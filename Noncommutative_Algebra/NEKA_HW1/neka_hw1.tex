@@ -1,0 +1,210 @@
+\documentclass[a4paper, 12pt]{article}
+
+\usepackage[slovene]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{units}
+\usepackage{eurosym}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{mathtools}
+\usepackage{graphicx}
+\usepackage{color}
+%\usepackage{url}
+\usepackage{hyperref}
+\usepackage{enumerate}
+\usepackage{enumitem}
+\usepackage{pifont}
+\usepackage{tikz-cd}
+\usetikzlibrary{babel}
+\usepackage{adjustbox}
+\usepackage{stmaryrd}
+
+% set margin and layout here
+\usepackage[margin=0.5in]{geometry}
+
+% commonly used math operators
+\DeclareMathOperator{\diam}{diam}
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\im}{im}
+\DeclareMathOperator{\coker}{coker}
+\DeclareMathOperator{\pr}{pr}
+\DeclareMathOperator{\Lin}{Lin}
+\DeclareMathOperator{\Ann}{Ann}
+\DeclareMathOperator{\Ass}{Ass}
+\DeclareMathOperator{\Spec}{Spec}
+\DeclareMathOperator{\mSpec}{mSpec}
+\DeclareMathOperator{\Quot}{Quot}
+\DeclareMathOperator{\Tor}{Tor}
+\DeclareMathOperator{\Ext}{Ext}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\End}{End}
+\DeclareMathOperator{\rad}{rad}
+
+% commonly used math objects
+\newcommand{\D}{\mathbb{D}}
+\renewcommand{\S}{\mathbb{S}}
+\newcommand{\B}{\mathbb{B}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\renewcommand{\P}{\mathbb{P}}
+
+% commonly used math relations
+\newcommand{\iso}{\cong}
+\newcommand{\homeo}{\approx}
+\newcommand{\htpeq}{\simeq}
+\newcommand{\hlgeq}{\sim}
+\newcommand{\idtfy}{\longleftrightarrow}
+
+% commonly used math symbols
+\newcommand{\closure}[1]{\overline{#1}}
+\newcommand{\subideal}{\vartriangleleft}
+\newcommand{\supideal}{\vartriangleright}
+
+% title data - MODIFY
+\title{Noncommutative algebra - $1^{\text{st}}$ homework}
+\author{Benjamin Benčina, 27192018}
+
+\begin{document}
+
+\maketitle
+
+\underline{\textbf{Ex. 1:}}
+Let $k$ be a field and $A$ a finite dimensional $k$-algebra. Let us show that every element of $A$ is either a unit or a zero-divisor.
+
+Consider the following two maps
+\begin{align*}
+L_a \in \End_k(A): \quad x \mapsto ax \\
+R_a \in \End_k(A): \quad x \mapsto xa
+\end{align*}
+Since $k$ is a field, $A$ is in fact a finite dimensional vector space over $k$. Linear maps $L_a$ and $R_a$ are therefore surjective iff they are injective. Clearly $L_a$ is injective precisely when $a \in A$ is not a left zero-divisor (look at the kernel). Let us now prove that $L_a$ is surjective precisely when $a$ is right invertible. Both implications are clear, indeed, we have
+\begin{itemize}
+	\item $(\implies)$: For every $x \in A$ there exists $y \in A$ such that $ay = x$. In particular, for $x = 1$ there exist $y \in A$ such that $ay = 1$.
+	\item $(\impliedby)$: There exists $b \in A$ such that $ab = 1$. Clearly we have that for every $x \in A$, $bx \mapsto abx = x$.
+\end{itemize}
+Similarly we prove analogue statements for $R_a$ with left $\idtfy$ right.
+
+Suppose now that $a \in A$ is not a zero-divisor. This by definition means that it is not a left zero-divisor and that it is not a right zero-divisor. By the above, $a$ is left and right invertible and therefore invertible. Clearly, no zero-divisor can be invertible.
+\newline
+
+\underline{\textbf{Ex. 2:}}
+Let $M$ be an artinian and noetherian $R$-module and $\varphi \in \End_R(M)$ We will show that there exists $n \in \N$ such that $M = \im(\varphi^n) \oplus \ker(\varphi^n)$.
+
+We first notice that for every $n \in \N$ we have $\ker\varphi^n \subseteq \ker\varphi^{n+1}$ and $\im\varphi^{n+1} \subseteq \im\varphi^n$. Also note that since $\varphi$ is linear, $\ker\varphi^n$ and $\im\varphi^n$ are submodules in $M$ for every $n \in \N$.
+
+Now consider the following two chains
+\begin{align*}
+\ker\varphi &\leq \ker\varphi^2 \leq \ker\varphi^3 \leq \cdots \\
+\im\varphi &\geq \im\varphi^2 \geq \im\varphi^3 \geq \cdots
+\end{align*}
+Since $M$ is noetherian, there exists $k \in \N$ such that $\ker\varphi^k = \ker\varphi^{k+1}=\cdots$, and since $M$ is artinian, there exists $l \in \N$ such that $\im\varphi^l = \im\varphi^{l+1} = \cdots$; denote $N = \max\lbrace k, l \rbrace$. We will prove that $M = \im\varphi^N \oplus \ker\varphi^N$.
+\begin{itemize}
+	\item Take $x \in \ker\varphi^N \cap \im\varphi^N$, that is $\varphi^Nx = 0$ and there exists $y \in M$ such that $\varphi^Ny = x$. It follows that $\varphi^{2N}y = 0$, therefore $y \in \ker\varphi^{2N} = \ker\varphi^N$, so we have $x = \varphi^Ny = 0$ and the intersection is trivial.
+	\item Take $x \in M$. Since $\im\varphi^N = \im\varphi^{2N}$, there exists $y \in M$ such that $\varphi^Nx = \varphi^{2N}y$. Then we can decompose $x = (x - \varphi^Ny) + \varphi^Ny$, where the first term is in $\ker\varphi^N$ and the second term is in $\im\varphi^N$.
+\end{itemize}
+
+\underline{\textbf{Ex. 3:}}
+We will show that a module $M$ is semisimple iff every one of its cyclic submodules is semisimple.
+
+The implication from left to right is trivial. Every submodule of a semisimple module is semisimple, in particular every cyclic submodule.
+
+For the converse notice that every module can be written as a sum of its cyclic submodules, that is
+\[
+M = \Sigma_{m \in M}Rm
+\]
+where note that the above sum is in general not direct. By assumption, every cyclic submodule is semisimple and can therefore be written as a direct sum of simple submodules, that is for every $m \in M$ we have
+\[
+Rm = \bigoplus_{i \in I_m} N_i^m
+\]
+If follows now that $M$ is a sum of simple modules (not necessarily direct). By a proposition from the lectures, $M$ is semisimple.
+\newline
+
+\underline{\textbf{Ex. 4:}}
+Let $R$ be a ring with unity. We shall compute the Jacobson radical $J$ of $U_n(R)$ the ring of all upper triangular $n \times n$ matrices over $R$ (not unitary matrices).
+
+As a first step, we simply guess the Jacobson radical:
+\[
+J = \begin{bmatrix}
+\rad R & R  & \dots & R \\
+ & \rad R  & \dots & R \\
+  & & \ddots & \vdots \\
+  & & & \rad R
+\end{bmatrix}
+\]
+
+It is fairly easy to see that $J$ is both a left and a right ideal, which follows from the fact, that $\rad R$ is a two-sided ideal, and the properties of matrix multiplication.
+Furthermore, if $J \subseteq \rad U_n(R)$, it follows that
+\[
+\rad(U_n(R)) / J = \rad(U_n(R) / J) \iso \rad(R/\rad R \times \cdots \times R / \rad R) \iso (0)
+\]
+since $R /\rad R$ is $J$-semisimple. Clearly then $J = \rad U_n(R)$.
+
+As we see now, we have to prove $J \subseteq \rad U_n(R)$. Concretely, we will prove that for every left maximal ideal $M < U_n(R)$ we have $J \subseteq M$. We observe that for every $i = 1, \dots, n$ matrices in $U_n(R)$ that have elements ranging over the entire $R$ all but on the $i$-th diagonal place, where they are ranging over some maximal left ideal $M < R$, form a left ideal (again apparent from matrix multiplication) which is obviously maximal. Moreover, if we put a maximal left ideal anywhere else but on the diagonal, by the properties of matrix multiplication, we get the entire $U_n(R)$ back. Of course any left ideal that has left ideals of $R$ on more than one place is contained in one of the above ideals (by maximality of left ideals $M$). Therefore, every maximal left ideal is of the above form, but $J$ is clearly contained in all of them, since all of its diagonal elements are ranging over $\rad R$ (which is by definition contained in all maximal left ideals of $R$).
+\newline
+
+\underline{\textbf{Ex. 5:}}
+Let $R$ be an artinian ring and $G$ a finite group. Let us show that the group ring $RG$ is a semisimple ring iff $R$ is a semisimple and $|G|$ is invertible in $R$.
+
+\begin{itemize}
+	\item $(\impliedby)$: This direction seems similar to the formulation of Maschke's theorem with the complication that we have merely an artinian ring, not a field. We nonetheless try and follow the proof as much as possible.
+	Indeed, let $M \leq RG$ be an $RG$-submodule. We're proving that $M$ has a complement in $RG$. Since $R$ is semisimple, these exists a projection map of $R$-modules $f\colon RG \to M$ ($f|_M$ is the identity map). We construct the following "averaging" map $g \colon RG \to RG$ with
+	\[
+	g(x) = \frac{1}{|G|} \Sigma_{\sigma \in G} \sigma^{-1}f\sigma x
+	\]
+	and claim that $g$ is an $RG$-linear projection map with respect to $M$ (here $\frac{1}{|G|}$ denotes the inverse of $|G|$). Indeed, with the same steps as at the lectures, we prove that for every $x \in RG$ we have $g(x) \in M$, for every $x \in M \leq RG$ we have $g(x) = x$ (both of these are trivial to see, since $f$ is a projection with respect to $M$ and $R$-linear), and that (since addition is trivial) that for every $\tau \in G$ and $x \in RG$ we have $g(\tau x) = \tau g(x)$ (we merely switch around group elements). It follows that $RG = M \oplus \ker g$ and by a proposition from the lectures (every submodule is a direct summand), $RG$ is semisimple.
+	\item $(\implies)$: Suppose that $RG$ is a semisimple ring (that is, semisimple as an $RG$-module). We first show that $R$ is semisimple.
+	
+	In the standard way we embed $R$ into $RG$ as a submodule via the identification $R \idtfy R(\Sigma_{\sigma \in G}\sigma)$. Indeed, $R$ is now a $RG$ submodule; it is clearly closed for addition and multiplication with finite sums from $RG$, since we chose $\Sigma_{\sigma \in G}\sigma$ as the generator and for every $\tau \in G$ we have $\tau\Sigma_{\sigma \in G}\sigma = \Sigma_{\sigma \in G}\sigma$. It follows that every $R$-submodule of $R$ will be an $RG$-submodule of $R$ (under identification) and thus $R$ is semisimple too.
+	
+	Now consider the augmentation map $\varepsilon \colon RG \to R$ (given by the trivial action of $G$ on $R$) defined by
+	\[
+	\Sigma_{\sigma \in G} r_\sigma \sigma \mapsto \Sigma_{\sigma \in G} r_\sigma
+	\]
+	and let us look at $I = \ker\varepsilon$ an $RG$-submodule of $RG$. Since $RG$ is semisimple it satisfies the complement property, so there exists a (one-sided) ideal $C$ of $RG$ such that $RG = I \oplus C$. Let us decompose the multiplicative neutral element of $R$ under identification as $1 = e + c$ with $e \in I$ and $c \in C$ in a unique way. Squaring the expression we see $e^2 = e$. Since our augmentation map was given by the trivial action of $G$ on $R$, $G$ acts trivially on $RG/C$, so $e\sigma = e$ for each $\sigma \in G$. It follows that $e = t\Sigma_{\sigma \in G}\sigma$ for some $t \in R$. However $e$ is an idempotent, so from a calculation from the tutorials it follows that
+	\[
+	e^2 = |G|t^2\Sigma_{\sigma \in G}\sigma = t\Sigma_{\sigma \in G}\sigma = e
+	\]
+	Comparing coefficients (remember, $G$ is a basis for $RG$) we get $|G|t^2 = t$ at the unit of the group $G$. Furthermore, there is no $r \in R$ such that $rt = tr = 0$. Indeed, $e$ acts as the identity on the $RG$-module $R$, and if $rt = 0$ in $R$ then $e = t \Sigma_{\sigma \in G}\sigma$ annihilates $r$ in the natural action of $RG$ on $R$, same for $tr = 0$. Hence we're justified in cancelling the extra $t$ in the above equation and we get that $|G|t = 1$ in $R$, hence $|G|$ is invertable ($|G|$ obviously commutes with $t$ as a sum of $|G|$-many $1$s).
+	%Now suppose that $|G|$ is not invertable in $R$. Under the above identification, $|G|\Sigma_{\sigma \in G}\sigma = \left(\Sigma_{\sigma \in G}\sigma\right)^2$ (calculation from tutorials) is not invertable in $RG$. However, this leads to a contradiction, since $\Sigma_{\sigma \in G}\sigma$ is a unit under identification.
+%	We need to also show that $|G|$ is invertible in $R$. It might be easier if we negate the statement and prove that if $|G|$ is not invertible in $R$, $RG$ cannot be semisimple. Indeed, consider the augmentation map $\varepsilon \colon RG \to R$ defined by
+%	\[
+%	\Sigma_{\sigma \in G} r_\sigma \sigma \mapsto \Sigma_{\sigma \in G} r_\sigma
+%	\]
+%	and let us look at $I = \ker\varepsilon$ an $RG$-submodule of $RG$. We claim it does not have a complement, that is it non-trivially intersects every other non-trivial $RG$-submodule. Take $M \leq RG$ and $m \in M$ non-zero. Either $\varepsilon(m) = 0$, which means $m \in I$ as well, or $\varepsilon(m) \neq 0$. But in that case we have $\varepsilon((\Sigma_{\sigma \in G}1 \cdot\sigma)m) = 0$, since $\varepsilon(\Sigma_{\sigma \in G}1\cdot\sigma) = \Sigma_{\sigma \in G} 1 = |G| \cdot 1$, while clearly $(\Sigma_{\sigma \in G}1 \cdot \sigma) m$ is non-zero and thus a non-zero element of $I \cap M$.
+%	
+%	=====
+%	
+%	Since $RG$ is semisimple, it is isomorphic to a finite product of matrix rings over division rings, that is
+%	\[
+%	RG \iso \Pi_{i=1}^k M_{n_i}(D_i)
+%	\]
+%	Since $RG$ is a semisimple ring, $RG$ has finite length (as an $RG$-module) and every simple $RG$-module is isomorphic to a simple component of $RG$ (corollary from the lectures). In particular, this holds for every simple component of $R$ embedded into $RG$. Note that $RG$ must also be artinian. We want to show that if $|G|$ is not invertible in $R$, $RG$ is not $J$-semisimple and by extension not semisimple. 
+	
+	
+\end{itemize}
+\end{document}
+
+%% TEMPLATES
+% lists
+%\begin{enumerate}[label=(\alph*)]
+% diagram
+%\adjustbox{scale=1, center}{
+%	\begin{tikzcd}
+%		\R_n \arrow[d, "\varphi_n"] \arrow[r, "\Phi"] & \R_m \arrow[d, "\varphi_m"] \\
+%		\R \arrow[r, "\widetilde{\Phi}"] & \R
+%	\end{tikzcd}
+%}
+% figure
+%\begin{figure}[h]
+%	\centering
+%	\includegraphics[scale=0.4]{fig}
+%	\caption{caption}
+%	\label{fig:label}
+%\end{figure}
