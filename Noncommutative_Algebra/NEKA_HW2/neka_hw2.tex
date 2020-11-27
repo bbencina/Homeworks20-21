@@ -1,0 +1,181 @@
+\documentclass[a4paper, 12pt]{article}
+
+\usepackage[slovene]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{units}
+\usepackage{eurosym}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{mathtools}
+\usepackage{graphicx}
+\usepackage{color}
+%\usepackage{url}
+\usepackage{hyperref}
+\usepackage{enumerate}
+\usepackage{enumitem}
+\usepackage{pifont}
+\usepackage{tikz-cd}
+\usetikzlibrary{babel}
+\usepackage{adjustbox}
+\usepackage{stmaryrd}
+
+% set margin and layout here
+\usepackage[margin=0.5in]{geometry}
+
+% commonly used math operators
+\DeclareMathOperator{\diam}{diam}
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\im}{im}
+\DeclareMathOperator{\coker}{coker}
+\DeclareMathOperator{\pr}{pr}
+\DeclareMathOperator{\rad}{rad}
+\DeclareMathOperator{\chrs}{char}
+\DeclareMathOperator{\Lin}{Lin}
+\DeclareMathOperator{\Ann}{Ann}
+\DeclareMathOperator{\Ass}{Ass}
+\DeclareMathOperator{\Spec}{Spec}
+\DeclareMathOperator{\mSpec}{mSpec}
+\DeclareMathOperator{\Quot}{Quot}
+\DeclareMathOperator{\Tor}{Tor}
+\DeclareMathOperator{\Ext}{Ext}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\End}{End}
+
+% commonly used math objects
+\newcommand{\D}{\mathbb{D}}
+\renewcommand{\S}{\mathbb{S}}
+\newcommand{\B}{\mathbb{B}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\renewcommand{\P}{\mathbb{P}}
+
+% commonly used math relations
+\newcommand{\iso}{\cong}
+\newcommand{\homeo}{\approx}
+\newcommand{\htpeq}{\simeq}
+\newcommand{\hlgeq}{\sim}
+\newcommand{\idtfy}{\longleftrightarrow}
+
+% commonly used math symbols
+\newcommand{\closure}[1]{\overline{#1}}
+\newcommand{\subideal}{\vartriangleleft}
+\newcommand{\supideal}{\vartriangleright}
+
+% title data - MODIFY
+\title{Noncommutative algebra - $2^{\text{nd}}$ homework}
+\author{Benjamin Benčina, 27192018}
+
+\begin{document}
+
+\maketitle
+
+\underline{\textbf{Ex. 1:}}
+Let $R$ be a primitive ring and $L$ a minimal left ideal of $R$. Let us show that every faithful simple $R$-module is isomorphic to $L$.
+ 
+Let $M$ be a faithful simple $R$-module, that exists by primitivity of $R$. Then by faithfulness of $M$, the product $LM$ is non-zero. Choose $m \in M$ such that $Lm \neq 0$. By simplicity of $M$, $Lm = M$. Consider the homomorphism $\varphi \colon L \to M$ defined by $a \mapsto am$. The map $\varphi$ is surjective by the above. It is also injective, since $\varphi \neq 0$ and $\ker \varphi \leq L$ and therefore $\ker\varphi = 0$. This is the isomorphism we seek.
+\newline
+
+\underline{\textbf{Ex. 2:}}
+Let $R$ be a ring and $V$ a faithful simple $R$-module ($R$ is therefore primitive). By Schur's lemma, $V$ is a left vector space over the division ring $S = \End_R(V)$. We define the rank of an element $r \in R$ by
+\[
+\rank r = \dim_S(rV)
+\]
+We will show that $r \in R$ has finite rank $\iff$ $r$ is a sum of elements of rank $1$.
+\begin{itemize}
+	\item $(\impliedby)$: This direction follows from basic linear algebra. Suppose that $r = \Sigma_{i \in I}r_i$ is a finite sum (say, $|I| = n$) with $\rank r_i = 1$ for all $i$ where $r_i$ is non-zero.
+	Then we have
+	\[
+	\rank r = \dim_S(rV) = \dim_S\left(\Sigma_{i \in I}r_iV\right) \leq \Sigma_{i \in I} \dim_S(r_iV) = \Sigma_{i \in I} 1 = n < \infty
+	\]
+	\item $(\implies)$: By the Jacobson Density Theorem, since $R$ is primitive, $R$ is a dense ring of linear transformations of the $S$-vector space $V$. In other words, for any finite linearly independent set $\lbrace v_1, \dots, v_n \rbrace$ and a finite set $\lbrace w_1, \dots, w_n \rbrace$ there exists $r \in R$ such that $rv_i = w_i$ for all $i = 1,\dots,n$.
+	
+	We now continue with a proof by induction on the rank of $r$. The base case is trivial (if $\rank r = 1$, $r$ is itself a one-term sum of elements of rank $1$), so we proceed with the step case. Assume the implication holds for all $r \in R$ with $\rank r \leq n-1$ and suppose for concrete $r \in R$ that $\rank r = \dim_S(rV) = n < \infty$. There exists a (linearly independent) basis for $rV$: $\lbrace rv_1, \dots, rv_n\rbrace$. By the density of $R$, there exists $r' \in R$ mapping the basis to the set $\lbrace 0, rv_2, \dots, rv_n\rbrace$ as described above. Clearly now $\rank r'r = n-1$ and we can write $r = (r - r'r) + r'r$. Since by the induction hypothesis $r'r$ can be written as a sum of elements of rank $1$, we now need to prove only that $r - r'r$ has rank $1$, which is easy, since clearly $(r-r'r)V = \Lin\lbrace rv_1 \rbrace$ ($r'$ acts as a projection).
+\end{itemize}
+
+\underline{\textbf{Ex. 3:}}
+Let $U$ be an $\R$-vector space. Let us show that $\Sigma_{i = 1}^n u_i\otimes u_i = 0 \in U\otimes_\R U \iff u_i = 0$ for all $i = 1, \dots, n$.
+\begin{itemize}
+	\item $(\impliedby)$: Since $u_i = 0$ implies $u_i \otimes u_i = 0$, this implication holds.
+	\item $(\implies)$: Let $\lbrace e_i \rbrace_{i \in I}$ be a basis for $U$. Then $\lbrace e_i \otimes e_j \rbrace_{i, j \in I}$ is a basis for $U \otimes_\R U$. We can write $u_i = \Sigma_{j \in I} a_je_j$, so we get $u_i \otimes u_i = \Sigma_{j, k \in I} a_ja_k e_j \otimes e_k$ where in both sums only finitely many coefficients are non-zero. We thus get $\Sigma_{i =1}^n u_i \otimes u_i = \Sigma_{j, k \in I} b_{jk} e_j \otimes e_k$ where $b_{jk}$ are sums of degree $2$ products of coefficients of $u_i$, and only finitely many coefficients of the sum are non-zero. Since this sum is by assumption equal to zero, all its coefficients must be equal to zero. Now observe coefficients at basis vectors of the form $e_p \otimes e_p$. We see they are formed precisely by the sums of squares of appropriate coefficients of vectors $u_i$ (those that contain $e_p$ in basis decomposition) and that each coefficient from all of vectors $u_i$ is present in some term. In particular, we have sums of non-negative real numbers that are equal to zero, so all these numbers (squares of coefficients of vectors $u_i$) must be zero. It follows all $u_i$ are equal to zero. %Notice that we assumed $u_i$ are linearly independent for this implication to go through more smoothly, but if two vectors are linearly dependent, we can just treat the as one vector and adjust the coefficients at the beginning.
+\end{itemize}
+
+\underline{\textbf{Ex. 4:}}
+Let $F$ be a field with $\chrs F \neq 2$ and $a, b \in F^*$. Let $Q = \left(\frac{a, b}{F}\right)$ be a quaternion algebra with basis $\lbrace 1, i, j, k \rbrace$. Define the norm $N \colon Q \to F$ by $N(x + yi + zj + wk) = x^2 - ay^2 - bz^2 + abw^2$. We show the following statements are equivalent
+\begin{enumerate}[label=(\alph*)]
+	\item $Q$ is not a division algebra;
+	\item $Q \iso M_2(F)$;
+	\item The above norm $N$ has a non-trivial zero;
+	\item We have $b \in N_a := N_{F(\sqrt{a})/F}(F(\sqrt{a})) = \lbrace x^2 - ay^2 ; \; x, y \in F \rbrace$.
+\end{enumerate}
+Let us first prove the equivalence $(a) \iff (c)$, since we will need it later.
+\begin{itemize}
+	\item \underline{$(a) \iff (c)$}: We prove a more precise statement: an element $q \in Q$ is invertible $\iff$ $N(q) \neq 0$. If $qq' = 1$ for some $q' \in Q$, then $N(q)N(q') = N(1) = 1$, so $N(q) \neq 0$. Conversely, suppose $N(q) \neq 0 \in F$. Since elements from $F$ commute with all elements of $Q$ (recall that $Q$ is central simple), the expression
+	\[
+	N(q) = q\overline{q} = \overline{q}q
+	\]
+	gives us
+	\[
+	q\frac{1}{N(q)}\overline{q} = \frac{1}{N(q)}q\overline{q} = 1
+	\]
+	In other words, $q^{-1} = \frac{\overline{q}}{N(q)}$ is a two-sided multiplicative inverse of $q$.
+\end{itemize}
+
+We will later prove that $(a) \implies (d) \implies (b) \implies (a)$. First however, we will show some other basic properties. Recall from tutorials that $\left(\frac{1,b}{F}\right) \iso M_2(F)$. We also have $\left(\frac{a, b}{F}\right) \iso \left(\frac{b, a}{F}\right)$ by the basis transformation $(i, j) \mapsto (j, i)$, and $\left(\frac{ac^2, b}{F}\right) \iso \left(\frac{a, b}{F}\right)$ by the basis transformation $(i, j) \mapsto (ic^{-1}, j)$ for $c \neq 0$.
+
+This clearly shows that if $a$ is a square (that is, $\sqrt{a} \in F$) we also have $\left(\frac{a, b}{F}\right) \iso M_2(F)$. If $a$ is a square it also easily follows that $N_a = F$ and therefore $b \in N_a$. Indeed, write $a = c^2$. Then
+\[
+N_a = \lbrace x^2 - c^2 y^2 \rbrace = \lbrace (x-cy)(x+cy) \rbrace = \lbrace x'y' \rbrace
+\]
+where in the last equality we merely change variables. For a special case of, say, $y' = 1$, we get the entirety of $F \subseteq N_a$. The reverse inclusion is always true.
+
+In the following proofs we can therefore assume, that $a$ is not a square, since it will already imply what we want.
+
+\begin{itemize}
+	\item \underline{$(a) \implies (d)$}: Let $Q$ not be a division algebra, so there exists a non-zero non-invertible $q \in Q$. By the above, $N(q) = 0$ and we have
+	\[
+	x^2 - ay^2 - bz^2 + abw^2 = 0 \implies x^2 - ay^2 = b(z^2 - aw^2)
+	\]
+	Since $a$ is not a square, we must have $z^2 - aw^2 \neq 0$. Indeed, if $z^2 - aw^2 = 0$ then $w = 0$ (if $w \neq 0$ we can solve for $a$ and see that $a$ is a square). It follows that also $z = 0$ and we get in the above equation that $x^2 - ay^2 = 0$, so also $x = y = 0$ since $a$ is not a square. It follows that $q = 0$, which is a contradiction. We can now solve the first equation for $b$ and get
+	\[
+	b = \frac{x^2 - ay^2}{z^2 - aw^2} \in N_a
+	\]
+	\item \underline{$(d) \implies (b)$}: Write $b = x_0^2 - a y_0^2$. $Q$ then has a different quaternion basis $\lbrace 1, i, x_0j + y_0k, i(x_0j + y_0k) \rbrace$ (the fourth element is actually $x_0k + y_0aj$, since $i^2 = a$ and $k = ij$). Indeed, we get this basis by transforming $(j, k)$ as basis columns with the matrix
+	\[
+	\begin{bmatrix}
+	x_0 & ay_0 \\
+	y_0 & x_0
+	\end{bmatrix}
+	\]
+	that has determinant $b \neq 0$. We also have $(x_0j + y_0 k)^2 = b^2$. Since this is a different basis for the same quaternion algebra, it follows that
+	\[
+	\left(\frac{a, b}{F}\right) \iso \left(\frac{a, b^2}{F}\right) \iso \left(\frac{a, 1}{F}\right) \iso M_2(F)
+	\]
+	\item \underline{$(b) \implies (a)$}: Clearly $M_2(F)$ is not a division algebra.
+\end{itemize}
+\end{document}
+
+%% TEMPLATES
+% lists
+%\begin{enumerate}[label=(\alph*)]
+% diagram
+%\adjustbox{scale=1, center}{
+%	\begin{tikzcd}
+%		\R_n \arrow[d, "\varphi_n"] \arrow[r, "\Phi"] & \R_m \arrow[d, "\varphi_m"] \\
+%		\R \arrow[r, "\widetilde{\Phi}"] & \R
+%	\end{tikzcd}
+%}
+% figure
+%\begin{figure}[h]
+%	\centering
+%	\includegraphics[scale=0.4]{fig}
+%	\caption{caption}
+%	\label{fig:label}
+%\end{figure}
