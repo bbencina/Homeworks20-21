@@ -1,0 +1,221 @@
+\documentclass[a4paper, 12pt]{article}
+
+\usepackage[slovene]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{units}
+\usepackage{eurosym}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{mathtools}
+\usepackage{graphicx}
+\usepackage{color}
+%\usepackage{url}
+\usepackage{hyperref}
+\usepackage{enumerate}
+\usepackage{enumitem}
+\usepackage{pifont}
+\usepackage{tikz-cd}
+\usetikzlibrary{babel}
+\usepackage{adjustbox}
+\usepackage{stmaryrd}
+
+% set margin and layout here
+% in case of beamer, comment this out
+\usepackage[margin=0.5in]{geometry}
+
+% commonly used math operators
+\DeclareMathOperator{\diam}{diam}
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\im}{im}
+\DeclareMathOperator{\coker}{coker}
+\DeclareMathOperator{\pr}{pr}
+\DeclareMathOperator{\rad}{rad}
+\DeclareMathOperator{\chrs}{char}
+\DeclareMathOperator{\Lin}{Lin}
+\DeclareMathOperator{\Ann}{Ann}
+\DeclareMathOperator{\Ass}{Ass}
+\DeclareMathOperator{\Spec}{Spec}
+\DeclareMathOperator{\mSpec}{mSpec}
+\DeclareMathOperator{\Quot}{Quot}
+\DeclareMathOperator{\Tor}{Tor}
+\DeclareMathOperator{\Ext}{Ext}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\End}{End}
+\DeclareMathOperator{\Br}{Br}
+
+% commonly used math objects
+\newcommand{\D}{\mathbb{D}}
+\renewcommand{\S}{\mathbb{S}}
+\newcommand{\B}{\mathbb{B}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\renewcommand{\H}{\mathbb{H}}
+\renewcommand{\P}{\mathbb{P}}
+
+% commonly used math relations
+\newcommand{\iso}{\cong}
+\newcommand{\homeo}{\approx}
+\newcommand{\htpeq}{\simeq}
+\newcommand{\hlgeq}{\sim}
+\newcommand{\idtfy}{\longleftrightarrow}
+
+% commonly used math symbols
+\newcommand{\closure}[1]{\overline{#1}}
+\newcommand{\subideal}{\vartriangleleft}
+\newcommand{\supideal}{\vartriangleright}
+
+% cool environment I sometimes use
+%\definecolor{bostonuniversityred}{rgb}{0.8, 0.0, 0.0}
+%
+%\newenvironment{matematika}[1]{
+%\textcolor{bostonuniversityred}{\underline{\textsc{#1:}}}
+%}{
+%}
+
+% title data - MODIFY
+\title{Noncommutative Algebra, $2^\text{nd}$ homework}
+\author{Benjamin Benčina, 27192018}
+
+\begin{document}
+
+\maketitle
+
+\underline{\textbf{Ex. 1:}}
+Let $A$ be a central simple $k$-algebra. Assume that for all $x, y, z, w \in A$ we have
+\[
+    [x, y][z,w] + [z, w][x, y] \in k
+\]
+Let us show that $\deg{A} = 1$ or $2$.
+
+We consider the following map
+\[
+    f(x, y, z, w, v) = [[x, y][z, w] + [z, w][x, y], v]
+\]
+Since $A$ is central, it is clear that $f(x, y, z, w, v) = 0$ for all $x, y, z, w, v \in A$\footnote{Such a function is often called a (multilinear) polynomial identity, which makes $A$ a so called PI-ring.}.
+For now assume also that $n = \deg A < \infty$.
+We can always map $A \to \overline{k} \otimes A \iso M_n(\overline{k})$ with $x \mapsto 1 \otimes x$, so any function, that is zero everywhere on $M_n(\overline{k})$, will also be zero everywhere on $A$.
+This allows us to look for counterexamples in matrix algebras over algebraically closed fields.
+Since we can also always embed $M_n$ into $M_{n+1}$ by just padding matrices with zeros below and to the right, it is enough to find a counterexample for $n = 3$, which is what we will do now.
+We know that for basis unit matrices we have $E_{ij}E_{kl} = \delta_{j,k}E_{il}$ so we take the following matrices:
+\[
+    x = E_{11},\quad y = E_{12},\quad z = E_{22},\quad w = E_{23},\quad v = E_{33}
+\]
+We quickly see that $f(x, y, z, w, v) = E_{13} \neq 0$, since the only non-zero product in the commutator is $xyzwv$.
+This now excludes all finite degrees except for $1$ and $2$.
+
+\underline{\textit{Note:}}
+If one takes finite dimension as part of the definition of central simple algebras, we conclude the proof here.
+In this case, take the following as an alternative solution. Otherwise, assume $A$ has infinite degree and continue as follows.
+
+What remains to be seen is that the infinite degree is also not a possibility.
+Indeed, since $A$ is simple, it is primitive as a ring.
+By the Jacobson Density Theorem, $A$ acts as a ring of linear transformations on a vector space $V$ over a division ring $D$.
+Now suppose there exist linearly independent vectors $u_0, \dots, u_5 \in V$ (which must be the case if $A$ has infinite degree and is not the case if $A$ has degree $1$ or $2$).
+By density of $A$ there exist $a_1, \dots, a_5 \in A$ such that $a_iu_j = \delta_{i,j}u_{j-1}$.
+Then clearly $a_1\cdots a_5 u_n = u_0$ while all other permutations of actions result in zero (notice the similarity with the above counterexample).
+We now have $f(a_1,\dots,a_5)u_n = u_0 \neq 0$ (only the first of the terms of the above commutator gives us the correct order), but this is a contradiction with the fact that $f$ is by assumption zero on $A$.
+Hence $A$ must have finite degree.
+Note that this already proves that $\deg A < 3$, but the counterexample is much more illustrative.
+\newline
+
+\underline{\textbf{Ex. 2:}}
+Let $A$ be a simple $\R$-algebra of odd dimension $n$.
+We will show that $A \iso M_m(\R)$ for some odd $m$.
+
+By applying Wedderburn's Structure Theorem and Frobenius' Theorem consecutively,
+it is clear that any finite dimensional simple $\R$-algebra is isomorphic to either $M_m(\R)$, $M_m(\C)$ or $M_m(\H)$ for some $m \in \N$.
+Indeed, since $A$ is simple, we have $A \iso M_m(D)$, where $D$ is a real division algebra, clearly $\R \subseteq Z(D)$, so $D \in \left\{ \R, \C, \H \right\}$.
+But we know $A$ has odd $\R$-dimension, while $2$ divides both $\dim_\R M_m(\C)$ and $\dim_\R M_m(\H)$ simply because $\dim_\R \C = 2$ and $\dim_\R \H = 4$.
+It follows that $A \iso M_m(\R)$.
+Furthermore, since $x^2$ is odd precisely when $x$ is odd, by dimension counting we get $n = m^2$ and consequently $m = \sqrt{n}$, which is an odd number.
+\newline
+
+\underline{\textbf{Ex. 3:}}
+Let $A, B, C$ be finite dimensional central simple $k$-algebras such that $A \otimes B \iso A \otimes C$.
+Let us show that $B \iso C$.
+
+Consider $\Br(k)$ the Brauer group of $k$.
+We have the following equivalence
+\[
+    A \otimes B \iso A \otimes C \iff [A \otimes B ] = [A \otimes C] \quad\&\quad [A\otimes B : k] = [A \otimes C : k]
+\]
+Since $[X \otimes Y] = [X]\cdot [Y]$ in $\Br(k)$ and $[X \otimes Y : k] = [X : k] \cdot [Y : k]$, we get by cancellation law for group multiplication that $[B] = [C]$ and $[B : k] = [C : k]$. By the analogue to the above equivalence we have $B \iso C$.
+\newline
+
+\underline{\textbf{Ex. 4:}}
+Let $A$ be a central simple $k$-algebra of degree $n$.
+We will show that $A$ is split $\iff$  $A$ contains a subalgebra $S \iso k^n$.
+
+As usual, we prove the equivalence as two implications separately.
+\begin{itemize}
+    \item $\underline{(\implies)}$:
+        Let $A$ be a split central simple $k$-algebra of degree $n$. By definition this means that $A \iso M_n(k)$.
+        Then for instance $D = \text{Diag}_n(k) \leq M_n(k)$ is a subalgebra and $D \iso k^n$.
+    \item $\underline{(\impliedby)}$:
+        Recall that $n = \sqrt{\dim_k(A)}$ as a vector space.
+        Suppose $R \leq A$ such that $R \iso k^n$.
+        Notice that $R$ is a commutative $k$-subalgebra of dimension $n$ in $A$.
+        By Wedderburn's Structure Theorem, $A \iso M_m(D)$, where $D$ is a division algebra that can be viewed so as to contain $k$.
+        Recall now from linear algebra, that any commutative matrix subalgebra is isomorphic to a diagonal subalgebra of appropriate dimension (via a conjugation isomorphism).
+        From this it follows, that $m \geq n$, hence $m = n$ (intuitively, we keep in mind the equation $m^2 [D : k] = n^2$).
+        This means that $D \iso k$, but now by definition, $A$ is Brauer equivalent to $k$; in other words, $A$ is split.
+\end{itemize}
+
+\underline{\textbf{Ex. 5:}}
+Let $S$ be a subalgebra of algebra $A$.
+Let us show the following
+\begin{enumerate}[label=(\alph*)]
+    \item If $S$ is commutative, than so is $C_A(C_A(S))$.
+    \item If $S = C_A(U)$ for some subset $U \subset A$, then $C_A(C_A(S)) = S$.
+\end{enumerate}
+
+Recall that for any set $U \subseteq A$ we have $U \subseteq C_A(C_A(U))$, and notice that for $U \subseteq V \subseteq A$ we have $C_A(V) \subseteq C_A(U)$ (since these elements have to commute with a ``larger'' set, so there is ``fewer'' of them).
+
+Take now the subalgebra $S \leq A$. Since $S$ is commutative, clearly $S \subseteq C_A(S)$. Now using the above remarks we have
+\[
+    S \subseteq C_A(C_A(S)) \subseteq C_A(S)
+\]
+Since $C_A(C_A(S))$ by definition commutes with all elements of $C_A(S)$, clearly $C_A(C_A(S))$ is commutative by the above inclusion chain, which proves (a).
+
+Now suppose $S = C_A(U)$ for some set $U \subseteq A$. Of course we have $U \subseteq C_A(C_A(U))$, so we get
+\[
+    C_A(C_A(C_A(U))) \subseteq C_A(U)
+\]
+and therefore
+\[
+    C_A(C_A(S)) \subseteq S
+\]
+Since also $S \subseteq C_A(C_A(S))$, this proves (b).
+
+\end{document}
+
+%% TEMPLATES
+% lists
+%\begin{enumerate}[label=(\alph*)]
+% diagram
+%\adjustbox{scale=1, center}{
+%	\begin{tikzcd}
+%		\R_n \arrow[d, "\varphi_n"] \arrow[r, "\Phi"] & \R_m \arrow[d, "\varphi_m"] \\
+%		\R \arrow[r, "\widetilde{\Phi}"] & \R
+%	\end{tikzcd}
+%}
+% figure
+%\begin{figure}[h]
+%	\centering
+%	\includegraphics[scale=0.4]{fig}
+%	\caption{caption}
+%	\label{fig:label}
+%\end{figure}
+% beamer
+%\documentclass[a4paper, 12pt]{beamer}
+%\usetheme{CambridgeUS}
+%\usecolortheme{beaver}
+%\usefonttheme{structuresmallcapsserif}
