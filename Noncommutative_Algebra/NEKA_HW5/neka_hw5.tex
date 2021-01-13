@@ -1,0 +1,291 @@
+\documentclass[a4paper, 12pt]{article}
+
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{units}
+\usepackage{eurosym}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{mathtools}
+\usepackage{graphicx}
+\usepackage{wrapfig}
+\usepackage{color}
+%\usepackage{url}
+\usepackage{hyperref}
+\usepackage{enumerate}
+\usepackage{enumitem}
+\usepackage{pifont}
+\usepackage{tikz-cd}
+\usetikzlibrary{babel}
+\usepackage{adjustbox}
+\usepackage{stmaryrd}
+
+% set margin and layout here
+% in case of beamer, comment this out
+\usepackage[margin=0.5in]{geometry}
+
+% commonly used math operators
+\DeclareMathOperator{\diam}{diam}
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\im}{im}
+\DeclareMathOperator{\coker}{coker}
+\DeclareMathOperator{\pr}{pr}
+\DeclareMathOperator{\rad}{rad}
+\DeclareMathOperator{\chrs}{char}
+\DeclareMathOperator{\len}{len}
+\DeclareMathOperator{\Lin}{Lin}
+\DeclareMathOperator{\Ann}{Ann}
+\DeclareMathOperator{\Ass}{Ass}
+\DeclareMathOperator{\Spec}{Spec}
+\DeclareMathOperator{\mSpec}{mSpec}
+\DeclareMathOperator{\Quot}{Quot}
+\DeclareMathOperator{\Tor}{Tor}
+\DeclareMathOperator{\Ext}{Ext}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\End}{End}
+\DeclareMathOperator{\Aut}{Aut}
+\DeclareMathOperator{\Br}{Br}
+\DeclareMathOperator{\Gal}{Gal}
+
+% commonly used math objects
+\newcommand{\D}{\mathbb{D}}
+\renewcommand{\S}{\mathbb{S}}
+\newcommand{\B}{\mathbb{B}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\renewcommand{\H}{\mathbb{H}}
+\renewcommand{\P}{\mathbb{P}}
+
+% commonly used math relations
+\newcommand{\iso}{\cong}
+\newcommand{\homeo}{\approx}
+\newcommand{\htpeq}{\simeq}
+\newcommand{\hlgeq}{\sim}
+\newcommand{\idtfy}{\longleftrightarrow}
+
+% commonly used math symbols
+\newcommand{\closure}[1]{\overline{#1}}
+\newcommand{\subideal}{\vartriangleleft}
+\newcommand{\supideal}{\vartriangleright}
+
+% cool environment I sometimes use
+%\definecolor{bostonuniversityred}{rgb}{0.8, 0.0, 0.0}
+%
+%\newenvironment{matematika}[1]{
+%\textcolor{bostonuniversityred}{\underline{\textsc{#1:}}}
+%}{
+%}
+
+\newcounter{excounter}[section]
+\newenvironment{Exercise}
+    {\refstepcounter{excounter}\underline{\textbf{Ex. \theexcounter:}}}
+    {\par\vspace{\baselineskip}}
+
+% start sections with 0
+%\setcounter{section}{-1}
+
+
+% title data - MODIFY
+    \title{Non-commutative Algebra, $5^{\text{th}}$ homework}
+\author{Benjamin Benčina, 27192018}
+
+\begin{document}
+
+\maketitle
+
+\begin{Exercise}
+    Let $K/k$ be a finite Galois field extension with the Galois group $G = \Gal(K/k)$ and let $L_i/k$ be finite field extensions for $i = 1, \dots, n$.
+    Denote $L = L_1 \times \cdots \times L_n$ (all operations are component-wise).
+    Let us show that
+    \[
+        H^1(G, (L \otimes_k K)^{-1}) = 1
+    \]
+
+    As much as possible we would like to follow the proof of the Hilbert $90$ Theorem from the lectures.
+    Take a cocycle $f \in Z^1$, that is a map $f \colon G \to (L \otimes_k K)^{-1}$ such that for all $\sigma, \tau \in G$ we have
+    \[
+        (\delta_1 f)(\sigma, \tau) = \sigma(f(\tau)) \cdot f(\sigma\tau)^{-1} \cdot f(\sigma) = 1
+    \]
+    In other words, for every $\sigma, \tau \in G$ we have
+    \begin{equation}
+        f(\sigma\tau) = \sigma(f(\tau)) \cdot f(\sigma)
+        \label{eq:cocycle}
+    \end{equation}
+    Here we have to ask ourselves what exactly does $\sigma(f(\tau))$ even mean, more specifically, how does $G$ act on $(L \otimes_k K)^{-1}$.
+    We can derive this action from the action of $G$ on $K^{-1}$ (just the mapping action).
+    On simple tensors we act simply by first projecting on $K^{-1}$, that is, we have
+    \[
+        \sigma((a_1,\dots,a_n)\otimes x) = \sigma(x)
+    \]
+    We then linearly extend this to all elements of the tensor product.
+    We want to show that $f \in B^1$, that is we want to find a $g \in (L \otimes_k K)^{-1}$ such that
+    \[
+        \delta_0 g = f
+    \]
+    In other words, for every $\tau \in G$ we want
+    \begin{equation}
+        \tau(g) \cdot g^{-1} = f(\tau)
+        \label{eq:coboundary}
+    \end{equation}
+    
+    From now on denote $f(x)$ as $f_x$.
+    Recall from the proof of the Hilbert $90$ Theorem that there exists an $a \in K^{-1}$ such that
+    \[
+        b = \Sigma_{\tau \in G} f_\tau \tau(a) \neq 0
+    \]
+    In that case, we have seen than $g = b^{-1}$ finishes the proof.
+    By the definition of our action, we see that since $K^{-1}$ can be seen inside $(L \otimes_k K)$ as $1^n \otimes K^{-1}$, the same must hold if we take $a' = 1^n \otimes a$.
+    We therefore have a $b' \in (L \otimes_k K)^{-1}$ such that
+    \begin{equation}
+        b' = \Sigma_{\tau \in G} f_\tau \tau(a') \neq 0
+        \label{eq:ba}
+    \end{equation}
+    It is now reasonable to try and see whether $g = b'^{-1}$ finishes the proof in this more general case.
+    Same as in the proof of the theorem, we calculate
+    \begin{align*}
+        \sigma(b') &\stackrel{\eqref{eq:ba}}{=} \Sigma_{\tau \in G} \sigma(f_\tau) \sigma\tau(a')
+        \stackrel{\eqref{eq:cocycle}}{=} \Sigma_{\tau \in G} f_\sigma^{-1} f_{\sigma\tau} \sigma\tau(a')
+        = f_\sigma^{-1} \Sigma_{\tau \in G} f_{\sigma\tau}(\sigma\tau)(a') \\
+        &= f_{\sigma}^{-1} \Sigma_{\alpha \in G} f_\alpha \alpha(a')
+        \stackrel{\eqref{eq:ba}}{=} f_\sigma^{-1} b'
+    \end{align*}
+    We therefore have
+    \[
+        f_\sigma = \frac{b'}{\sigma(b')} = \frac{\sigma(b'^{-1})}{b'^{-1}}
+    \]
+    for all $\sigma \in G$ so indeed \eqref{eq:coboundary} holds.
+\end{Exercise}
+
+\begin{Exercise}
+    Let us prove the following:
+    \begin{enumerate}
+        \item If there exists a finite composition series for a module $N$ then all its other composition series are also finite.
+        \item For a proper submodule $M < N$ we have $\len M < \len N$ (note the strict inequality).
+    \end{enumerate}
+    
+    Let $\len N = n < \infty$ (since we do not yet know that length is in fact an invariant, this denotes the length of the shortest composition series, which we are assuming to be finite) and let $M \leq N$ (not necessarily strict).
+    By assumption we have
+    \[
+        N = N_0 \supset N_1 \supset \cdots \supset N_n = 0
+    \]
+    a composition series for $N$ of length $n$.
+    Denote $M_i = M \cap N_i$ and consider the following chain of submodules in $M$
+    \[
+        M = M_0 \supseteq M_1 \supseteq \cdots \supseteq M_n = 0
+    \]
+    Note that these inclusions are in general not strict and the quotients of consecutive modules need not be simple.
+    Now consider the following chain of module homomorphisms
+    \[
+        M_{i-1} \xrightarrow{\iota_{i-1}} N_{i-1} \xrightarrow{\pi_{i-1}} N_{i-1}/N_i
+    \]
+    for all $i = 2,\dots, n$, where $\iota$ and $\pi$ denote the inclusion and the quotient projection, respectively.
+    Clearly we have that
+    \[
+        \ker\iota_{i-1}\pi_{i-1} = M \cap N_i = M_i
+    \]
+    so there exists an induced injective homomorphism $\phi_{i-1} \colon M_{i-1}/M_i \to N_{i-1}/N_i$ for all $i = 1,\dots,n$.
+    But $N_{i-1}/N_i$ are by assumption simple, so images $\phi_{i-1}(M_{i-1}/M_i)$ are either trivial or the whole module $N_{i-1}/N_i$.
+    In other words, either $M_{i-1} = M_i$ or $M_{i-1}/M_i$ is simple.
+    Hence by deleting repeated terms we obtain
+    \[
+        M = M_0 \supset M_1 \supset \cdots \supset M_m = 0
+    \]
+    a composition series for $M$ of length $m \leq n$.
+
+    Now suppose $M < N$ is a proper submodule and additionally suppose that $\len M = \len N$.
+    Then in the above series we have that
+    \[
+        N_{i-1}/N_i \iso M_{i-1}/M_i = M_{i-1}/(M_{i-1}\cap N_i) \iso (M_{i-1} + N_i)/N_i \subseteq N_{i-1}/N_i
+    \]
+    by one of the Isomorphism Theorems.
+    This implies that $(M_{i-1} + N_i)/N_i = M_{i-1}/M_i$ and consequently $M_{i-1} + N_i = N_{i-1}$ for each $i = 1, \dots, n$.
+    Since $N_n = 0$ we have $N_{n-1} = M_{n-1}$ in the case of $i = n$.
+    Continuing in this manner, we finally get $N = M$, which is in contradiction with $M < N$.
+    Therefore $\len M < \len N$ which proves the second statement.
+
+    We can now easily prove the first statement by proving that any strictly decreasing chain in $N$ must be finite which of course includes all composition series.
+    Indeed, let
+    \[
+        N = N_0 \supset N_1 \supset N_2 \supset \cdots
+    \]
+    be a strictly decreasing chain of submodules.
+    Then by the second statement we have a strictly decreasing sequence in $\N_0$ as follows
+    \[
+        n = \len(N_0) > \len(N_1) > \len(N_2) > \cdots
+    \]
+    Of course $\N_0$ is downward bounded, so there must exist an index $k \in \N$ such that $\len(M_k) = 0$, but this can only mean that $M_k = 0$.
+    Hence, the above series must have been finite to begin with.
+\end{Exercise}
+
+\begin{Exercise}
+    Let $R$ be a local ring with the (unique) maximal ideal $M$ and let $N$ be a finitely generated (left) $R$-module.
+    We will show that there exists a non-trivial $R$-homomorphism $\varphi\colon N \to R/M$.
+
+    Recall that $M = \rad R$, so $M$ must at the same time be the unique left maximal ideal and the unique right maximal ideal.
+    Denote $n = \dim_R N$.
+
+    Firstly, let $n = 1$.
+    Then $N$ is just $Rx$ for some $x \in N$, where we are allowed to also ``quotient'' the coefficients $R$ with the left annihilator of $x$.
+    In general, we cannot properly quotient, since $\Ann(x)$ need not be a two-sided ideal, but it is however a left ideal and as such contained in $M$ (since $M$ is also the unique maximal left ideal).
+    Therefore, the canonical homomorphism $\varphi \colon N \to R/M$ that maps $\alpha x \mapsto \overline{\alpha}$ is not trivial, since $1 x \mapsto \overline{1} \neq 0 \in R/M$.
+    
+    %\underline{\textbf{Note:}}
+    %We can say even more on the topic of simple modules over local rings.
+    %In fact, $N$ must be isomorphic to $R/I$ where $I$ is the kernel of $f\colon R \to N$ that maps $\alpha \mapsto \alpha x$.
+    %However, if $I \subsetneq M$ then $M/I$ is a proper submodule of $N$, which contradicts simplicity.
+    %Hence, $N \iso R/M$ and we can take this isomorphism as the desired map, since $M$ is a proper ideal.
+    %But are all $1$-dim modules simple? No.
+
+    Similarly, let $n > 1$.
+    Then $N$ is just a sum of $Rx_i$ for some basis $\left\{ x_i ; \; i = 1, \dots, n \right\}$, where we are at each term $Rx_i$ allowed to ``quotient'' by $\Ann(x_i)$.
+    Each of $\Ann(x_i)$ is a left ideal and as such contained in $M$, therefore the homomorphism $\varphi\colon N \to R/M$ that maps $\Sigma_i \alpha_i x_i \mapsto \Sigma_i \overline{\alpha_i}$ is not trivial, since again $1 x_1 \mapsto \overline{1} \neq 0 \in R/M$.
+
+    In both cases notice that we are merely composing the quotient projection and the augmentation homomorphism.
+    More specifically, let $\varepsilon \colon N \to R$ be the augmentation homomorphism, that is the map
+    \[
+        \Sigma_{i = 1}^n \alpha_i x_i \mapsto \Sigma_{i = 1}^n \alpha_i
+    \]
+    and let $\pi\colon R \to R/M$ be the quotient projection.
+    Then $\varphi = \pi \circ \varepsilon$ is a non-trivial homomorphism $N \to R/M$.
+\end{Exercise}
+
+\end{document}
+
+%% TEMPLATES
+% lists
+%\begin{enumerate}[label=(\alph*)]
+% diagram
+%\adjustbox{scale=1, center}{
+%	\begin{tikzcd}
+%		\R_n \arrow[d, "\varphi_n"] \arrow[r, "\Phi"] & \R_m \arrow[d, "\varphi_m"] \\
+%		\R \arrow[r, "\widetilde{\Phi}"] & \R
+%	\end{tikzcd}
+%}
+% figure
+%\begin{figure}[h]
+%	\centering
+%	\includegraphics[scale=0.4]{fig}
+%	\caption{caption}
+%	\label{fig:label}
+%\end{figure}
+% wrapped figure
+%\begin{wrapfigure}{r}{3in}
+%	\includegraphics[scale=0.4]{fig}
+%	\caption{caption}
+%	\label{fig:label}
+%\end{wrapfigure}
+% beamer
+%\documentclass[a4paper, 12pt]{beamer}
+%\usetheme{CambridgeUS}
+%\usecolortheme{beaver}
+%\usefonttheme{structuresmallcapsserif}
+% sth above equality
+%\stackrel{?}{=}
