@@ -1,0 +1,302 @@
+\documentclass[a4paper, 12pt]{article}
+
+\usepackage[slovene]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{units}
+\usepackage{eurosym}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{mathtools}
+\usepackage{graphicx}
+\usepackage{wrapfig}
+\usepackage{color}
+%\usepackage{url}
+\usepackage{hyperref}
+\usepackage{enumerate}
+\usepackage{enumitem}
+\usepackage{pifont}
+\usepackage{tikz-cd}
+\usetikzlibrary{babel}
+\usepackage{adjustbox}
+\usepackage{stmaryrd}
+
+% set margin and layout here
+% in case of beamer, comment this out
+\usepackage[margin=0.5in]{geometry}
+
+% commonly used math operators
+\DeclareMathOperator{\diam}{diam}
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\im}{im}
+\DeclareMathOperator{\dom}{dom}
+\DeclareMathOperator{\coker}{coker}
+\DeclareMathOperator{\pr}{pr}
+\DeclareMathOperator{\rad}{rad}
+\DeclareMathOperator{\chrs}{char}
+\DeclareMathOperator{\len}{len}
+\DeclareMathOperator{\Lin}{Lin}
+\DeclareMathOperator{\Ann}{Ann}
+\DeclareMathOperator{\Ass}{Ass}
+\DeclareMathOperator{\Spec}{Spec}
+\DeclareMathOperator{\mSpec}{mSpec}
+\DeclareMathOperator{\Quot}{Quot}
+\DeclareMathOperator{\Tor}{Tor}
+\DeclareMathOperator{\Ext}{Ext}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\End}{End}
+\DeclareMathOperator{\Aut}{Aut}
+\DeclareMathOperator{\Br}{Br}
+\DeclareMathOperator{\Gal}{Gal}
+
+% commonly used math objects
+\newcommand{\D}{\mathbb{D}}
+\renewcommand{\S}{\mathbb{S}}
+\newcommand{\B}{\mathbb{B}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\renewcommand{\H}{\mathbb{H}}
+\renewcommand{\P}{\mathbb{P}}
+
+% commonly used math relations
+\newcommand{\iso}{\cong}
+\newcommand{\homeo}{\approx}
+\newcommand{\htpeq}{\simeq}
+\newcommand{\hlgeq}{\sim}
+\newcommand{\idtfy}{\longleftrightarrow}
+
+% commonly used math symbols
+\newcommand{\closure}[1]{\overline{#1}}
+\newcommand{\subideal}{\vartriangleleft}
+\newcommand{\supideal}{\vartriangleright}
+
+% cool environment I sometimes use
+%\definecolor{bostonuniversityred}{rgb}{0.8, 0.0, 0.0}
+%
+%\newenvironment{matematika}[1]{
+%\textcolor{bostonuniversityred}{\underline{\textsc{#1:}}}
+%}{
+%}
+
+\newcounter{excounter}[section]
+\newenvironment{Exercise}
+    {\refstepcounter{excounter}\underline{\textbf{Ex. \theexcounter:}}}
+    {\par\vspace{\baselineskip}}
+
+% start sections with 0
+%\setcounter{section}{-1}
+
+
+% title data - MODIFY
+\title{Computability Theory, $2^{\text{nd}}$ homework}
+\author{Benjamin Benčina, 27192018}
+
+\begin{document}
+
+\maketitle
+
+\begin{Exercise}
+    Given a finite alphabet $\Sigma$, we first give a definition in terms of ordinary Turing machines
+    of what it means for a partial function $f \colon \Sigma^* \times \N \rightharpoonup \Sigma^*$
+    to be computable.
+
+    Consider a Turing machine with the alphabet $\Sigma \cup \left\{ 0, 1, ; \right\}$
+    and a halting state \textbf{halt}.
+    A partial function $f \colon \Sigma^* \times \N \rightharpoonup \Sigma$ is computable,
+    if there exists such a Turing machine that the following hold
+    \begin{itemize}
+        \item
+            for every $(w,n) \in \dom f$ and the associated
+            $(k + l + 1)$-length input $(w_1,\dots,w_k,;,n_1,\dots,n_l)$,
+            where the $w_i \in \Sigma$ constitute a finite word $w$ and the $n_i$ constitute
+            the binary representation of a natural number $n$, we have
+            \[
+                (w, ;, \text{bin}(n)) @ 0 \Downarrow (\text{\textbf{halt}}, f(w, n)) @ i
+            \]
+            for some $i \in \Z$;
+        \item
+            for every $(w, n) \notin \dom f$ the machine does not end up in the \textbf{halt}
+            state (regardless of the ``output'').
+    \end{itemize}
+\end{Exercise}
+
+\begin{Exercise}
+    Let $q_d$ be a representation of dyadic rational numbers by words over the alphabet $\Sigma_b$,
+    as defined in Lecture 12.
+    Let us show that there exists a computable partial function
+    $f\colon \Sigma_b^* \times \N \rightharpoonup \Sigma_b^*$
+    that satisfies
+    \begin{enumerate}[label=(\alph*)]
+        \item $\dom(f) = \left\{ u \in \dom (q_d) ; \; q_d(u) \neq 0 \right\} \times \N$, and
+        \item for any $(u,n) \in \dom(f)$, $ | q_d(f(u)) - q_d(u)^{-1} | \leq 2^{-n} $.
+    \end{enumerate}
+
+    Let us first notice that what the above function is trying to calculate
+    is the multiplicative inverse of $u$ with precision of at least $n$ decimal places.
+    We also assume that the addition and multiplication of dyadic rationals
+    are computable functions over $\Sigma_b$.
+    Now, let us take a short detour from computability theory and into the world of real analysis.
+
+    We recall the following Taylor series
+    \[
+        \frac{1}{1-u} = 1 + u^1 + u^2 + u^3 + \cdots
+    \]
+    which calculates the inverse of the real number $1 - u$.
+    In the case where $u$ is a dyadic rational, clearly $1 - u$ is one as well.
+    The problem is, however, that the (strict) convergence radius for this series is $1$,
+    so we can calculate inverses for values between $0$ and $2$ (and with a minus for the negative case).
+    Nevertheless, we can remedy this problem later and we have produced an inverse
+    formula containing merely addition and multiplication of dyadic rationals.
+    To remedy the above problem, consider a positive dyadic rational
+    \[
+        u = \sum_{i = -n}^k u_i 2^i
+    \]
+    We can ``shift'' it by simply extracting the largest power of $2$ as such
+    \[
+        u = 2^k \cdot \sum_{i = -n-k}^0 u_{i+k}2^i
+    \]
+    where this is only needed in the case of $k > 0$
+    (we can probably also work with $k > 1$).
+    The inverse is then
+    \[
+        u^{-1} = 2^{-k} \left( \sum_{i = -n-k}^0 u_{i+k}2^i \right)^{-1}
+    \]
+    where the sum in the parenthesis is a dyadic rational number between $0$ and $2$.
+    The Turing machine that would calculate our function then looks something like this:
+    \begin{itemize}
+        \item
+            For a given input $(w,;,\text{bin}(n))$, shift $w$ enough to the right so that the number represents a dyadic rational $u$ between $0$ and $2$,
+            and save the number by which we shifted somewhere on the tape.
+            This can easily be done in a computable way by simply moving the decimal period and noting the number of move operations.
+        \item
+            Calculate a new dyadic rational $v$ such that $u = 1 - v$.
+            Clearly, $v = 1 - u$,
+            which is a formula involving only the addition and multiplication of dyadic rationals,
+            as $1$ and $-1$ are both such.
+        \item
+            Calculate the inverse of $u$ by using $v$ in the above formula
+            until two consecutive estimates have enough common digits after the decimal period,
+            say $n+ k$, where $k$ is the saved value we shifted by.
+            The digits before the decimal period also have to be the same.
+            This procedure terminates by Taylor's Theorem in a finite number of steps for any fixed $n$.
+        \item
+            Calculate the inverse of $2^{k}$ by simply mirroring the string that represents it over the decimal point
+            and shifting the decimal point one place to the right.
+            Indeed, this is needed to correct the offset that is inherent to any number system, that is,
+            the first place to the right of the decimal represents the $(-1)$-th power of $2$
+            while the first place to the right represents the $0$-th, not the $1$-st, power of $2$.
+            Note here that if the shifting was not needed, we can skip this step.
+        \item
+            Multiply the values to obtain the desired approximate inverse,
+            which can be done in a computable way by assumption,
+            since the produced approximation is by construction a finite string and hence represents a dyadic rational.
+        \item
+            If the input was negative in the beginning, make sure the minus is added here as well.
+            Indeed, without loss of generality we can delete the minus at the beginning and reintroduce it at the end,
+            so we are operating merely with positive numbers.
+    \end{itemize}
+    Notice, that this procedure clearly does not work for $w = 0$, regardless of $n$,
+    for the simple reason that there is no way to shift $w$ in order to obtain a number strictly between $0$ and $2$.
+    In addition, the inverse formula will not hold, hence the first demand is satisfied.
+    The second demand is satisfied by construction and is guaranteed to hold by Taylor's Theorem.
+\end{Exercise}
+
+\begin{Exercise}
+    We will prove that the partial function
+    $r\colon \R \rightharpoonup \R$
+    defined by
+    \[
+        r(x) \simeq
+        \begin{cases}
+            x^{-1} \quad &\text{if } x \neq 0 \\
+            \uparrow \quad &\text{if } x = 0
+        \end{cases}
+    \]
+    is computable.
+
+    Recall that a real partial function $r \colon \R \rightharpoonup \R$ is by definition
+    computable precisely when it is $(\gamma_c-\gamma_c)$-computable.
+    Hence, we are searching for a $T2M$-computable partial function
+    $g\colon \Sigma_c^* \rightharpoonup \Sigma_c^*$
+    such that for every $x \in \R$ and every $\gamma_c$-representation $p$ of $x$ we have
+    \begin{itemize}
+        \item $g(p)$ is defined precisely when $r$ is defined in $x$, and
+        \item
+            if $g(p)$ is defined, then $g(p)$ is a $\gamma_c$-representation for $r(x)$.
+    \end{itemize}
+    Since the dyadic rationals are dense in $\R$, that is,
+    we can approximate any real number with dyadic rationals with arbitrary precision,
+    and since for an approximating sequence of dyadic rationals $(u_n)_n \to x$
+    by definition $\gamma_c(p) = \lim_{n\to\infty}q_d(u_n)$,
+    we conclude that our function $r$ will be computable precisely when there exists
+    a Turing machine, that can for a given non-zero real number $x \in \R$
+    calculate the inverses of the dyadic approximations of $x$ to an arbitrary precision
+    (previously denoted by $n$).
+    We notice, however, that this is precisely the substance of Exercise $2$.
+    Indeed, using Exercise $2$, we give the following realizer $g$ for $r$:
+
+    if the input word is $u_1$,;,$u_2$;,$u_3$,;,\dots,
+    we output $f(u_1,1)$,;,\dots,;,$f(u_n, n)$,;,\dots as defined in Exercise $2$.
+    \newline
+    The partial inverse function $r$ is hence computable.
+\end{Exercise}
+
+\begin{Exercise}
+    Does there exist any total computable function
+    $r' \colon \R \to \R$
+    such that
+    $r'(x) = x^{-1}$
+    for all $x \neq 0$?
+
+    The answer is \underline{no}.
+    Suppose that we have an extension $r'$ of $r$ to the real line by defining $r'(0) = r_0 \in \R$.
+    By the Continuity Theorem, $r'$ is a continuous function on the whole $\R$ with respect to the usual topology,
+    which is clearly absurd, as
+    \[
+        \lim_{x \to 0^+} r'(x) = \lim_{x \to 0^+} r(x) = \infty
+    \]
+    and
+    \[
+        \lim_{x \to 0^-} r'(x) = \lim_{x \to 0^-} r(x) = -\infty.
+    \]
+\end{Exercise}
+
+\end{document}
+
+%% TEMPLATES
+% lists
+%\begin{enumerate}[label=(\alph*)]
+% diagram
+%\adjustbox{scale=1, center}{
+%	\begin{tikzcd}
+%		\R_n \arrow[d, "\varphi_n"] \arrow[r, "\Phi"] & \R_m \arrow[d, "\varphi_m"] \\
+%		\R \arrow[r, "\widetilde{\Phi}"] & \R
+%	\end{tikzcd}
+%}
+% figure
+%\begin{figure}[h]
+%	\centering
+%	\includegraphics[scale=0.4]{fig}
+%	\caption{caption}
+%	\label{fig:label}
+%\end{figure}
+% wrapped figure
+%\begin{wrapfigure}{r}{3in}
+%	\includegraphics[scale=0.4]{fig}
+%	\caption{caption}
+%	\label{fig:label}
+%\end{wrapfigure}
+% beamer
+%\documentclass[a4paper, 12pt]{beamer}
+%\usetheme{CambridgeUS}
+%\usecolortheme{beaver}
+%\usefonttheme{structuresmallcapsserif}
+% sth above equality
+%\stackrel{?}{=}
