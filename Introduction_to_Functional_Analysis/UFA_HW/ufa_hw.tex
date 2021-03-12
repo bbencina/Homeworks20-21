@@ -1,0 +1,635 @@
+\documentclass[a4paper, 12pt]{article}
+
+\usepackage[slovene]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{units}
+\usepackage{eurosym}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{mathtools}
+\usepackage{graphicx}
+\usepackage{wrapfig}
+\usepackage{color}
+%\usepackage{url}
+\usepackage{hyperref}
+\usepackage{enumerate}
+\usepackage{enumitem}
+\usepackage{pifont}
+\usepackage{tikz-cd}
+\usetikzlibrary{babel}
+\usepackage{adjustbox}
+\usepackage{stmaryrd}
+
+% set margin and layout here
+% in case of beamer, comment this out
+\usepackage[margin=0.5in]{geometry}
+
+% commonly used math operators
+\DeclareMathOperator{\diam}{diam}
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\im}{im}
+\DeclareMathOperator{\coker}{coker}
+\DeclareMathOperator{\pr}{pr}
+\DeclareMathOperator{\rad}{rad}
+\DeclareMathOperator{\chrs}{char}
+\DeclareMathOperator{\len}{len}
+\DeclareMathOperator{\Lin}{Lin}
+\DeclareMathOperator{\Ann}{Ann}
+\DeclareMathOperator{\Ass}{Ass}
+\DeclareMathOperator{\Spec}{Spec}
+\DeclareMathOperator{\mSpec}{mSpec}
+\DeclareMathOperator{\Quot}{Quot}
+\DeclareMathOperator{\Tor}{Tor}
+\DeclareMathOperator{\Ext}{Ext}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\End}{End}
+\DeclareMathOperator{\Aut}{Aut}
+\DeclareMathOperator{\Br}{Br}
+\DeclareMathOperator{\Gal}{Gal}
+
+% commonly used math objects
+\newcommand{\D}{\mathbb{D}}
+\newcommand{\T}{\mathbb{T}}
+\renewcommand{\S}{\mathbb{S}}
+\newcommand{\B}{\mathbb{B}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\renewcommand{\H}{\mathbb{H}}
+\renewcommand{\P}{\mathbb{P}}
+
+% commonly used math relations
+\newcommand{\iso}{\cong}
+\newcommand{\homeo}{\approx}
+\newcommand{\htpeq}{\simeq}
+\newcommand{\hlgeq}{\sim}
+\newcommand{\idtfy}{\longleftrightarrow}
+
+% commonly used math symbols
+\newcommand{\closure}[1]{\overline{#1}}
+\newcommand{\subideal}{\vartriangleleft}
+\newcommand{\supideal}{\vartriangleright}
+
+% cool environment I sometimes use
+%\definecolor{bostonuniversityred}{rgb}{0.8, 0.0, 0.0}
+%
+%\newenvironment{matematika}[1]{
+%\textcolor{bostonuniversityred}{\underline{\textsc{#1:}}}
+%}{
+%}
+
+\newcounter{excounter}[section]
+\newenvironment{Exercise}
+    {\refstepcounter{excounter}\underline{\textbf{Nal. \theexcounter:}}}
+    {\par\vspace{\baselineskip}}
+
+% start sections with 0
+%\setcounter{section}{-1}
+
+
+% title data - MODIFY
+\title{Uvod v funkcionalno analizo, domača naloga}
+\author{Benjamin Benčina, 27192018}
+
+\begin{document}
+
+\maketitle
+
+\begin{Exercise}
+    Dokažimo, da obstaja tak $\varphi \in (l^\infty)^*\setminus\lbrace 0 \rbrace$,
+    da velja $\varphi(x) = 0$ za vsako periodično zaporedje $x \in l^\infty$.
+
+    Naj bo $P$ množica vseh periodičnih zaporedij, torej
+    \[
+        P = \left\{ x \in l^\infty ; \; \exists N \in \N \quad \forall n \in \N \colon x_{n+N} = x_n \right\}
+    \]
+    Takoj opazimo, da je $P \leq l^\infty$,
+    saj je vsota $N$ in $M$-periodičnega zaporedja $LCM(N,M)$-periodična.
+    Po izreku s predavanj velja
+    \[
+        \closure{P} = \bigcap \left\{ \ker f ; \; f \in (l^\infty)^*, \quad P \subseteq \ker f \right\}
+    \]
+    Želimo torej dokazati, da $P$ ni gost podprostor.
+    Vzemimo $a \neq 0$ in definirajmo
+    \[
+        \alpha = \left( a,-a,a,a,-a,-a,a,a,a,-a,-a,-a,\dots \right) \in l^\infty
+    \]
+    torej zaporedje, kjer na $n$-tem koraku dodamo $n$ $a$-jev in $n$ $(-a)$-jev.
+    Za vsak $0 < \varepsilon < |a|$ potem krogla $\B(\alpha, \varepsilon)$ ne vsebuje nobenega periodičnega zaporedja.
+    Res, če je $x \in l^\infty$ $N$-periodično, ki sledi zaporedju $\alpha$ na razdalji največ $\varepsilon$,
+    najkasneje med $2N$ in $3N$ korakov globoko v zaporedje $\alpha$ (koraki definirani kot zgoraj) pade ven iz krogle.
+    Prostor $P$ torej ne more biti gost.
+\end{Exercise}
+
+\begin{Exercise}
+    Naj bosta $X$ in $Y$ Banachova prostora.
+    \begin{enumerate}[label=(\alph*)]
+        \item
+            Denimo, da za $Z \leq X$ obstaja omejen linearen operator $P \colon X \to X$,
+            ki zadošča $\im P = Z$ in $P^2 = P$.
+            Dokažimo, da je $Z$ zaprt podprostor.
+
+            Naj bo $(z_n)_n$ zaporedje elementov iz $Z$, ki konvergira proti $x \in X$.
+            Radi bi pokazali, da $x \in Z$.
+            Ker je $\im P = Z$, obstaja zaporedje $(x_n)_n \subset X$,
+            da je $z_n = P(x_n)$ za vsak $n \in \N$.
+            Sedaj imamo
+            \[
+                P^2(x_n) = P(z_n) \to P(x) \in Z
+            \]
+            hkrati pa po idempotentnosti
+            \[
+                P^2(x_n) = P(x_n) = z_n \to x
+            \]
+            torej $x \in Z$.
+        \item
+            Naj bo $T \in \mathcal{B}(X, Y)$ operator z zaprto sliko.
+            Dokažimo ekvivalenco spodnjih trditev.
+            \begin{enumerate}[label=(\roman*)]
+                \item
+                    Obstajata omejena linearna operatorja $P\colon X \to X$ in $Q\colon Y \to Y$,
+                    ki zadoščata $P^2 = P$, $Q^2 = Q$, $\im P = \ker T$ in $\im Q = \im T$.
+                \item
+                    Obstaja operator $S \in \mathcal{B}(Y, X)$,
+                    ki zadošča $STS = S$ in $TST = T$.
+            \end{enumerate}
+            \begin{itemize}
+                \item \underline{(ii) $\implies$ (i):}
+                    Opazimo, da
+                    \[
+                        (TS)^2 = (TS)(TS) = T(STS) = TS,
+                    \]
+                    hkrati pa
+                    \[
+                        \im T = \im TST \subseteq \im TS \subseteq \im T,
+                    \]
+                    torej je vmes enakost in lahko vzamemo $Q = TS$.
+                    Podobno je
+                    \[
+                        (I - ST)^2 = I - ST - ST + (ST)^2 = I - ST - ST + ST = I - ST,
+                    \]
+                    od tod pa sledi
+                    \[
+                        \im (I - ST) = \ker ST \subseteq \ker TST = \ker T.
+                    \]
+                    Ker seveda $\ker T \subseteq \ker ST$,
+                    so vmes enakosti in lahko vzamemo $P = I - ST$.
+                \item \underline{(i) $\implies$ (ii):}
+                    Vzemimo $x \in \ker T$.
+                    Potem obstaja $z \in X$, da je $Pz = x$.
+                    Računamo
+                    \[
+                        Px = PPz = Pz = x,
+                    \]
+                    torej je $P$ identična preslikava na $\ker T$ in ničelna preslikava drugod.
+                    Analogno dobimo, da je $Q$ identična preslikava na $\im T$ in ničelna preslikava drugod.
+                    Preslikavi $P$ in $Q$ lahko obravnavamo kot projekciji na primerna podprostora,
+                    ki pa sta oba zaprta po točki (a) (v bistvu že kar po predpostavki) in zato Banachova.
+                    Oglejmo si preslikavo $\widetilde{T}$ v naslednjem diagramu
+
+                    \adjustbox{scale=1, center}{
+                        \begin{tikzcd}
+                            X \arrow[r, "T"] \arrow[d, "I - P"] & Y \arrow[d, "Q"] \\
+                            Z \iso X/\ker T \arrow[r, "\widetilde{T}"] & \im T
+                        \end{tikzcd}
+                    }
+                    Preslikava $\widetilde{T}$ je po prvem izreku o izomorfizmu izomorfizem,
+                    po diagramu pa je tudi zvezna.
+                    Zato obstaja zvezen inverz $\widetilde{S}$,
+                    ki pa ga po Hahn-Banachovem izreku razširimo do preslikave $S'\colon Y \to X$.
+                    Nazadnje definiramo $S = (I - P)S'Q$.
+                    Preslikava $S$ ustreza želenim lastnostim po konstrukciji.
+                    Res,
+                    \[
+                        TSTx =
+                        \begin{cases}
+                            0 ; \quad  x \in \ker T \\
+                            Tx ; \quad  \text{sicer}
+                        \end{cases}
+                    \]
+                    in
+                    \[
+                        STSy =
+                        \begin{cases}
+                            0 ; \quad  y \notin \im T \\
+                            Sy ; \quad \text{sicer}
+                        \end{cases}
+                    \]
+                    kar zaključi dokaz.
+            \end{itemize}
+    \end{enumerate}
+\end{Exercise}
+
+\begin{Exercise}
+    Naj bo $X$ Banachov prostor in $Y,Z \leq X$ zaprta in disjunktna podprostora.
+    Označimo
+    \[
+        k = \inf\left\{ ||y - z|| ; \; y \in Y, z \in Z, ||y|| = ||z|| = 1 \right\}.
+    \]
+    Dokažimo, da je $Y + Z$ zaprt podprostor natanko tedaj, ko je $k > 0$.
+
+    Najprej se spomnimo naloge $2$ iz poskusne domače naloge,\footnote{
+        Za popravke glej Dodatek, točka (a).}
+    ki pravi, da je $Y + Z$ zaprt natanko tedaj, ko obstaja $C > 0$,
+    da je $ || y || \leq C || y + z ||$ za vse $y \in Y$ in $z \in Z$.
+    Od tod takoj sledi implikacija v desno, saj lahko zamenjamo $z \idtfy -z$
+    in v posebnem primeru $|| y || = || z || = 1$ dobimo
+    \[
+        \exists C \colon \quad || y - z || \geq \frac{||y||}{C} = \frac{1}{C} > 0,
+    \]
+    torej velja to tudi za infimum.
+
+    Obratno, naj bo $k > 0$.
+    Radi bi dokazali, da je $Y + Z$ zaprt prostor,
+    za kar pa je po poskusni domači nalogi dovolj pokazati,
+    da je projekcija $\pr_y \colon Y+Z \to Y$ zvezna preslikava.
+    Opazimo, da $k$ zaznamuje razdaljo med sferama $\S_Y$ in $\S_Z$.
+    Ker je $k > 0$, ga lahko zapišemo kot $k = \frac{1}{\alpha - 1}$ za neki $\alpha > 1$.
+    Računamo
+    \begin{align*}
+        k &= \frac{1}{ \alpha - 1}
+        = \left\| \frac{y}{||y||} - \frac{z}{||z||} \right\|  
+        \stackrel{\triangle}{\leq} \left\| \frac{y}{||y||} - \frac{z}{||y||} \right\| + \left\| \frac{z}{||y||} - \frac{z}{||z||} \right\| \\
+        &= \frac{||y-z||}{||y||} + \left\| \frac{(||z|| - ||y||)z}{||z||\cdot||y||} \right\|
+        = \frac{||y-z||}{||y||} + \frac{1}{||y||} \left| ||z|| - ||y|| \right|
+    \end{align*}
+    Sedaj lahko zamenjamo $z \idtfy -z$ in premečemo enačbo, da dobimo
+    \[
+        ||y|| \leq (\alpha - 1) ||y + z|| + | ||y|| - ||z|| |
+        \leq (\alpha - 1) ||y+z|| + ||y+z||
+        = \alpha ||y+z||
+    \]
+    iz česar sledi, da je $ \pr_y$ zvezna preslikava.
+\end{Exercise}
+
+\begin{Exercise}
+    Na Hilbertovem prostoru $L^2[-1, 1]$ definiramo funkcijo $\varphi\colon L^2[-1,1] \to \R$ s predpisom
+    \[
+        \varphi(f) = \int_{-1}^{1} |f(x)|^2 dx - 2 \int_{-1}^{1} x^2f(x)dx.
+    \]
+    Naj bo $\mathcal{M} = \left\{ f \in L^2[-1, 1] ; \; \int_{-1}^{1}f(x)dx = 0 \right\} \leq L^2[-1, 1]$.
+    Določimo vrednost $\inf_{f \in \mathcal{M}} \varphi(f)$.
+
+    %Najprej omenimo, da je po nekem limitnem izreku iz teorije mere prostor $\mathcal{M}$ zaprt.
+    Opazimo, da lahko izraz ``dopolnimo do kvadrata'' in računamo
+    \begin{align*}
+        \varphi(f) &= \int_{-1}^{1} f(x)^2 dx - \int_{-1}^{1} 2x^2f(x)dx
+        = \int_{-1}^{1} \left( f(x)^2 - 2x^2f(x) \right)dx \\
+        &= \int_{-1}^{1} \left( \left( f(x) - x^2 \right)^2 - x^4 \right)dx
+        = \int_{-1}^{1} \left( f(x) - x^2 \right)^2 dx - \int_{-1}^{1} x^4 dx
+    \end{align*}
+    Drugi integral je sedaj neodvisen od funkcije $f$,
+    prvi pa je vedno nenegativen.
+    Torej je potrebno za izračun infimuma minimizirati le prvi integral,
+    ki pa ima očitno ničlo v $f(x) = x^2$.
+    Težava je seveda, da $x^2 \notin \mathcal{M}$,
+    zato si oglejmo $g(x)$ pravokotno projekcijo funkcije $x^2$ na $\mathcal{M}$.
+
+    Konkretno, opazimo, da je $\mathcal{M} = \left\{ f \in L^2[-1, 1] ; \; \langle f, 1 \rangle = 0 \right\}$.
+    Od tod sledi, da je $\mathcal{M}^\perp = \Lin\lbrace1\rbrace = \Lin\lbrace\frac{1}{2}\rbrace$,
+    kjer je ta množica že sama ONS.
+    Računamo
+    \[
+        P_{\mathcal{M}^\perp} x^2 = \langle x^2, \frac{1}{2} \rangle \frac{1}{2}
+        = \frac{1}{2}\int_{-1}^{1}x^2dx \cdot \frac{1}{2}
+        = \frac{1}{2}\frac{x^3}{3}\Big|_{-1}^1 \cdot \frac{1}{2}
+        = \frac{1}{3} \cdot \frac{1}{2}
+    \]
+    Potem je $g(x) = x^2 - \frac{1}{3}$.
+    Izračunajmo še vrednost funkcionala
+    \begin{align*}
+        \varphi(g) &= \int_{-1}^{1}\left( x^2 - \frac{1}{3} - x^2 \right)^2 dx - \int_{-1}^{1}x^4dx
+        = \int_{-1}^{1}\frac{1}{9} dx - \frac{2}{5}
+        = \frac{2}{9} - \frac{2}{5}
+        = \frac{10}{45} - \frac{18}{45} = -\frac{8}{45}
+        %\varphi(g) &= \int_{-1}^{1}| x^2 - \frac{1}{3} |^2 dx - 2\int_{-1}^{1} \left( x^4 - \frac{1}{3}x^2 \right)dx
+        %= 2 \int_{0}^{1} \left( x^4 - \frac{2}{3}x^2 + \frac{1}{9} \right)dx - 4 \int_{0}^{1} \left( x^4 - \frac{2}{3}x^2 \right) \\
+        %&= 2 \left( \frac{1}{5} - \frac{2}{9} + \frac{1}{9} \right) - 4 \left( \frac{1}{4} - \frac{2}{9} \right)
+        %= \frac{2}{5} - \frac{2}{9} - 1 + \frac{8}{9}
+        %= \frac{2}{5} + \frac{2}{3} - 1
+        %= \frac{1}{15}
+    \end{align*}
+\end{Exercise}
+
+\begin{Exercise}
+    Definirajmo operator $A\colon l^2 \to l^2$ s predpisom
+    \[
+        A(x_1,x_2,\dots) = \left( x_1+\frac{1}{2}x_2,-\frac{1}{2}x_1 + x_2,\dots \right)
+    \]
+    kjer imamo na mestih $2n-1$ in $2n$ elementa $x_{2n-1} + \frac{1}{2n}x_{2n}$ in $-\frac{1}{2n}x_{2n-1} + x_{2n}$.
+    \begin{enumerate}[label=(\alph*)]
+        \item
+            Najprej dokažimo, da je $A$ zvezen in določimo $A^*$.
+
+            Opazimo, da je $A$ vsota dveh operatorjev, in sicer $A = I + D$,
+            kjer je
+            \[
+                Dx = \left( \frac{1}{2}x_2, -\frac{1}{2}x_1,\dots \right)
+            \]
+            Dovolj je pokazati, da je zvezen operator $D$.
+            Računamo
+            \[
+                \| Dx \|^2 = \sum_{n = 1}^\infty \frac{|x_{2n}|^2 + |x_{2n-1}|^2}{4n^2}
+                \leq \frac{1}{4} \sum_{n = 1}^\infty |x_{n}|^2 = \frac{1}{4} \| x \|^2
+            \]
+            iz česar sledi, da je $D$ zvezen operator.
+            Operator $A$ je potem zvezen kot vsota zveznih operatorjev.
+
+            Vemo, da je $A^* = (I + D)^* = I + D^*$,
+            zato je zopet dovolj najti $D^*$.
+            Razpišemo
+            \[
+                \langle Dx,y \rangle = \sum_{n = 1}^\infty \frac{x_{2n}\overline{y_{2n-1}}}{2n}
+                - \sum_{n = 1}^\infty \frac{x_{2n-1}\overline{y_{2n}}}{2n}
+            \]
+            Takoj postane jasno, da je
+            \[
+                D(y_1, y_2, \dots) = \left( -\frac{1}{2}y_2, \frac{1}{2}y_1,\dots \right)
+            \]
+            torej kot $D$, le da so povsod zamenjani minusi.
+            Vstavimo v enačbo in dobimo
+            \[
+                A^*(y_1,y_2,\dots) = (y_1 - \frac{1}{2}y_2, \frac{1}{2}y_1 + y_2,\dots)
+            \]
+        \item
+            Ali je $A$ surjektiven?
+            
+            Glede na to, da so koordinate po parih odvisne, sumimo,
+            da lahko iz sistema enačb izračunamo kakšno prasliko.
+            Na vsakem zaporednem paru nam $Ax = y$ porodi naslednji sistem enačb
+            \begin{align*}
+                x_{2n-1} + \frac{1}{2n}x_{2n} &= y_{2n-1} \\
+                -\frac{1}{2n}x_{2n-1} + x_{2n} &= y_{2n}
+            \end{align*}
+            Z nekaj preobračanja enačb dobimo enolično rešitev
+            \begin{align*}
+                x_{2n-1} &= \frac{4n^2}{4n^2+1} \left(y_{2n-1} - \frac{1}{2n}y_{2n} \right) \\
+                x_{2n} &= \frac{4n^2}{4n^2+1} \left( \frac{1}{2n}y_{2n-1} + y_{2n} \right)
+            \end{align*}
+            Vprašati se moramo še, ali je tak $x \in l^2$?
+            Odgovor je \underline{da}, saj $\frac{4n^2}{4n^2+1} < 1$, $\frac{1}{2n} < 1$ in $y \in l^2$.
+            Operator $A$ je torej surjektiven.
+        \item
+            Ali je $A$ kompakten?
+
+            Najprej opazimo, da je kompakten operator $D$.
+            Res, $Dx = \lim_{n \to \infty} P_{2n}D$, saj velja
+            \begin{align*}
+                \| (D - P_{2n}D)x \|
+                &= \| (\underbrace{0, \dots, 0}_{2n}, \frac{x_{2n+2}}{4n+4}, \frac{x_{2n+1}}{4n+2}, \dots)\|\\
+                &\leq \frac{1}{4n+2}\| (\underbrace{0, \dots, 0}_{2n}, x_{2n+2}, x_{2n+1}, \dots)\| \\
+                &\leq \frac{1}{4n+2} \|x\|
+            \end{align*}
+            in zato $\| D - P_{2n}D \| \to 0$.
+            Ker je množica kompaktnih operatorjev podprostor, $A$ ne sme biti kompakten operator,
+            saj bi sicer bil kompakten tudi $I = A - D$, od tod pa bi sledilo, da $\dim l^2 < \infty$,
+            kar je protislovje.
+    \end{enumerate}
+\end{Exercise}
+
+\begin{Exercise}
+    Naj bo $H$ Hardyjev prostor na enotskem disku $\D \subset \C$
+    \[
+        H = \left\{ f \colon \D \to \C \text{ analitična } ; \;
+        \sup_{r < 1} \frac{1}{2\pi} \int_{0}^{2\pi} |f(re^{i\theta})|^2 d\theta < \infty\right\},
+    \]
+    opremljen s skalarnim produktom
+    \[
+        \langle f, g \rangle_H = \sup_{r < 1} \frac{1}{2\pi} \int_{0}^{2\pi} f(re^{i\theta})\overline{g(re^{i\theta})} d\theta
+    \]
+    in pripadajočo normo $\|.\|_H$.
+
+    \begin{enumerate}[label=(\alph*)]
+        \item
+            Najprej dokažimo, da je za vsak $z \in \D$ operator $\Phi_z\colon H \to \C$,
+            podan s predpisom $f \mapsto f(z)$, zvezen.
+
+            Spomnimo se zopet poskusne domače naloge, konkretno naloge (4c).\footnote{
+                Za popravke glej Dodatek, točka (b).}
+            Če vzamemo Hardyjevo integralsko jedro\footnote{
+                Načeloma je integralsko jedro funkcija $k(z, \omega)$,
+                kjer pa je seveda $f_z(\omega) = k(z,\omega)$ za vsak $z \in \D$.
+                Zato je razlika zanemarljiva.}
+            \[
+                f_z(\omega) = \frac{1}{1 - \overline{z}\omega}
+            \]
+            potem je po Cauchyjevi formuli $\Phi_z(f) = \langle f, f_z \rangle_H$ za vse $f \in H$.
+            Ker je v Hilbertovih prostorih skalarni produkt zvezen,
+            je posledično $\Phi_z$ zvezna preslikava za vsak $z \in \D$.
+        \item
+            Naj bo še $\|.\|$ norma na $H$, s katero je $H$ Banachov prostor
+            in glede na katero so operatorji $\Phi_{\frac{1}{n+1}}$ zvezni za vsak $ n \in \N$.
+            Pokažimo, da sta normi $\|.\|$ in $\|.\|_H$ ekvivalentni na $H$.
+
+            Imamo torej, da za vsak $n \in \N$ obstaja $C_n > 0$,
+            da je $| \Phi_{\frac{1}{n+1}}(f) | \leq C_n \|f\|$.
+            Zaradi harmoničnosti holomorfnih funkcij na kompaktnih diskih $\frac{1}{n+1}\D$
+            (uporabimo princip maksimuma)
+            je nujno $\lim_{n \to \infty} C_n = 0$, torej obstaja $C = \max_n C_n$.
+
+            Po posledici izreka o odprti preslikavi je dovolj pokazati,
+            za obstaja konstanta $D$, da je $\|f\|_H \leq D \|f\|$ za vsak $f \in \D$
+            (vzamemo identično preslikavo $(H, \|.\|) \to (H, \|.\|_H)$).
+            Računamo
+            \begin{align*}
+                \|f\|_H^2 &= \sup_{r<1}\frac{1}{2\pi}\int_{0}^{2\pi}\Big|f(re^{i\theta})\Big|^2d\theta
+                = \sup_{r<1}\frac{1}{2\pi}\int_{0}^{2\pi}\Big| \Phi_{re^{i\theta}}(f)\Big|^2 d\theta \\
+                &= \lim_{n \to 0} \int_{0}^{2\pi} \Big| \Phi_{\frac{1}{n+1}e^{i\theta}}(f) \Big|^2 d\theta
+                \leq \lim_{n\to 0} \frac{1}{2\pi} \int_{0}^{2\pi}C^2\|f\|^2 d\theta \\
+                &= C^2 \|f\|^2
+            \end{align*}
+            torej res $\|f\|_H \leq C \|f\|$ za vsak $f \in H$.
+    \end{enumerate}
+\end{Exercise}
+
+\begin{Exercise}
+    Naj bo $H$ Hilbertov prostor in $A \in \mathcal{B}(H)$.
+    Dokažimo naslednjo zaporedno verigo implikacij.
+    \begin{enumerate}[label=(\alph*)]
+        \item
+            Obstaja Hilbertov prostor $K$, ki vsebuje prostor $H$,
+            in tak normalen operator $B \in \mathcal{B}(K)$,
+            da je $B(H) \subseteq H$ in $B|_H = A$.
+        \item
+            Za vsak $n \in \N$ in izbor vektorjev $x_0,\dots,x_n \in H$ velja
+            \begin{equation}
+                \sum_{i,j = 0}^n \langle A^ix_j, A^jx_i \rangle \geq 0
+                \label{eq:nic}
+            \end{equation}
+            Poleg tega obstaja tudi taka konstanta $c > 0$,
+            da za poljuben izbor vektorjev $x_0,\dots,x_n \in H$ velja
+            \begin{equation}
+                \sum_{i,j=0}^n \langle A^{i+1}x_j, A^{j+1}x_i \rangle
+                \leq c \sum_{i,j=0}^n \langle A^ix_j,A^jx_i\rangle
+                \label{eq:konst}
+            \end{equation}
+        \item
+            Obstaja konstanta $c > \|A\|^2$, da je za vsak $n \in \N$
+            in poljuben izbor vektorjev $x_0,\dots,x_n \in H$
+            izpolnjen pogoj \eqref{eq:konst}.
+        \item
+            Pogoj \eqref{eq:nic} velja za vsak $n \in \N$ in
+            vsak izbor vektorjev $x_0,\dots,x_n \in H$.
+        \item
+            Za vsak $n \in \N$ in vektorje $x_0,\dots,x_n \in H$ velja
+            \[
+                \sum_{i,j=0}^n \langle A^{i+j}x_i,A^{i+j}x_j\rangle \geq 0.
+            \]
+    \end{enumerate}
+    \begin{itemize}
+        \item \underline{(a) $\implies$ (b):}
+            Za $n = 0$ je rezultat trivialen.
+            Za $n = 1$ dobimo
+            \begin{align*}
+                \sum_{i,j=0}^1 \langle A^jx_i, A^ix_j \rangle &=
+                \langle x_0,x_0 \rangle + \langle Ax_0,x_1 \rangle
+                + \langle x_1, Ax_0 \rangle + \langle Ax_1,Ax_1\rangle \\
+                &= \langle x_0,x_0 \rangle + \langle Bx_0,x_1 \rangle
+                + \langle x_1, Bx_0 \rangle + \langle Bx_1,Bx_1\rangle \\
+                &= \|x_0\|^2 + 2\Re\langle Bx_0, x_1\rangle + \|Bx_1\|^2 \\
+                &= \|x_0\|^2 + 2\Re\langle x_0, B^*x_1\rangle + \|B^*x_1\|^2 \\
+                &= \| x_0 + B^*x_1\|^2 = \| x_0 + A^*x_1 \|^2
+            \end{align*}
+            po polarizacijski identiteti.
+            Sumimo, da za vsak $n \in \N$ velja
+            \[
+                \sum_{i,j=0}^n \langle A^jx_i, A^ix_j\rangle = \|x_0 + A^*x_1 + \cdots + A^{*n}x_n \|^2
+            \]
+            Dokažimo indukcijski korak
+            \begin{align*}
+                \sum_{i,j=0}^{n+1} \langle A^jx_i, A^ix_j \rangle
+                &= \sum_{i,j=0}^{n+1} \langle B^jx_i, B^ix_j \rangle \\
+                &= \|x_0 + \cdots + B^{*n}x_n\|^2 + \sum_{i = 0}^n 2\Re\langle B^{*i}x_i, B^{*(n+1)}x_{n+1} \rangle + \|B^{*(n+1)}x_{n+1}\|^2 \\
+                &= \|x_0 + \cdots + B^{*n}x_n\|^2 +2\Re\langle  \sum_{i = 0}^n B^{*i}x_i,  B^{*(n+1)}x_{n+1} \rangle + \|B^{*(n+1)}x_{n+1}\|^2 \\
+                &= \|x_0 + \cdots + B^{*(n+1)}x_{n+1}\|^2
+                = \|x_0 + \cdots + A^{*(n+1)}x_{n+1}\|^2
+            \end{align*}
+            zopet po polarizacijski identiteti,
+            kjer na vsakem koraku uporabljamo normalnost $B$,
+            da lahko svobodno menjamo $B$ in $B*$ in dobimo želeno obliko.
+            S tem je \eqref{eq:nic} očitno dokazana.
+            Po zgornjem računu je \eqref{eq:konst} ekvivalentna temu, da je
+            \[
+                \| B^*(x_0 + \cdots + B^{*n}x_n) \|^2 \leq c \| x_0 + \cdots + B^{*n}x_n \|^2,
+            \]
+            kar pa je očitno, saj je $B^*$ zvezen operator.
+        \item \underline{(b) $\implies$ (c):}
+            Po \eqref{eq:nic} je desna stran enačbe \eqref{eq:konst} (lahko tudi brez $c$) nenegativna.
+            Iz \eqref{eq:nic} za izbiro $(Ax_0,\dots,Ax_n)$ prav tako sledi,
+            da je leva stran enačbe \eqref{eq:konst} nenegativna.
+            Torej imamo enačbo oblike $X = cY$, kjer sta oba $X$ in $Y$ pozitivna.
+            Enačba bo torej res tudi za vsako konstanto $d \geq c$,
+            zato vzamemo $d = \max\left\{ c, \|A\|^2 + 1 \right\} > \|A\|^2$.
+        \item \underline{(c) $\implies$ (d):}
+            Z rekurzivnim upoštevanje točke (c) dobimo, da je
+            \[
+                \sum_{i,j=0}^n \langle A^{j+k}x_i,A^{i+k}x_j\rangle
+                \leq c \sum_{i,j=0}^n \langle A^{j+k-1}x_i, A^{i+k-1}x_j \rangle
+            \]
+            za vsak $k \in \N$ (predpostavka je natanko $k = 1$).
+            Od tod dobimo padajoče zaporedje
+            \[
+                \cdots \leq \frac{\sum_{i,j=0}^n \langle A^{j+k}x_i,A^{i+k}x_j\rangle}{c^k}
+                \leq \cdots
+                \leq \frac{\sum_{i,j=0}^n \langle A^{j+1}x_i,A^{i+1}x_j\rangle}{c}
+                \leq \sum_{i,j=0}^n \langle A^{j}x_i,A^{i}x_j\rangle
+            \]
+            Dovolj je torej pokazati, da to zaporedje limitira k pozitivni vrednosti,
+            ko $k \to \infty$, oziroma kar k $0$.
+            V ta namen je dovolj pokazati, da so zgornje vsote primerno omejene.
+            Ocenimo
+            \begin{align*}
+                \Big| \sum_{i,j=0}^n \langle A^{j+k}x_i,A^{i+k}x_j\rangle\Big|
+                &\stackrel{\triangle}{\leq} \sum_{i,j=0}^n \Big|\langle A^{j+k}x_i,A^{i+k}x_j\rangle\Big|\\
+                &\stackrel{\text{CSB}}{\leq} \sum_{i,j=0}^n \|A^{j+k}x_i\|\cdot \|A^{i+k}x_j\|\\
+                &\leq \sum_{i,j=0}^n \|A\|^k\cdot\|A^jx_i\|\cdot\|A\|^k\cdot\|A^ix_j\|\\
+                &\leq \|A\|^{2k}\sum_{i,j=0}^n \|A^jx_i\|\cdot\|A^ix_j\|
+            \end{align*}
+            in opazimo, da je zadnja vsota neodvisna od $k$ in jo označimo z $D$.
+            Ker je po (c) $\|A\|^{2k} < c^k$,
+            računamo
+            \[
+                \lim_{k \to \infty}\Big\| \frac{\sum_{i,j=0}^n \langle A^{j+k}x_i,A^{i+k}x_j\rangle}{c^k}\Big\|
+                \leq \lim_{k\to\infty}\underbrace{\frac{\|A\|^{2k}}{c^k}}_{<1} D = 0
+            \]
+            S tem je implikacija dokazana, saj je zgornje zaporedje padajoče.
+        \item \underline{(d) $\implies$ (e):}
+            Definiramo vektorje $y_i = A^ix_i$ in vstavimo v enačbo
+            \[
+                \sum_{i,j=0}^n \langle A^{i+j}x_i, A^{i+j}x_j \rangle
+                = \sum_{i,j=0}^n \langle A^jy_i, A^iy_j \rangle
+                \stackrel{\eqref{eq:nic}}{\geq} 0
+            \]
+    \end{itemize}
+\end{Exercise}
+
+\underline{\textbf{Dodatek - poprava poskusne domače naloge:}}
+V tem razdelku bom dopolnil/popravil tiste dele poskusne domače naloge,
+ki se navezujejo na rešitve te (prave) domače naloge.
+\begin{enumerate}[label=(\alph*)]
+    \item \underline{Naloga 2:}
+        Za dokaz, da iz tega, da je $Y \otimes Z \leq X$ zaprt podprostor,
+        sledi, da je $\pr_y$ zvezna preslikava, uporabimo izrek o zaprtem grafu.
+        Naj bo $(y_n, z_n)_n \to x$ konvergentno zaporedje v $Y \oplus Z$
+        in naj bo $(\pr_y(y_n,z_n))_n = (y_n)_n \to y$ zaporedje slik v $Y$.
+        Radi bi pokazali, da je $\pr_y(x) = y$, kar pa je očitno,
+        saj je po predpostavki $x \in Y \oplus Z$, torej $x = (y_0, z)$ za neka $y_0 \in Y$ in $z \in Z$.
+        Ker je $y_0 = \lim_{n\to\infty}y_n$, je po enoličnosti limite $y_0 = y$,
+        torej $\pr_y(x) = \pr_y(y, z) = y$.
+    \item \underline{Naloga 4:}
+        S Cauchyjevo integralsko formulo dokažimo, da je
+        \[
+            f_z(\omega) = \frac{1}{1 - \overline{z}\omega}
+        \]
+        res t.i. Hardyjevo integralsko jedro,
+        (torej Rieszov vektor za evaluacijski funkcional):
+        \begin{align*}
+            \langle f, f_z\rangle_H
+            &= \lim_{r \to 1} \frac{1}{2\pi} \int_{0}^{2\pi} f(re^{i\theta}) \overline{\left(\frac{1}{1 - \overline{z}\omega}\right)} d\theta
+            = \lim_{r \to 1} \frac{1}{2\pi} \int_{0}^{2\pi} \frac{f(re^{i\theta})}{1 - zre^{-i\theta}} d\theta \\
+            &= \lim_{r \to 1} \frac{1}{2i\pi} \int_{0}^{2\pi} \frac{f(re^{i\theta})}{re^{i\theta} - z} ire^{i\theta}d\theta
+            = \lim_{r \to 1} \frac{1}{2i\pi} \int_{r\T} \frac{f(r\omega)}{r\omega - z} d\omega \\
+            &= \lim_{r \to 1} f_r(z) = f(z)
+        \end{align*}
+        kjer $f_r(z) = f(rz)$.
+\end{enumerate}
+
+\end{document}
+
+%% TEMPLATES
+% lists
+%\begin{enumerate}[label=(\alph*)]
+% diagram
+%\adjustbox{scale=1, center}{
+%	\begin{tikzcd}
+%		\R_n \arrow[d, "\varphi_n"] \arrow[r, "\Phi"] & \R_m \arrow[d, "\varphi_m"] \\
+%		\R \arrow[r, "\widetilde{\Phi}"] & \R
+%	\end{tikzcd}
+%}
+% figure
+%\begin{figure}[h]
+%	\centering
+%	\includegraphics[scale=0.4]{fig}
+%	\caption{caption}
+%	\label{fig:label}
+%\end{figure}
+% wrapped figure
+%\begin{wrapfigure}{r}{3in}
+%	\includegraphics[scale=0.4]{fig}
+%	\caption{caption}
+%	\label{fig:label}
+%\end{wrapfigure}
+% beamer
+%\documentclass[a4paper, 12pt]{beamer}
+%\usetheme{CambridgeUS}
+%\usecolortheme{beaver}
+%\usefonttheme{structuresmallcapsserif}
+% sth above equality
+%\stackrel{?}{=}

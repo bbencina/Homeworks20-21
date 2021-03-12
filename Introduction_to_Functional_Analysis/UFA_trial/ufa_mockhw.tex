@@ -1,0 +1,313 @@
+\documentclass[a4paper, 12pt]{article}
+
+\usepackage[slovene]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{units}
+\usepackage{eurosym}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{mathtools}
+\usepackage{graphicx}
+\usepackage{color}
+%\usepackage{url}
+\usepackage{hyperref}
+\usepackage{enumerate}
+\usepackage{enumitem}
+\usepackage{pifont}
+\usepackage{tikz-cd}
+\usetikzlibrary{babel}
+\usepackage{adjustbox}
+\usepackage{stmaryrd}
+
+% set margin and layout here
+% in case of beamer, comment this out
+\usepackage[margin=0.5in]{geometry}
+
+% commonly used math operators
+\DeclareMathOperator{\diam}{diam}
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\im}{im}
+\DeclareMathOperator{\coker}{coker}
+\DeclareMathOperator{\pr}{pr}
+\DeclareMathOperator{\rad}{rad}
+\DeclareMathOperator{\chrs}{char}
+\DeclareMathOperator{\Lin}{Lin}
+\DeclareMathOperator{\Ann}{Ann}
+\DeclareMathOperator{\Ass}{Ass}
+\DeclareMathOperator{\Spec}{Spec}
+\DeclareMathOperator{\mSpec}{mSpec}
+\DeclareMathOperator{\Quot}{Quot}
+\DeclareMathOperator{\Tor}{Tor}
+\DeclareMathOperator{\Ext}{Ext}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\End}{End}
+\DeclareMathOperator{\Aut}{Aut}
+\DeclareMathOperator{\Br}{Br}
+
+% commonly used math objects
+\newcommand{\D}{\mathbb{D}}
+\newcommand{\T}{\mathbb{T}}
+\renewcommand{\S}{\mathbb{S}}
+\newcommand{\B}{\mathbb{B}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\renewcommand{\H}{\mathbb{H}}
+\renewcommand{\P}{\mathbb{P}}
+
+% commonly used math relations
+\newcommand{\iso}{\cong}
+\newcommand{\homeo}{\approx}
+\newcommand{\htpeq}{\simeq}
+\newcommand{\hlgeq}{\sim}
+\newcommand{\idtfy}{\longleftrightarrow}
+
+% commonly used math symbols
+\newcommand{\closure}[1]{\overline{#1}}
+\newcommand{\subideal}{\vartriangleleft}
+\newcommand{\supideal}{\vartriangleright}
+
+% cool environment I sometimes use
+%\definecolor{bostonuniversityred}{rgb}{0.8, 0.0, 0.0}
+%
+%\newenvironment{matematika}[1]{
+%\textcolor{bostonuniversityred}{\underline{\textsc{#1:}}}
+%}{
+%}
+
+\newcounter{excounter}[section]
+\newenvironment{Exercise}
+    {\refstepcounter{excounter}\underline{\textbf{Ex. \theexcounter:}}}
+    {\par\vspace{\baselineskip}}
+
+% start sections with 0
+%\setcounter{section}{-1}
+
+
+% title data - MODIFY
+\title{UFA - poskusna domača naloga}
+\author{Benjamin Benčina, 27192018}
+
+\begin{document}
+
+\maketitle
+
+\begin{Exercise}
+    Naj bo $X$ normiran prostor, $M \subseteq X$ in $N \subseteq X^*$.
+    Definiramo
+    \begin{align*}
+        M^0 &= \left\{ f \in X^* ; \; |f(x)| \leq 1 \quad \forall x \in M \right\} \\
+        N^0 &= \left\{ x \in X ; \; |f(x)| \leq 1 \quad \forall f \in N \right\}
+    \end{align*}
+    Označimo z $B_r^X \subset X$ in $B_r^{X^*} \subset X^*$ zaprti krogli radija $r$.
+    \begin{enumerate}[label=(\alph*)]
+        \item
+            Dokažimo, da velja $\left( B_r^X \right)^0 = B_{1/r}^{X^*}$ in $\left( B_r^{X^*} \right)^0 = B_{1/r}^X$.
+            \begin{itemize}
+                \item
+                    Najprej računamo
+                    \[
+                        \left( B_r^X \right)^0 = \left\{ f \in X^* ; \; |f(x)| \leq 1 \forall x \in B_r^X \right\} \supseteq \left\{ f \in X^* ; \; ||f||\cdot ||x|| \leq 1 \forall x \in B_r^X \right\} = B_{1/r}^{X^*}
+                    \]
+                    Obratno vzemimo $f \in \left( B_r^X \right)^0$, torej $|f(x)| \leq 1$ za vsak $||x|| \leq r$.
+                    Po homogenosti je $|f(y)| \leq \frac{1}{r}$ za vsak $||y|| \leq 1$.
+                    Sledi, da je $f \in B_{1/r}^{X^*}$.
+                \item
+                    Povsem analogno računamo
+                    \[
+                        \left( B_r^{X^*} \right)^0 = \left\{ x \in X ; \; |f(x)| \leq 1 \forall f \in B_r^{X^*} \right\} \supseteq \left\{ x \in X ; \; ||f||\cdot ||x|| \leq 1 \forall f \in B_r^{X^*} \right\} = B_{1/r}^X
+                    \]
+                    Obratno vzemimo $x \in \left( B_r^{X^*} \right)^0$, torej $|f(x)| \leq 1$ za vsak $||f|| \leq r$.
+                    Po homogenosti je $|g(x)| \leq \frac{1}{r}$ za vsak $||g|| \leq 1$.
+                    Sledi, da je $x \in B_{1/r}^X$.
+            \end{itemize}
+        \item
+            Naj bo sedaj $M \leq X$.
+            \begin{itemize}
+                \item 
+                    Najprej pokažimo, da je $M^0 = \left\{ f \in X^* ; \; f(x) = 0 \quad \forall x \in M \right\}$.
+
+                    Po definiciji je $M^0 = \left\{ f \in X^* ; \; |f(x)| \leq 1 \forall x \in M \right\}$.
+                    Ampak $M$ je podprostor, zato je zaprt za množenje s skalarji.
+                    Če za nek $x \in M$ velja $|f(x)| = \alpha \leq 1$ in $\alpha \neq 0$, potem $|f(\frac{n}{\alpha}x)| = n$, kar pa se seveda ne sme zgoditi.
+                    Zato je mora za vse $f \in M^0$ veljati, da $|f(x)| = 0$ za vse $x \in M$, kar pa je ekvivalentno želenemu.
+                \item
+                    Pokažimo še, da je $M$ gost podprostor v $X$ $\iff$ $M^0 = \left\{ 0 \right\}$.
+
+                    Privzemimo najprej, da je $M$ gost podprostor v $X$ in vzemimo $f \in M^0$.
+                    Zaradi zveznosti $f$ je po prejšnji točki $f(x) = 0$ za vse $x \in X$, torej je $f \equiv 0$.
+
+                    Obratno, če je edini funkcional, ki je ničelen na celem $M$, le ničelni funkcional, potem je $M^\perp = \left\{ 0 \right\}$ in zato $\closure{M} = X$.
+            \end{itemize}
+    \end{enumerate}
+\end{Exercise}
+
+\begin{Exercise}
+    Naj bo $X$ Banachov prostor in $Y, Z \leq X$ zaprta podprostora s trivialnim presekom.
+    Dokažimo, da je $Y + Z$ zaprt podprostor $\iff$ obstaja $C > 0$, da je $||y|| \leq C ||y+z||$ za vse $y \in Y$ in $z \in Z$.
+
+    \begin{itemize}
+        \item \underline{$(\implies)$:}
+            Če je $Y + Z = Y \oplus Z$ zaprt podprostor, potem je Banachov.
+            Sledi, da je $\pr_y \colon y \oplus z \mapsto y$ zvezna preslikava, kar je ekvivalentno zgornjemu pogoju.
+        \item \underline{$(\impliedby)$:}
+            Naj bo $\left( y_n \oplus z_n \right)_n \to x$ konvergentno zaporedje v $Y \oplus Z$.
+            Po predpostavki sta obe zaporedji na komponentah konvergentni, torej $y_n \to y$ in $z_n \to z$.
+            Ker sta $Y$ in $Z$ zaprta podprostora, je $y \in Y$ in $z \in Z$.
+            Zaradi enoličnosti limite je $x = y \oplus z \in Y \oplus Z$.
+    \end{itemize}
+\end{Exercise}
+
+\begin{Exercise}
+    Naj bosta $A$ in $B$ normalna operatorja na Hilbertovem prostoru $H$.
+    \begin{enumerate}[label=(\alph*)]
+        \item
+            Dokažimo, da je $AB = 0 \iff BA = 0$.
+
+            Zaradi simetrije trditve je dovolj dokazati le eno implikacijo.
+            Naj bo $AB = 0$. Oglejmo si naslednji izraz
+            \[
+                B^*BAA^* = BB^*A^*A = B(AB)^*A = 0
+            \]
+            Od tod sledi, da je $\im AA^* \subseteq \ker B^*B = \ker B$.
+            Sledi, da je $BAA^* = 0$ in dualno $AA^*B^* = 0$.
+            Od tod zopet sledi $\im B^* \subseteq \ker AA^* = \ker A^*$.
+            Torej $A^*B^* = 0$, oziroma ekvivalentno $BA = 0$.
+        \item
+            Naj bosta dodatno $A, B$ neničelna operatorja, ki zadoščata $AB = 0$.
+            Pokažimo, da $A$ in $B$ nista niti injektivna niti surjektivna.
+
+            Ker $AB = 0$, je $\im B \subseteq \ker A$.
+            Če je $A$ injektiven, mora biti $B$ ničelen, torej $A$ ni injektiven.
+            Če je $B$ surjektiven, mora biti $A$ ničelen, torej $B$ ni surjektiven.
+            Po točki (a) veljata tudi izjavi z zamenjanima operatorjema $A$ in $B$.
+    \end{enumerate}
+\end{Exercise}
+
+\begin{Exercise}
+    Naj bo $H$ Hardyjev prostor na odprtem enotskem disku $\D \subset \C$:
+    \[
+        H = \left\{f \colon \D \to \C \text{ analitična} ; \; \sup_{r < 1} \frac{1}{2\pi} \int_0^{2\pi}|f(re^{i\theta})|^2 d\theta < \infty  \right\}
+    \]
+    opremljen s skalarnim produktom
+    \[
+        \langle f, g \rangle_H = \sup_{r<1}\frac{1}{2\pi} \int_0^{2\pi} f(re^{i\theta})\overline{g(re^{i\theta})} d\theta
+    \]
+    s pripadajočo normo $||.||_H$.
+    \begin{enumerate}[label=(\alph*)]
+        \item
+            Uporabimo Cauchyjevo integralsko formulo in dokažimo, da za vsak $z \in \D$ velja
+            \[
+                |f(z)| \leq ||f||_H \frac{1}{\sqrt{1 - |z|^2}}
+            \]
+            
+            Spomnimo se Cauchyjeve formule, ki pravi, da za vsak $a \in \D$ velja
+            \[
+                f(a) = \frac{1}{2i\pi} \int_\T \frac{f(\omega)}{\omega - a} d\omega
+            \]
+            kjer je $\T = \partial \D$ kompleksni torus (običajna oznaka iz harmonične analize).
+            Standardno definiramo tudi $f_r(z) = f(rz)$ in $f^*(z) = \lim_{r \to 1}f_r(z)$.
+            Računamo
+            \[
+                f(z) = \lim_{r \to 1} f_r(z)
+                     = \frac{1}{2i\pi} \int_\T \frac{f^*(w)}{w - z}
+                     = \frac{1}{2i\pi} \int_0^{2\pi} \frac{f^*(e^{i\theta})}{e^{i\theta} - z} i e^{i\theta} d\theta
+                     = \frac{1}{2\pi} \int_0^{2\pi} \frac{f(e^{i\theta})}{1 - ze^{-i\theta}} dm(\theta) 
+            \]
+            Ker velja
+            \[
+                \int_\T \frac{1}{|1 - ze^{-i\theta}|^2} dm(\theta) \leq \frac{1}{1 - |z|^2},
+            \]
+            lahko s CSB ocenimo
+            \[
+                |f(z)| \leq ||f^*||_{L^2(\T)} \frac{1}{\sqrt{1 - |z|^2}} = ||f||_H \frac{1}{\sqrt{1 - |z|^2}}
+            \]
+        \item
+            Dokažimo, da za vsak $z \in \D$ obstaja taka funkcija $f_z \in H$, da za vsak $f \in H$ velja
+            \[
+                \langle f, f_z \rangle_H = f(z).
+            \]
+        \item
+            Za vsak $z \in \D$ bi radi določili predpis funkcije $f_z$.
+
+            Točki (b) in (c) naredimo hkrati.
+            Konkretno, pokažimo, da 
+            \[
+                f_z(\omega) = \frac{1}{-i}\frac{1}{\overline{\omega - z}}
+            \]
+            ustreza zahtevi.
+            Najprej računamo
+            \[
+                \langle f, f_z \rangle_H = \lim_{r \to 1} \frac{1}{2\pi} \int_0^{2\pi} f(re^{i\theta}) \frac{1}{i}\frac{1}{re^{i\theta}-z} d\theta = f(z)
+            \]
+            po Cauchyjevi formuli.
+            Potrebujemo še $f_z \in H$.
+            Spet le računamo
+            \begin{align*}
+                ||f_z||_H &= \lim_{r \to 1} \frac{1}{2\pi} \int_0^{2\pi} |f_z(re^{i\theta})|^2 d\theta
+                = \lim_{r \to 1} \frac{1}{2\pi} \int_0^{2\pi} \frac{1}{|re^{i\theta} - z|^2} d\theta \\
+                &= \frac{1}{2\pi} \int_0^{2\pi} \frac{1}{|e^{i\theta} - z|^2} d\theta
+                \leq \frac{1}{2\pi} \int_0^{2\pi} \frac{1}{1 - |z|^2} d\theta
+                = \frac{1}{1 - |z|^2}
+                < \infty
+            \end{align*}
+    \end{enumerate}
+\end{Exercise}
+
+\begin{Exercise}
+    Naj bo $H$ Hilbertov prostor in $T \colon H \to H$ linearen operator.
+    Dokažimo, da sta naslednji trditvi ekvivalentni.
+    \begin{enumerate}[label=(\alph*)]
+        \item Obstaja linearen operator $S \colon H \to H$, ki zadošča $\langle Sx, y \rangle = \langle x, Ty \rangle$ za vsak $x, y \in H$.
+        \item Operator $T$ je zvezen.
+    \end{enumerate}
+    \begin{itemize}
+        \item \underline{$(b) \implies (a)$:}
+            Vzamemo $S = T^*$.
+        \item \underline{$(a) \implies (b)$:}
+            Dokažimo, da je graf operatorja $T$ zaprt.
+            Po izreku o zaprtem grafu bo operator $T$ zvezen.
+            Naj bo $(x_n)_n \to x$ konvergentno zaporedje in naj $(Tx_n)_n \to y$.
+            Želimo pokazati, da je $Tx = y$.
+            Računamo
+            \[
+                \langle Tx, z \rangle = \langle x, Sz \rangle = \lim_{n \to \infty} \langle x_n, Sz \rangle = \lim_{n \to \infty} \langle Tx_n, z \rangle = \langle y, z \rangle
+            \]
+            kjer upoštevamo zveznost skalarnega produkta in $z \in H$ poljuben.
+            Ta formulacija je ekvivalentna naši po dveh konjugiranjih.
+            Od tod sledi, da je $\langle Tx - y , z \rangle = 0$ za vsak $z \in H$, torej $Tx = y$.
+            Graf operatorja $T$ je torej zaprt.
+    \end{itemize}
+\end{Exercise}
+
+\end{document}
+
+%% TEMPLATES
+% lists
+%\begin{enumerate}[label=(\alph*)]
+% diagram
+%\adjustbox{scale=1, center}{
+%	\begin{tikzcd}
+%		\R_n \arrow[d, "\varphi_n"] \arrow[r, "\Phi"] & \R_m \arrow[d, "\varphi_m"] \\
+%		\R \arrow[r, "\widetilde{\Phi}"] & \R
+%	\end{tikzcd}
+%}
+% figure
+%\begin{figure}[h]
+%	\centering
+%	\includegraphics[scale=0.4]{fig}
+%	\caption{caption}
+%	\label{fig:label}
+%\end{figure}
+% beamer
+%\documentclass[a4paper, 12pt]{beamer}
+%\usetheme{CambridgeUS}
+%\usecolortheme{beaver}
+%\usefonttheme{structuresmallcapsserif}
