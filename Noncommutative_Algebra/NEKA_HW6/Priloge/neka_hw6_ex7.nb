@@ -1,0 +1,591 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.3' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     22869,        583]
+NotebookOptionsPosition[     20637,        541]
+NotebookOutlinePosition[     20970,        556]
+CellTagsIndexPosition[     20927,        553]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{"omogocimo", " ", "razsiritveni", " ", "paket", " ", "NC"}], " ", 
+   "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{"<<", "NC`"}], " ", "\[IndentingNewLine]", 
+   RowBox[{"(*", " ", 
+    RowBox[{"uvozimo", " ", "nekomutativne", " ", "operacije"}], " ", "*)"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{"<<", " ", "NCAlgebra`"}], "\[IndentingNewLine]", 
+   RowBox[{"(*", " ", 
+    RowBox[{
+    "uvozimo", " ", "funkcije", " ", "za", " ", "ra\[CHacek]unanje", " ", 
+     RowBox[{"nekom", ".", " ", "Grobnerjevih"}], " ", "baz"}], "*)"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{"<<", " ", "NCGBX`", " "}]}]}]], "Input",
+ CellChangeTimes->{{3.822546437989781*^9, 3.822546457936981*^9}, {
+  3.82254691703319*^9, 
+  3.822546980291485*^9}},ExpressionUUID->"d910e569-f2f9-444d-9785-\
+30d6d30df072"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData["\<\"You are using the version of NCAlgebra which is found in:\"\
+\>"], "Print",
+ CellChangeTimes->{3.822546459153165*^9},
+ CellLabel->
+  "During evaluation of \
+In[12]:=",ExpressionUUID->"08efdda3-5817-444b-a078-15fe54d7e659"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"  \"\>", 
+   "\[InvisibleSpace]", \
+"\<\"/home/bbencina/.Mathematica/Applications/NC/\"\>"}],
+  SequenceForm["  ", "/home/bbencina/.Mathematica/Applications/NC/"],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.822546459154208*^9},
+ CellLabel->
+  "During evaluation of \
+In[12]:=",ExpressionUUID->"cda285bf-0630-4cc6-9ba6-a96391ddaa6f"],
+
+Cell[BoxData["\<\"You can now use \\\"<< NCAlgebra`\\\" to load \
+NCAlgebra.\"\>"], "Print",
+ CellChangeTimes->{3.822546459155271*^9},
+ CellLabel->
+  "During evaluation of \
+In[12]:=",ExpressionUUID->"a2bfa66f-37b2-4f8c-9c8f-524be24f2887"]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"dolocimo", " ", "red", " ", "monomov"}], ";", " ", 
+     RowBox[{"vseeno", " ", "kaksen"}]}], ",", " ", 
+    RowBox[{"le", " ", "da", " ", "je", " ", "l", " ", 
+     RowBox[{"(", "lambda", ")"}], " ", "na", " ", "prvem", " ", "mestu"}]}], 
+   "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"SetMonomialOrder", "[", 
+     RowBox[{"l", ",", " ", 
+      RowBox[{"{", 
+       RowBox[{"x", ",", " ", "y", ",", " ", "z"}], "}"}]}], "]"}], ";"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{"PrintMonomialOrder", "[", "]"}]}]}]], "Input",
+ CellChangeTimes->{{3.822546470974063*^9, 3.822546496516898*^9}, {
+  3.822546984877761*^9, 
+  3.822547038334277*^9}},ExpressionUUID->"84de4af6-1fb7-4666-895d-\
+b3de71797e76"],
+
+Cell[BoxData[
+ TagBox[
+  RowBox[{"l", "\[LessLess]", " ", "x", "<", "y", "<", "z"}],
+  DisplayForm]], "Output",
+ CellChangeTimes->{3.822546497457445*^9},
+ CellLabel->
+  "Out[16]//DisplayForm=",ExpressionUUID->"85dc0b5e-0348-4091-b5fa-\
+bf54dfc01973"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{
+    RowBox[{"definiramo", " ", "sistem", " ", "polinomskih", " ", 
+     RowBox[{"enacb", ":", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"-", " ", "najprej"}], " ", "enacba"}]}]}], ",", " ", 
+    RowBox[{
+     RowBox[{"ki", " ", "jo", " ", "resujemo"}], "\[IndentingNewLine]", "-", 
+     " ", 
+     RowBox[{"potem", " ", "tri", " ", "relacije", " ", "idempotentnosti"}], 
+     "\[IndentingNewLine]", "-", " ", 
+     RowBox[{
+     "nazadnje", " ", "pa", " ", "mora", " ", "l", " ", "komutirati", " ", 
+      "z", " ", "vsemi", " ", 
+      RowBox[{"(", 
+       RowBox[{
+        RowBox[{"ne", " ", "deluje"}], ",", " ", 
+        RowBox[{
+        "ce", " ", "jo", " ", "dodamo", " ", "kot", " ", "komutativno", " ", 
+         "spremenljivko"}]}], ")"}]}]}]}], "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"rels", " ", "=", " ", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{
+       "x", " ", "+", " ", "y", " ", "+", " ", "z", " ", "-", " ", "l"}], ",",
+        " ", 
+       RowBox[{
+        RowBox[{"x", "^", "2"}], " ", "-", " ", "x"}], ",", " ", 
+       RowBox[{
+        RowBox[{"y", "^", "2"}], " ", "-", " ", "y"}], ",", " ", 
+       RowBox[{
+        RowBox[{"z", "^", "2"}], "-", " ", "z"}], ",", " ", 
+       RowBox[{
+        RowBox[{"l", "**", "x"}], " ", "-", " ", 
+        RowBox[{"x", " ", "**", " ", "l"}]}], ",", " ", 
+       RowBox[{
+        RowBox[{"l", " ", "**", " ", "y"}], " ", "-", " ", 
+        RowBox[{"y", " ", "**", " ", "l"}]}], ",", " ", 
+       RowBox[{
+        RowBox[{"l", " ", "**", " ", "z"}], " ", "-", " ", 
+        RowBox[{"z", " ", "**", " ", "l"}]}]}], "}"}]}], ";"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{
+     RowBox[{
+      RowBox[{
+      "racunamo", " ", "in", " ", "izpisemo", " ", "vsako", " ", "resitev", 
+       " ", "v", " ", "svoji", " ", "vrstici"}], ";", "\[IndentingNewLine]", 
+      RowBox[{
+      "ker", " ", "smo", " ", "dali", " ", "l", " ", "na", " ", "prvo", " ", 
+       "mesto", " ", "v", " ", "red", " ", "monomov"}]}], ",", " ", 
+     RowBox[{"dobimo", " ", "na", " ", "koncu", " ", "enacbo"}], ",", " ", 
+     RowBox[{"ki", " ", "vsebuje", " ", "le", " ", "l"}]}], " ", "*)"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{"ColumnForm", "[", 
+    RowBox[{"NCMakeGB", "[", 
+     RowBox[{"rels", ",", " ", "10"}], "]"}], "]"}]}]}]], "Input",
+ CellChangeTimes->{{3.8225465016247*^9, 3.822546559864862*^9}, {
+  3.822547041865888*^9, 3.822547156338752*^9}, {3.822547233140181*^9, 
+  3.822547306353198*^9}},ExpressionUUID->"90ffe01e-9382-4ffa-b66f-\
+998d2104b372"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData["\<\"* * * * * * * * * * * * * * * *\"\>"], "Print",
+ CellChangeTimes->{3.822546562946803*^9},
+ CellLabel->
+  "During evaluation of \
+In[17]:=",ExpressionUUID->"27f4060b-0d15-4058-a176-4711262044e9"],
+
+Cell[BoxData["\<\"* * *   NCPolyGroebner    * * *\"\>"], "Print",
+ CellChangeTimes->{3.822546562949358*^9},
+ CellLabel->
+  "During evaluation of \
+In[17]:=",ExpressionUUID->"2cc5124a-1c0b-47bf-8811-c9551c5d5e68"],
+
+Cell[BoxData["\<\"* * * * * * * * * * * * * * * *\"\>"], "Print",
+ CellChangeTimes->{3.822546562953062*^9},
+ CellLabel->
+  "During evaluation of \
+In[17]:=",ExpressionUUID->"7e785fb7-3714-4b04-9582-faf8d730da22"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"* Monomial order: \"\>", "\[InvisibleSpace]", 
+   TagBox[
+    RowBox[{"l", 
+     RowBox[{"\[LessLess]", " "}], "x", "<", "y", "<", "z"}],
+    DisplayForm]}],
+  SequenceForm["* Monomial order: ", 
+   DisplayForm[
+    RowBox[{$CellContext`l, "\[LessLess] ", $CellContext`x, 
+      "<", $CellContext`y, "<", $CellContext`z}]]],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.822546562954706*^9},
+ CellLabel->
+  "During evaluation of \
+In[17]:=",ExpressionUUID->"416a460e-609d-4499-8594-b3fa949365ae"],
+
+Cell[BoxData["\<\"* Reduce and normalize initial set\"\>"], "Print",
+ CellChangeTimes->{3.8225465629560843`*^9},
+ CellLabel->
+  "During evaluation of \
+In[17]:=",ExpressionUUID->"8bfb57c1-0d71-4c88-8dc1-bbfd97902efc"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"> Initial set reduced to '\"\>", 
+   "\[InvisibleSpace]", "\<\"6\"\>", 
+   "\[InvisibleSpace]", "\<\"' out of '\"\>", 
+   "\[InvisibleSpace]", "\<\"7\"\>", 
+   "\[InvisibleSpace]", "\<\"' polynomials\"\>"}],
+  SequenceForm[
+  "> Initial set reduced to '", "6", "' out of '", "7", "' polynomials"],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.8225465629785347`*^9},
+ CellLabel->
+  "During evaluation of \
+In[17]:=",ExpressionUUID->"a4218c26-a1fd-4f05-b6fa-5e76377c005d"],
+
+Cell[BoxData["\<\"* Computing initial set of obstructions\"\>"], "Print",
+ CellChangeTimes->{3.822546562980133*^9},
+ CellLabel->
+  "During evaluation of \
+In[17]:=",ExpressionUUID->"ba24d53f-1952-4151-a833-732bdc104b8d"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"> MAJOR Iteration \"\>", "\[InvisibleSpace]", "1", 
+   "\[InvisibleSpace]", "\<\", \"\>", "\[InvisibleSpace]", "7", 
+   "\[InvisibleSpace]", "\<\" polys in the basis, \"\>", "\[InvisibleSpace]", 
+   "5", "\[InvisibleSpace]", "\<\" obstructions\"\>"}],
+  SequenceForm[
+  "> MAJOR Iteration ", 1, ", ", 7, " polys in the basis, ", 5, 
+   " obstructions"],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.822546563028314*^9},
+ CellLabel->
+  "During evaluation of \
+In[17]:=",ExpressionUUID->"9f3fa695-2d5c-4427-a9e0-43b5996797e2"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"> MAJOR Iteration \"\>", "\[InvisibleSpace]", "2", 
+   "\[InvisibleSpace]", "\<\", \"\>", "\[InvisibleSpace]", "9", 
+   "\[InvisibleSpace]", "\<\" polys in the basis, \"\>", "\[InvisibleSpace]", 
+   "10", "\[InvisibleSpace]", "\<\" obstructions\"\>"}],
+  SequenceForm[
+  "> MAJOR Iteration ", 2, ", ", 9, " polys in the basis, ", 10, 
+   " obstructions"],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.8225465632163754`*^9},
+ CellLabel->
+  "During evaluation of \
+In[17]:=",ExpressionUUID->"a8f633db-5423-4692-82bc-88fb7d645595"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"> MAJOR Iteration \"\>", "\[InvisibleSpace]", "3", 
+   "\[InvisibleSpace]", "\<\", \"\>", "\[InvisibleSpace]", "10", 
+   "\[InvisibleSpace]", "\<\" polys in the basis, \"\>", "\[InvisibleSpace]", 
+   "10", "\[InvisibleSpace]", "\<\" obstructions\"\>"}],
+  SequenceForm[
+  "> MAJOR Iteration ", 3, ", ", 10, " polys in the basis, ", 10, 
+   " obstructions"],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.8225465636014853`*^9},
+ CellLabel->
+  "During evaluation of \
+In[17]:=",ExpressionUUID->"05658273-9933-4d8f-8855-71f977f4f7b7"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"* Found Groebner basis with \"\>", 
+   "\[InvisibleSpace]", "\<\"10\"\>", 
+   "\[InvisibleSpace]", "\<\" polynomials\"\>"}],
+  SequenceForm["* Found Groebner basis with ", "10", " polynomials"],
+  Editable->False]], "Print",
+ CellChangeTimes->{3.8225465638308563`*^9},
+ CellLabel->
+  "During evaluation of \
+In[17]:=",ExpressionUUID->"98880ab1-e7fc-4b77-b626-caff65d0f118"],
+
+Cell[BoxData["\<\"* * * * * * * * * * * * * * * *\"\>"], "Print",
+ CellChangeTimes->{3.822546563832258*^9},
+ CellLabel->
+  "During evaluation of \
+In[17]:=",ExpressionUUID->"f839fec7-d048-414e-a1ba-9405cbc12c2e"]
+}, Open  ]],
+
+Cell[BoxData[
+ InterpretationBox[GridBox[{
+    {
+     RowBox[{"z", "\[Rule]", 
+      RowBox[{"l", "-", "x", "-", "y"}]}]},
+    {
+     RowBox[{
+      RowBox[{"x", "**", "x"}], "\[Rule]", "x"}]},
+    {
+     RowBox[{
+      RowBox[{"y", "**", "y"}], "\[Rule]", "y"}]},
+    {
+     RowBox[{
+      RowBox[{"y", "**", "x"}], "\[Rule]", 
+      RowBox[{
+       RowBox[{"-", "y"}], "+", "z", "-", 
+       RowBox[{"l", "**", "z"}], "+", 
+       RowBox[{"x", "**", "z"}], "+", 
+       RowBox[{"y", "**", "l"}]}]}]},
+    {
+     RowBox[{
+      RowBox[{"x", "**", "l"}], "\[Rule]", 
+      RowBox[{"l", "**", "x"}]}]},
+    {
+     RowBox[{
+      RowBox[{"y", "**", "l"}], "\[Rule]", 
+      RowBox[{"l", "**", "y"}]}]},
+    {
+     RowBox[{
+      RowBox[{"l", "**", "x", "**", "y"}], "\[Rule]", 
+      RowBox[{
+       RowBox[{"-", 
+        FractionBox[
+         RowBox[{"l", "**", "y"}], "2"]}], "+", 
+       FractionBox[
+        RowBox[{"l", "**", "z"}], "2"], "-", 
+       FractionBox[
+        RowBox[{"x", "**", "l"}], "4"], "+", 
+       FractionBox[
+        RowBox[{"x", "**", "y"}], "2"], "-", 
+       FractionBox[
+        RowBox[{"x", "**", "z"}], "4"], "-", 
+       FractionBox[
+        RowBox[{"y", "**", "x"}], "2"], "+", 
+       FractionBox[
+        RowBox[{"z", "**", "x"}], "4"], "-", 
+       FractionBox[
+        RowBox[{"l", "**", "l", "**", "x"}], "4"], "-", 
+       FractionBox[
+        RowBox[{"l", "**", "l", "**", "z"}], "2"], "+", 
+       FractionBox[
+        RowBox[{"l", "**", "x", "**", "l"}], "2"], "-", 
+       FractionBox[
+        RowBox[{"l", "**", "x", "**", "x"}], "4"], "+", 
+       FractionBox[
+        RowBox[{"l", "**", "y", "**", "l"}], "2"], "+", 
+       FractionBox[
+        RowBox[{"x", "**", "l", "**", "l"}], "4"]}]}]},
+    {
+     RowBox[{
+      RowBox[{"l", "**", "l", "**", "l", "**", "y"}], "\[Rule]", 
+      RowBox[{
+       RowBox[{"3", " ", "x"}], "-", 
+       RowBox[{"3", " ", "z"}], "-", 
+       FractionBox[
+        RowBox[{"3", " ", 
+         RowBox[{"l", "**", "x"}]}], "2"], "+", 
+       RowBox[{"3", " ", 
+        RowBox[{"l", "**", "y"}]}], "+", 
+       FractionBox[
+        RowBox[{"13", " ", 
+         RowBox[{"l", "**", "z"}]}], "2"], "-", 
+       RowBox[{"5", " ", 
+        RowBox[{"x", "**", "l"}]}], "-", 
+       RowBox[{"3", " ", 
+        RowBox[{"y", "**", "l"}]}], "-", 
+       RowBox[{"l", "**", "l", "**", "x"}], "-", 
+       FractionBox[
+        RowBox[{"7", " ", 
+         RowBox[{"l", "**", "l", "**", "y"}]}], "2"], "-", 
+       FractionBox[
+        RowBox[{"9", " ", 
+         RowBox[{"l", "**", "l", "**", "z"}]}], "2"], "+", 
+       FractionBox[
+        RowBox[{"9", " ", 
+         RowBox[{"l", "**", "x", "**", "l"}]}], "2"], "+", 
+       FractionBox[
+        RowBox[{"7", " ", 
+         RowBox[{"l", "**", "y", "**", "l"}]}], "2"], "+", 
+       RowBox[{"x", "**", "l", "**", "l"}], "+", 
+       RowBox[{"l", "**", "l", "**", "l", "**", "l"}], "-", 
+       RowBox[{"2", " ", 
+        RowBox[{"l", "**", "l", "**", "l", "**", "x"}]}]}]}]},
+    {
+     RowBox[{
+      RowBox[{"l", "**", "l", "**", "l", "**", "x"}], "\[Rule]", 
+      RowBox[{
+       RowBox[{"2", " ", "x"}], "-", "y", "-", "z", "-", 
+       FractionBox[
+        RowBox[{"4", " ", 
+         RowBox[{"l", "**", "x"}]}], "3"], "+", 
+       FractionBox[
+        RowBox[{"19", " ", 
+         RowBox[{"l", "**", "y"}]}], "6"], "+", 
+       FractionBox[
+        RowBox[{"13", " ", 
+         RowBox[{"l", "**", "z"}]}], "6"], "-", 
+       RowBox[{"3", " ", 
+        RowBox[{"x", "**", "l"}]}], "-", 
+       RowBox[{"y", "**", "l"}], "-", 
+       FractionBox[
+        RowBox[{"l", "**", "l", "**", "x"}], "6"], "-", 
+       FractionBox[
+        RowBox[{"8", " ", 
+         RowBox[{"l", "**", "l", "**", "y"}]}], "3"], "-", 
+       FractionBox[
+        RowBox[{"3", " ", 
+         RowBox[{"l", "**", "l", "**", "z"}]}], "2"], "+", 
+       FractionBox[
+        RowBox[{"13", " ", 
+         RowBox[{"l", "**", "x", "**", "l"}]}], "6"], "+", 
+       FractionBox[
+        RowBox[{"7", " ", 
+         RowBox[{"l", "**", "y", "**", "l"}]}], "6"], "+", 
+       RowBox[{"x", "**", "l", "**", "l"}], "+", 
+       RowBox[{
+        FractionBox["1", "3"], " ", 
+        RowBox[{"l", "**", "l", "**", "l", "**", "l"}]}]}]}]},
+    {
+     RowBox[{
+      RowBox[{"l", "**", "l", "**", "l", "**", "l", "**", "l"}], "\[Rule]", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"-", "9"}], " ", "l"}], "+", 
+       FractionBox[
+        RowBox[{"45", " ", 
+         RowBox[{"l", "**", "l"}]}], "2"], "-", 
+       RowBox[{"20", " ", 
+        RowBox[{"l", "**", "l", "**", "l"}]}], "+", 
+       RowBox[{
+        FractionBox["15", "2"], " ", 
+        RowBox[{"l", "**", "l", "**", "l", "**", "l"}]}]}]}]}
+   },
+   BaselinePosition->{Baseline, {1, 1}},
+   GridBoxAlignment->{
+    "Columns" -> {{Left}}, "ColumnsIndexed" -> {}, "Rows" -> {{Baseline}}, 
+     "RowsIndexed" -> {}}],
+  ColumnForm[{$CellContext`z -> $CellContext`l - $CellContext`x - \
+$CellContext`y, 
+    NonCommutativeMultiply[$CellContext`x, $CellContext`x] -> $CellContext`x, 
+    NonCommutativeMultiply[$CellContext`y, $CellContext`y] -> $CellContext`y, 
+    NonCommutativeMultiply[$CellContext`y, $CellContext`x] -> -$CellContext`y + \
+$CellContext`z - NonCommutativeMultiply[$CellContext`l, $CellContext`z] + 
+     NonCommutativeMultiply[$CellContext`x, $CellContext`z] + 
+     NonCommutativeMultiply[$CellContext`y, $CellContext`l], 
+    NonCommutativeMultiply[$CellContext`x, $CellContext`l] -> 
+    NonCommutativeMultiply[$CellContext`l, $CellContext`x], 
+    NonCommutativeMultiply[$CellContext`y, $CellContext`l] -> 
+    NonCommutativeMultiply[$CellContext`l, $CellContext`y], 
+    NonCommutativeMultiply[$CellContext`l, $CellContext`x, $CellContext`y] -> 
+    Rational[-1, 2] NonCommutativeMultiply[$CellContext`l, $CellContext`y] + 
+     Rational[1, 2] NonCommutativeMultiply[$CellContext`l, $CellContext`z] + 
+     Rational[-1, 4] NonCommutativeMultiply[$CellContext`x, $CellContext`l] + 
+     Rational[1, 2] NonCommutativeMultiply[$CellContext`x, $CellContext`y] + 
+     Rational[-1, 4] NonCommutativeMultiply[$CellContext`x, $CellContext`z] + 
+     Rational[-1, 2] NonCommutativeMultiply[$CellContext`y, $CellContext`x] + 
+     Rational[1, 4] NonCommutativeMultiply[$CellContext`z, $CellContext`x] + 
+     Rational[-1, 4] 
+      NonCommutativeMultiply[$CellContext`l, $CellContext`l, $CellContext`x] + 
+     Rational[-1, 2] 
+      NonCommutativeMultiply[$CellContext`l, $CellContext`l, $CellContext`z] + 
+     Rational[1, 2] 
+      NonCommutativeMultiply[$CellContext`l, $CellContext`x, $CellContext`l] + 
+     Rational[-1, 4] 
+      NonCommutativeMultiply[$CellContext`l, $CellContext`x, $CellContext`x] + 
+     Rational[1, 2] 
+      NonCommutativeMultiply[$CellContext`l, $CellContext`y, $CellContext`l] + 
+     Rational[1, 4] 
+      NonCommutativeMultiply[$CellContext`x, $CellContext`l, $CellContext`l], 
+    NonCommutativeMultiply[$CellContext`l, $CellContext`l, $CellContext`l, \
+$CellContext`y] -> 
+    3 $CellContext`x - 3 $CellContext`z + 
+     Rational[-3, 2] NonCommutativeMultiply[$CellContext`l, $CellContext`x] + 
+     3 NonCommutativeMultiply[$CellContext`l, $CellContext`y] + 
+     Rational[13, 2] NonCommutativeMultiply[$CellContext`l, $CellContext`z] - 
+     5 NonCommutativeMultiply[$CellContext`x, $CellContext`l] - 3 
+     NonCommutativeMultiply[$CellContext`y, $CellContext`l] - 
+     NonCommutativeMultiply[$CellContext`l, $CellContext`l, $CellContext`x] + 
+     Rational[-7, 2] 
+      NonCommutativeMultiply[$CellContext`l, $CellContext`l, $CellContext`y] + 
+     Rational[-9, 2] 
+      NonCommutativeMultiply[$CellContext`l, $CellContext`l, $CellContext`z] + 
+     Rational[9, 2] 
+      NonCommutativeMultiply[$CellContext`l, $CellContext`x, $CellContext`l] + 
+     Rational[7, 2] 
+      NonCommutativeMultiply[$CellContext`l, $CellContext`y, $CellContext`l] + 
+     NonCommutativeMultiply[$CellContext`x, $CellContext`l, $CellContext`l] + 
+     NonCommutativeMultiply[$CellContext`l, $CellContext`l, $CellContext`l, \
+$CellContext`l] - 2 
+     NonCommutativeMultiply[$CellContext`l, $CellContext`l, $CellContext`l, \
+$CellContext`x], 
+    NonCommutativeMultiply[$CellContext`l, $CellContext`l, $CellContext`l, \
+$CellContext`x] -> 
+    2 $CellContext`x - $CellContext`y - $CellContext`z + 
+     Rational[-4, 3] NonCommutativeMultiply[$CellContext`l, $CellContext`x] + 
+     Rational[19, 6] NonCommutativeMultiply[$CellContext`l, $CellContext`y] + 
+     Rational[13, 6] NonCommutativeMultiply[$CellContext`l, $CellContext`z] - 
+     3 NonCommutativeMultiply[$CellContext`x, $CellContext`l] - 
+     NonCommutativeMultiply[$CellContext`y, $CellContext`l] + 
+     Rational[-1, 6] 
+      NonCommutativeMultiply[$CellContext`l, $CellContext`l, $CellContext`x] + 
+     Rational[-8, 3] 
+      NonCommutativeMultiply[$CellContext`l, $CellContext`l, $CellContext`y] + 
+     Rational[-3, 2] 
+      NonCommutativeMultiply[$CellContext`l, $CellContext`l, $CellContext`z] + 
+     Rational[13, 6] 
+      NonCommutativeMultiply[$CellContext`l, $CellContext`x, $CellContext`l] + 
+     Rational[7, 6] 
+      NonCommutativeMultiply[$CellContext`l, $CellContext`y, $CellContext`l] + 
+     NonCommutativeMultiply[$CellContext`x, $CellContext`l, $CellContext`l] + 
+     Rational[1, 3] 
+      NonCommutativeMultiply[$CellContext`l, $CellContext`l, $CellContext`l, \
+$CellContext`l], 
+    NonCommutativeMultiply[$CellContext`l, $CellContext`l, $CellContext`l, \
+$CellContext`l, $CellContext`l] -> (-9) $CellContext`l + 
+     Rational[45, 2] NonCommutativeMultiply[$CellContext`l, $CellContext`l] - 
+     20 NonCommutativeMultiply[$CellContext`l, $CellContext`l, \
+$CellContext`l] + 
+     Rational[15, 2] 
+      NonCommutativeMultiply[$CellContext`l, $CellContext`l, $CellContext`l, \
+$CellContext`l]}],
+  Editable->False]], "Output",
+ CellChangeTimes->{3.8225465638475733`*^9},
+ CellLabel->"Out[18]=",ExpressionUUID->"fb00c95f-0322-41c2-bcd0-a59c2fffe803"]
+}, Open  ]]
+},
+WindowSize->{949, 1041},
+WindowMargins->{{Automatic, 9}, {Automatic, 9}},
+FrontEndVersion->"11.3 for Linux x86 (64-bit) (March 6, 2018)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[580, 22, 853, 20, 147, "Input",ExpressionUUID->"d910e569-f2f9-444d-9785-30d6d30df072"],
+Cell[CellGroupData[{
+Cell[1458, 46, 240, 5, 25, "Print",ExpressionUUID->"08efdda3-5817-444b-a078-15fe54d7e659"],
+Cell[1701, 53, 389, 10, 25, "Print",ExpressionUUID->"cda285bf-0630-4cc6-9ba6-a96391ddaa6f"],
+Cell[2093, 65, 239, 5, 25, "Print",ExpressionUUID->"a2bfa66f-37b2-4f8c-9c8f-524be24f2887"]
+}, Open  ]]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[2381, 76, 806, 21, 78, "Input",ExpressionUUID->"84de4af6-1fb7-4666-895d-b3de71797e76"],
+Cell[3190, 99, 250, 7, 50, "Output",ExpressionUUID->"85dc0b5e-0348-4091-b5fa-bf54dfc01973"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[3477, 111, 2624, 64, 193, "Input",ExpressionUUID->"90ffe01e-9382-4ffa-b66f-998d2104b372"],
+Cell[CellGroupData[{
+Cell[6126, 179, 212, 4, 25, "Print",ExpressionUUID->"27f4060b-0d15-4058-a176-4711262044e9"],
+Cell[6341, 185, 212, 4, 25, "Print",ExpressionUUID->"2cc5124a-1c0b-47bf-8811-c9551c5d5e68"],
+Cell[6556, 191, 212, 4, 25, "Print",ExpressionUUID->"7e785fb7-3714-4b04-9582-faf8d730da22"],
+Cell[6771, 197, 550, 15, 25, "Print",ExpressionUUID->"416a460e-609d-4499-8594-b3fa949365ae"],
+Cell[7324, 214, 217, 4, 25, "Print",ExpressionUUID->"8bfb57c1-0d71-4c88-8dc1-bbfd97902efc"],
+Cell[7544, 220, 525, 13, 25, "Print",ExpressionUUID->"a4218c26-a1fd-4f05-b6fa-5e76377c005d"],
+Cell[8072, 235, 220, 4, 25, "Print",ExpressionUUID->"ba24d53f-1952-4151-a833-732bdc104b8d"],
+Cell[8295, 241, 579, 13, 25, "Print",ExpressionUUID->"9f3fa695-2d5c-4427-a9e0-43b5996797e2"],
+Cell[8877, 256, 583, 13, 25, "Print",ExpressionUUID->"a8f633db-5423-4692-82bc-88fb7d645595"],
+Cell[9463, 271, 585, 13, 25, "Print",ExpressionUUID->"05658273-9933-4d8f-8855-71f977f4f7b7"],
+Cell[10051, 286, 422, 10, 25, "Print",ExpressionUUID->"98880ab1-e7fc-4b77-b626-caff65d0f118"],
+Cell[10476, 298, 212, 4, 25, "Print",ExpressionUUID->"f839fec7-d048-414e-a1ba-9405cbc12c2e"]
+}, Open  ]],
+Cell[10703, 305, 9918, 233, 248, "Output",ExpressionUUID->"fb00c95f-0322-41c2-bcd0-a59c2fffe803"]
+}, Open  ]]
+}
+]
+*)
+
