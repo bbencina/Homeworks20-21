@@ -1,0 +1,511 @@
+\documentclass[a4paper, 12pt]{article}
+
+\usepackage[english]{babel}
+\usepackage[margin=0.5in]{geometry}
+
+\input{basic}
+\input{math}
+
+\title{Differential Geometry - $1^{\text{st}}$ homework}
+\author{Benjamin Benčina, 27192018}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{Exercise}
+    Let $M$ and $N$ be smooth manifolds and let $C(M)$ denote the algebra of all continuous functions $f \colon M \to \R$.
+    Given a continuous map $g \colon M \to N$, we define the map $g^* \colon C(N) \to C(M)$ by $g^*f = f \circ g$.
+    \begin{enumerate}[label=(\roman*)]
+        \item
+            We will show that $g \colon M \to N$ is a smooth map iff $g^*(C^\infty(N)) \subset C^\infty(M)$ holds.
+
+            \begin{itemize}
+                \item \underline{($\implies$):}
+                    Suppose $g$ is a smooth map between smooth manifolds $M$ and $N$.
+                    Then $f \circ g$ is smooth as a composition of smooth maps.
+                    Indeed, we have
+                    \begin{align*}
+                        &f \circ g \text{ smooth } \\
+                        &\iff \text{ for any chart $(U, \varphi)$ on $M$: $f \circ g \circ \varphi^{-1}$ smooth} \\
+                        &\iff \text{ for any $(U, \varphi)$ and intermediate chart $(V, \psi)$ on $N$: $f \circ \psi^{-1} \circ \psi \circ g \circ \varphi^{-1}$ smooth}
+                    \end{align*}
+                    which is now a composition of two smooth real functions, hence smooth.
+                    By intermediate chart, we simply mean such a chart $(V, \psi)$ that $\im g \circ \varphi^{-1} \cap V \neq \emptyset$.
+                \item \underline{($\impliedby$):}
+                    Suppose now that $f \circ g$ is a smooth map for any smooth function $f$ on $N$.
+                    Denote $m = \dim M$ and $n = \dim N$.
+                    By the above chain of equivalences, we get that $f \circ \psi^{-1} \circ \psi \circ g \circ \varphi^{-1}$ is a smooth real function $\R^m \to \R$ (for appropriate charts as above).
+                    Denote by $g_i$ the $i$-th component of the real function $\psi \circ g \circ \varphi^{-1} \colon \R^m \to \R^n$ for $i = 1,\dots,n$.
+                    By assumption, we can choose any smooth function $f$ on $N$, so let $f_i$ be such choices of $f$ that $f_i \circ \psi^{-1} \colon \R^n \to \R$ is the projection to the $i$-th component.
+                    Then we have that $g_i = f_i \circ \psi^{-1} \circ \psi \circ g \circ \varphi^{-1}$ are smooth for all $i = 1, \dots, n$.
+                    Hence $\psi \circ g \circ \varphi^{-1}$ is a smooth real function for all appropriate charts, so $g$ is a smooth map.
+            \end{itemize}
+        \item
+            Suppose now that $g \colon M \to N$ is a homeomorphism between smooth manifolds.
+            Let us show that $g$ is a diffeomorphism iff $g^*|_{C^\infty(N)} \colon C^\infty(N) \to C^\infty(M)$ is an isomorphism.
+
+            \begin{itemize}
+                \item \underline{($\implies$):}
+                    Since function addition and multiplication are defined pointwise, $g^*$ is clearly an algebra homomorphism.
+                    By (1i), it is also well-defined.
+                    To prove injectivity, consider
+                    \begin{align*}
+                        g^*f_1 = g^*f_2 &\iff f_1 \circ g = f_2 \circ g \\
+                        &\iff f_1(g(x)) = f_2(g(x)) \text{ for every $x \in M$} \\
+                        &\overset{g \text{ bij.}}{\iff} f_1(g(g^{-1}(y))) = f_2(g(g^{-1}(y))) \text{ for every $y \in N$} \\
+                        &\iff f_1(y) = f_2(y) \text{ for every $y \in N$} \\
+                        &\iff f_1 = f_2
+                    \end{align*}
+                    For surjectivity, take $h \in C^\infty(M)$.
+                    We want to find a map $f \in C^\infty(N)$ such that $f \circ g = h$,
+                    but since $g$ is a diffeomorphism, this is obviously the map $f = h \circ g^{-1}$.
+                    Notice that this also shows that $(g^*)^{-1} = (g^{-1})^*$.
+                \item \underline{($\impliedby$):}
+                    Since $g^*$ is an isomorphism, we get
+                    \begin{align*}
+                        g^*(C^\infty(N)) = C^\infty(M) &\overset{(1i)}{\implies} g \text{ smooth} \\
+                        (g^{-1})^*(C^\infty(M)) = C^\infty(N) &\overset{(1i)}{\implies} g^{-1} \text{ smooth}
+                    \end{align*}
+                    hence $g$ is a diffeomorphism.
+            \end{itemize}
+    \end{enumerate}
+\end{Exercise}
+
+\begin{Exercise}
+    Let $g \colon M \to N$ be a smooth map between smooth manifolds.
+    \begin{enumerate}[label=(\roman*)]
+        \item
+            Suppose $S \subset N$ is an immersed submanifold in $N$, and suppose that $G(M) \subset S$.
+            Let us prove that if $g$ is continuous as a map from $M$ to $S$ then $g \colon M \to S$ is smooth.
+
+            Take $p \in M$ and denote $q = g(p) \in S$.
+            We use the hint right away: since $i \colon S \hookrightarrow N$ is an immersion,
+            there exists a neighbourhood $U$ of $q = g(p)$ in $S$ such that $i|_U \colon U \hookrightarrow N$ is a smooth embedding.
+            Hence, there exists a chart $(W, \psi)$ for $U$ in $N$ (that sends $q$ to $0$) such that $(U \cap W, \pi\circ\psi)$ is a (flattening) submanifold chard for $U$,
+            that is, $\pi\colon \R^n \to \R^k$ is a projection to the first $k = \dim S$ coordinates in $\R^n$.
+            Denote $(V, \tilde{\psi}) = (U \cap W, \pi\circ\psi)$.
+            Since $V = (i|_U)^{-1}(W)$ is open in $U$, which is in turn open in $S$, $V$ is also open in $S$,
+            so $(V, \tilde{\psi})$ can be seen as a chart in $S$.
+            We now finally use our assumption: since $g \colon M \to S$ is continuous,
+            $V_0 = g^{-1}(V)$ is an open set in $M$ containing $p$.
+
+            Choose a smooth chart $(U_0, \varphi)$ in $M$ that is contained in $V_0$ and contains the point $p$.
+            Then the coordinate representation of $g \colon M \to S$ with respect to charts $(U_0, \varphi)$ and $(V, \tilde{\psi})$
+            \[
+                \tilde{\psi} \circ g \circ \varphi^{-1} = \pi \circ \underbrace{\psi \circ g \circ \varphi^{-1}}_{\text{smooth}}
+            \]
+            is smooth. Hence $g$ is smooth on a neighbourhood of $p$ for every $p \in M$, so smooth everywhere.
+        \item
+            Suppose $S \subset N$ is an embedded submanifold in $N$, and suppose again that $g(M) \subset S$.
+            We will prove that $g \colon M \to S$ is smooth.
+
+            By (2i), since every embedding is an immersion, we only need to show that $g \colon M \to S$ is continuous,
+            but this is clearly the case as $S \subset N$ now has the subspace topology.
+        \item
+            The \emph{lemniscate} $L$ is the image of the map $\phi \colon (-\pi, \pi) \to \R^2$,
+            defined by $\phi(t) = (\sin(2t), \sin(t))$,
+            and is an immersed, but not embedded submanifold in $\R^2$.
+            Is the map $\psi \colon \R \to \R^2$, given by $\psi(t) = (\sin(2t), \sin(t))$,
+            smooth as a map $\psi \colon \R \to L$?
+
+            By (2i), this will be the case precisely when $\psi$ is continuous.
+            Let us prove that this is not the case.
+            Concretely, we will show that $\phi^{-1}\circ\psi\colon \R \to (-\pi, \pi)$ is not continuous.
+            Since $\phi^{-1}$ is continuous and the composition of continuous maps is continuous, the conclusion follows.
+            Indeed, $\phi^{-1}\circ\psi$ is not continuous at $t = -\pi$.
+            We calculate
+            \[
+                \phi^{-1}\circ\psi(-\pi) = \phi^{-1}(\sin(-2\pi), \sin(-\pi)) = \phi^{-1}(0, 0) = 0
+            \]
+            Take $U_\varepsilon = (-\varepsilon, \varepsilon) \subset (-\pi, \pi)$ a basis neighbourhood of $0$.
+            Then
+            \begin{align*}
+                (\phi^{-1}\circ\psi)^{-1}(-\varepsilon, \varepsilon)
+                &= \psi^{-1}(\left\{ (\sin(2t), \sin(t)) ; \; t \in (-\varepsilon, \varepsilon) \right\}) \\
+                &= \left\{ (2k\pi -\varepsilon, 2k\pi + \varepsilon) ;\; k \in \Z \right\} \cup \left\{ k\pi ; \; k \in \Z \right\}
+            \end{align*}
+            which is not an open set in $\R$.
+    \end{enumerate}
+\end{Exercise}
+
+\begin{Exercise}
+    For any $n \in \N$, we define the unitary group of $n \times n$ matrices as
+    \[
+        U(n) = \left\{ A \in GL(n, \C) ; \; A^*A = I \right\},
+    \]
+    and also denote $\mathcal{H}_n = \left\{ A \in \C^{n \times n} ; \; A^* = A \right\}$ as the vector space of $n \times n$ hermitian matrices.
+    \begin{enumerate}[label=(\roman*)]
+        \item
+            Let us show that $I$ is a regular value of the smooth map $\phi \colon GL(n, \C) \to \mathcal{H}_n$,
+            given by $\phi(A) = A^* A$ and conclude that $U(n)$ is a smooth embedded submanifold in $GL(n, \C)$.
+            We will also determine its dimension, its tangent space $T_IU(n)$ at $I$, and show that $U(n)$ is path-connected.
+            \begin{itemize}
+                \item \underline{\emph{$I$ is a regular value}:}
+                    By definition, $I$ is a regular value of $\phi$ precisely when for every $A \in \phi^{-1}(I)$ we have that the map
+                    \[
+                        d\phi_A \colon T_AGL(n, \C) \to T_I\mathcal{H}_n
+                    \]
+                    is surjective. We already know that $T_AGL(n, \C) \iso \C^{n\times n}$,
+                    and since $\mathcal{H}_n$ is a vector space we also get $T_I\mathcal{H}_n \iso \mathcal{H}_n$.
+                    We calculate
+                    \begin{align*}
+                        d\phi_A(X)
+                        &= \frac{d}{dt}|_{t = 0}\phi(A + tX) \\
+                        &= \frac{d}{dt}|_{t = 0}\left( (A^* + tX^*)(A + tX) \right) \\
+                        &= \frac{d}{dt}|_{t = 0} (A^*A + t(X^*A + A^*X) + t^2X^*X) \\
+                        &= X^*A + A^*X.
+                    \end{align*}
+                    We now want to see that for every $Y \in \mathcal{H}_n$ there exists $X \in \C^{n\times n}$ such that $X^*A + A^*X = Y$.
+                    Since $Y = Y^*$ and $A^*A = I$, taking $X = \frac{1}{2}AY$ satisfies our requirement.
+                    By the Implicit Map Theorem, we can now conclude that $U(n)$ is a smooth embedded submanifold in $GL(n, \C)$.
+                \item \underline{\emph{dimension}:}
+                    We calculate
+                    \[
+                        \dim U(n) = \dim GL(n, \C) - \dim \mathcal{H}_n = 2n^2 - n^2 = n^2.
+                    \]
+                \item \underline{\emph{tangent space at $I$}:}
+                    Again, we merely calculate
+                    \[
+                        T_IU(n) = \ker d\phi_I = \left\{ X \in C^{n\times n} ; \; X^* + X = 0 \right\},
+                    \]
+                    that is, all skew-hermitian matrices.
+                \item \underline{\emph{p-connectedness}:}
+                    Recall from linear algebra that unitary matrices can be diagonalized by unitary matrices,
+                    that is, for any unitary matrix $A$ there exists another unitary matrix $S$, such that
+                    \[
+                        A = S \diag\left( e^{i\theta_1}, \dots, e^{i\theta_n} \right) S^{-1}
+                    \]
+                    where we know that diagonal elements of diagonal unitary matrices must have absolute value $1$.
+                    We thus obtain a path from $I$ to $A$ in $U(n)$ by taking
+                    \[
+                        t \mapsto  S \diag\left( e^{it\theta_1}, \dots, e^{it\theta_n} \right) S^{-1}
+                    \]
+            \end{itemize}
+        \item
+            Additionally, we define the special unitary group of $n \times n$ matrices as
+            \[
+                SU(n) = \left\{ A \in GL(n, \C) ; \; A^* A = I, \det A = 1 \right\}.
+            \]
+            Let us show that $SU(n)$ is a smooth embedded submanifold in $U(n)$ and then again determine its dimension, its tangent space at $I$, and show that it is path-connected.
+            Additionally, we will show that the matrices $i\sigma_x, i\sigma_y, i\sigma_z$ form a basis for the vector space $T_ISU(2)$, where
+            \[
+                \sigma_x =
+                \begin{bmatrix}
+                    0 & 1 \\
+                    1 & 0
+                \end{bmatrix},
+                \sigma_y =
+                \begin{bmatrix}
+                    0 & i \\
+                    -i& 0
+                \end{bmatrix},
+                \sigma_z =
+                \begin{bmatrix}
+                    1 & 0 \\
+                    0 & -1
+                \end{bmatrix}
+            \]
+            are the Pauli matrices.
+            \begin{itemize}
+                \item \underline{\emph{smooth embedded submanifold}:}
+                    Similarly as above, we define the map
+                    \[
+                        \psi = \det \colon U(n) \to \S^1
+                    \]
+                    (clearly, the determinant of any unitary matrix has absolute value $1$)
+                    and prove that $1$ is its regular value.
+                    By the calculation from tutorials, we get
+                    \[
+                        d(\det)_A(X) = \det(A) \tr(A^{-1}X)
+                    \]
+                    for every $A \in GL(n, \C)$ and $X \in \C^{n\times n}$.
+                    In particular, this holds for $A \in \psi^{-1}(1)$,
+                    where we get just the trace.
+                    This map is surjective, since the trace function is surjective.
+                    As above, we conclude by the Implicit Mapping Theorem.
+                \item \underline{\emph{dimension}:}
+                    We calculate
+                    \[
+                        \dim SU(n) = \dim U(n) - \dim \R = n^2 - 1
+                    \]
+                \item \underline{\emph{tangent space at $I$}:}
+                    We calculate
+                    \[
+                        T_ISU(n) = \ker d(\psi)_I = \left\{ X \in \C^{n\times n} ; \; X^* + X = 0,\; \tr(X) = 0 \right\},
+                    \]
+                    that is, all skew-hermitian matrices with vanishing trace.
+                \item \underline{\emph{p-connectedness}:}
+                    We would like to take the same path as in (3i), so we simply verify that all intermediate diagonal matrices are themselves already in $SU(n)$.
+                    Indeed, we calculate
+                    \begin{align*}
+                        \det\diag\left( e^{it\theta_1}, \dots, e^{it\theta_n} \right)
+                        &= e^{it\theta_1}\cdots e^{it\theta_n} \\
+                        &= e^{t(i\theta_1 + \cdots + i\theta_n}) \\
+                        &= \left( e^{i\theta_1 + \cdots + i\theta_n} \right)^t \\
+                        &= \left( \det\diag\left( e^{i\theta_1}, \dots, e^{i\theta_n} \right) \right)^t \\
+                        &= 1^t = 1
+                    \end{align*}
+                \item \underline{\emph{Paoli matrices}:}
+                    Take a skew-hermitian matrix with vanishing trace
+                    \[
+                        A =
+                        \begin{bmatrix}
+                            a & b \\
+                            c & d
+                        \end{bmatrix}
+                    \]
+                    From zero trace we get that
+                    \[
+                        a = -d
+                    \]
+                    and from skew-hermitian property we get that
+                    \[
+                        a = -\overline{a}, \; b = -\overline{c}, \; c = \overline{b}, \; d = -\overline{d}.
+                    \]
+                    The first and fourth equation tell us that $a$ can only be a pure imaginary number (and $d = -a$ as well),
+                    while the second and third equation are the same and tell us nothing more.
+                    Hence
+                    \[
+                        A =
+                        \begin{bmatrix}
+                            \lambda i & -\overline{z} \\
+                            z & -\lambda i
+                        \end{bmatrix}
+                    \]
+                    for some $\lambda \in \R$ and $z \in \C$.
+                    The vector space $T_ISU(2)$ is then indeed of dimension $3$ and all $i\sigma_x, i\sigma_y, i\sigma_z$ clearly fit the above description.
+                    It is therefore enough to verify that they are linearly independent, so we take
+                    \[
+                        \alpha
+                        \begin{bmatrix}
+                            0 & i \\
+                            i & 0
+                        \end{bmatrix}
+                        + \beta
+                        \begin{bmatrix}
+                            0 & -1 \\
+                            1 & 0
+                        \end{bmatrix}
+                        + \gamma
+                        \begin{bmatrix}
+                            i & 0 \\
+                            0 & -i
+                        \end{bmatrix}
+                        = 0
+                    \]
+                    out of which it clearly follows that $\gamma = 0$, $\alpha i = \beta$, and $\alpha i = - \beta$, so $\alpha = \beta = 0$ as well.
+            \end{itemize}
+        \item
+            Explain how it follows from this and Ex.2 that $U(n)$ and $SU(n)$ are Lie groups.
+
+            Recall now that $GL(n, \C)$ is a Lie group and that by (3i), $U(n)$ is its embedded submanifold.
+            Clearly, $U(n)$ is a subgroup of $GL(n, \C)$ (algebraically), hence the operation functions
+            \[
+                \mu \colon U(n)\times U(n) \to GL(n, \C)
+            \]
+            and
+            \[
+                \iota \colon U(n) \to GL(n, \C)
+            \]
+            have their ranges restricted to $U(n)$.
+            Since they are smooth as functions to $GL(n, \C)$ (as restrictions of operation functions on $GL(n, \C)$),
+            by (2ii), they are smooth as functions to $U(n)$.
+            Hence, $U(n)$ is also Lie group.
+            Now repeat the same argument with $SU(n)$ being a subgroup and an embedded submanifold in $U(n)$.
+        \item
+            Lastly, we prove that $SU(2)$ is diffeomorphic to $\S^3$.
+
+            Notice, that elements in $SU(2)$ are precisely of the form
+            \[
+                SU(n) = \left\{
+                \begin{bmatrix}
+                    z & -\overline{w} \\
+                    w & \overline{z}
+                \end{bmatrix}
+                \in M_2(\C) ; |z|^2 + |w|^2 = 1\right\}.
+            \]
+            Indeed, this set is contained in $SU(n)$ by defining equations,
+            and for any matrix in $SU(n)$, the defining equations enforce this form.
+            Next, notice that $\S^3$ contained in $\C^2$ (or $\R^4$) is precisely the set
+            \[
+                \S^3 = \left\{ (z, w) \in \C^2 ; \; |z|^2 + |w|^2 = 1 \right\}.
+            \]
+            We can now define $f \colon \S^3 \to SU(2)$ as
+            \[
+                (z, w) \mapsto
+                \begin{bmatrix}
+                    z & -\overline{w} \\
+                    w & \overline{z}
+                \end{bmatrix}.
+            \]
+            This functions is clearly well-defined, as the defining conditions match.
+            It is also obvious that it is both injective, surjective, and of course continuous, since its component functions are continuous.
+            Now view $SU(2) \subset M_2(\C) \iso \R^8$ and $\S^3 \subset \R^4$.
+            We can view $f$ as a function $\tilde{f} \colon \R^4 \to \R^8$,
+            and it is clear that both $\tilde{f}$ and $\tilde{f}^{-1}$ (properly restricted) are smooth,
+            since their component functions are smooth.
+            Since $SU(2)$ and $\S^3$ are submanifolds in above sets,
+            $f$ and $f^{-1}$ must also be smooth,
+            since $f = \tilde{f}\circ i$ where $i \colon \S^3 \hookrightarrow \R^4$ is the (smooth) inclusion function.
+    \end{enumerate}
+\end{Exercise}
+
+\begin{Exercise}
+    Let the map $\pi \colon \R^4 \to \R^3$ be given by
+    \[
+        \pi(x, y, z, t) = (2xz + 2yt, 2yz - 2xt, x^2 + y^2 - z^2 - t^2)
+    \]
+    \begin{enumerate}[label=(\roman*)]
+        \item
+            We first show that $\pi$ restricts to a map $\pi|_{\S^3} \colon \S^3 \to \S^2$.
+
+            We assume
+            \[
+                x^2 + y^2 + z^2 + t^2 = 1
+            \]
+            and make a short calculation to prove that the restriction is well-defined:
+            \begin{align*}
+                &(2xz + 2yt)^2 + (2yz - 2xt)^2 + ((x^2 + y^2) - (z^2 + t^2))^2 \\
+                &= 4x^2z^2 + 8xyzt + 4y^2t^2 + 4y^2z^2 - 8xyzt + 4x^2t^2 + (x^2 + y^2)^2 -2(x^2 + y^2)(z^2 + t^2) + (z^2 + t^2)^2 \\
+                &= 4x^2(z^2 + t^2) + 4y^2(z^2 + t^2) + (x^2 + y^2)^2 -2(x^2 + y^2)(z^2 + t^2) + (z^2 + t^2)^2 \\
+                &= 4(x^2 + y^2)(z^2 + t^2) + (x^2 + y^2)^2 -2(x^2 + y^2)(z^2 + t^2) + (z^2 + t^2)^2 \\
+                &= (x^2 + y^2)^2 +2(x^2 + y^2)(z^2 + t^2) + (z^2 + t^2)^2 \\
+                &= (x^2 + y^2 + z^2 + t^2)^2 \\
+                &= 1
+            \end{align*}
+        \item
+            Let us not show that $\pi$ is a submersion on $\R^4\setminus\lbrace 0 \rbrace$.
+
+            We know that $d\pi$ at any point is precisely the Jacobi matrix at that point.
+            To prove that this map is surjective at any non-zero point, it is enough to show that this Jacobi matrix has full rank $3$.
+            We calculate
+            \[
+                A = D_{(x, y, z, t)}\pi =
+                \begin{bmatrix}
+                    2z & 2t & 2x & 2y \\
+                    -2t& 2z & 2y & -2x\\
+                    2x & 2y & -2z& -2t
+                \end{bmatrix}
+            \]
+            Denote by $A_i$ the $3 \times 3$ minor of $A$ with the $i$-th column skipped.
+            We calculate
+            \begin{align*}
+                \frac{1}{8}\det A_4 &= z(-z^2 - y^2) + t(-tz + xy) + x(-ty - xz) \\
+                &= -z^3 - y^2z -zt^2 + xyt - xyt -x^2z \\
+                &= -z (x^2 + y^2 + z^2 + t^2)
+            \end{align*}
+            which by assumption vanishes precisely when $z = 0$.
+            Notice that $z$ is the only variable missing in the skipped column $4$.
+            Indeed, for the rest $3\times 3$ minors we get analog determinants,
+            where we replace $z$ by the value missing in that column.
+            Since by assumption not all $x,y,z,t$ are zero, there exists a non-zero $3\times 3$ minor in $A$,
+            hence $A$ has full rank and the differential map is surjective.
+        \item
+            Let us now show that the following holds
+            \[
+                T_{(x, y, z, t)}\S^3 = \Lin\left\{ 
+                \begin{bmatrix}
+                    -y \\
+                    x \\
+                    t \\
+                    -z
+                \end{bmatrix},
+                \begin{bmatrix}
+                    -z \\
+                    -t \\
+                    x \\
+                    y
+                \end{bmatrix},
+                \begin{bmatrix}
+                    -t \\
+                    z \\
+                    -y \\
+                    x
+                \end{bmatrix}
+                \right\},
+            \]
+            and then use it to show that the map $\pi|_{\S^3} \colon \S^3 \to \S^2$ is a submersion.
+
+            We know that the tangent vectors to $\S^3 \subset \R^4$ are all orthogonal to the normal vector, i.e., the point vector of a point on $\S^3$.
+            Since $\S^3$ is a $3$-dimensional manifold, the vector space $T_{(x, y, z, t)}\S^3$ has $3$ vectors in its basis.
+            Denote the above vectors $v_1, v_2, v_3$, respectively.
+            By the above, it is enough to show that $(x, y, z, t) \cdot v_i = 0$ for each $i = 1, 2, 3$, and that the vectors $v_i$ are linearly independent.
+            The first claim is clearly true, e.g.
+            \[
+                (x,y,z,t) \cdot (-y,x,t,-z) = -xy + xy + zt - tz = 0
+            \]
+            and similarly for the other two vectors.
+            For linear independence, take the linear combination
+            \[
+                \alpha v_1 + \beta v_2 + \gamma v_3 = 0
+            \]
+            from which we immediately get
+            \[
+                \begin{bmatrix}
+                    -y & -z & -t \\
+                    x & -t  & z \\
+                    t & x   & -y \\
+                    -z & y  & x
+                \end{bmatrix}
+                \begin{bmatrix}
+                    \alpha \\
+                    \beta \\
+                    \gamma
+                \end{bmatrix}
+                = 0
+            \]
+            We quickly notice that the rows of this matrix are precisely columns of matrix $\frac{1}{2}A$ from (4ii) with a possible multiplication by $-1$.
+            Denote this matrix by $B$ and let $B_i$ be its $3 \times 3$ minor with the $i$-th row removed.
+            We calculate
+            \begin{align*}
+                \det B_4
+                &= -y(ty - xz) - z(xy + tz) - t(x^2 + t^2) \\
+                &= -y^2t + xyz - xyz - z^2t - x^2t - t^3 \\
+                &= -t(x^2 + y^2 + z^2 + t^2) \\
+                &= -t
+            \end{align*}
+            where $t$ is the only variable missing in the skipped row $4$.
+            For the other $3 \times 3$ minors we get similar results as in (4ii),
+            always obtaining the variable missing in the skipped column.
+            Since at least one of these is non-zero (take hemisphere charts on $\S^3$),
+            the system is solvable by the unique solution $\alpha = \beta = \gamma = 0$.
+
+            To show that the restriction $\pi|_{\S^3}$ is a submersion, take
+            \[
+                (a, b, c) = (2xz + 2yt, 2yz - 2xt, x^2 + y^2 - z^2 - t^2) \in \S^2
+            \]
+            By (4i), the restriction $\pi|_{\S^3}$ is well-defined and clearly smooth.
+            By (4ii), the differential map of the restriction is precisely the matrix $A$ at points from $\S^3$.
+            Now, apply $A$ to the three basis vectors $v_1, v_2, v_3$.
+            We get
+            \begin{align*}
+                A v_1 &=
+                \begin{bmatrix}
+                    -2b \\
+                    2a \\
+                    0
+                \end{bmatrix} \\
+                A v_2 &=
+                \begin{bmatrix}
+                    2c \\
+                    0 \\
+                    -2a
+                \end{bmatrix} \\
+                A v_3 &=
+                \begin{bmatrix}
+                    0 \\
+                    -2c \\
+                    2b
+                \end{bmatrix}
+            \end{align*}
+            Denote the resulting vectors by $w_1, w_2, w_3$.
+            Clearly, $(a, b, c)$ is orthogonal to each $w_i$, hence they are indeed in $T_{(a, b, c)}\S^2$,
+            and since not all $a, b, c$ are zero at the same time (take hemisphere charts on $\S^2$),
+            at least two of the $w_i$ must be linearly independent at any given point.
+            The dimension of $T_{(a,b,c)}\S^2$ is of course $2$, so the differential map is indeed surjective.
+    \end{enumerate}
+\end{Exercise}
+
+\end{document}
