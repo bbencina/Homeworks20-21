@@ -1,0 +1,288 @@
+\documentclass[a4paper, 12pt]{article}
+
+\usepackage[english]{babel}
+\usepackage[margin=0.5in]{geometry}
+
+\input{basic}
+\input{math}
+
+\title{Introduction to Algebraic Geometry - $1^\text{st}$ homework}
+\author{Benjamin Benčina}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{Exercise}
+    Let $A$ be a commutative ring with a unit element.
+    Let us show the following statements:
+    \begin{enumerate}[label=(\alph*)]
+        \item \underline{\emph{the set of nilpotent elements in $A$ forms an ideal:}}
+
+            We need to merely verify that the set $N$ of nilpotents in $A$ is an additive subgroup in $A$ which is closed under multiplication with elements from $A$.
+            Indeed, take $a, b \in N$ and $n,m \in \N$ such natural numbers that $a^n = b^m = 0$.
+            We calculate
+            \begin{align*}
+                (a+b)^{n+m}
+                &= \sum_{k=0}^{n+m}\binom{n+m}{k}a^{k}b^{n+m-k} \\
+                &= \underbrace{\sum_{k=0}^{n}\binom{n+m}{k}a^{k}b^{n+m-k}}_{\text{div. by $b^m$}} + \underbrace{\sum_{k=n+1}^{n+m}\binom{n+m}{k}a^{k}b^{n+m-k}}_{\text{div. by $a^n$}} \\
+                &= 0
+            \end{align*}
+            Now, take $a \in N$ with $a^n = 0$ and $x \in A$. Since $A$ is commutative, clearly
+            \[
+                (xa)^n = x^na^n = 0
+            \]
+            Notice that the case $x = -1$ (where $1$ is the unit element) proves that $N$ is closed for additive inverses as well, and hence an ideal.
+            This ideal is commonly called the \emph{nilradical} of $A$ and is in fact equal to the intersection of all prime ideals of $A$.\footnote{Last year's Commutative Algebra course covered this.}
+        \item \underline{\emph{the sum of a nilpotent and a unit element is always a unit:}}
+
+            Let $a \in N$ with $a^n = 0$ and $u \in A^{-1}$.
+            Since $a$ is nilpotent, we get the following (informal) idea for the inverse
+            \[
+                \frac{1}{u + a} = \frac{u^{-1}}{1 + u^{-1}a} = u^{-1} \sum_{k=0}^{\infty}(-u^{-1}a)^k = u^{-1} \sum_{k=0}^{n-1}(-u^{-1}a)^k
+            \]
+            Let us check that the above is indeed the element $(u + a)^{-1}$:
+            \begin{align*}
+                ( a + u ) \cdot u^{-1}\sum_{k=0}^{n-1}(-u^{-1}a)^k
+                &= u^{-1}\sum_{k=0}^{n-1}(-u^{-1})^ka^{k+1} + \sum_{k=0}^{n-1}(-u^{-1}a)^k \\
+                &= \sum_{k=1}^{n-1}(-1)^{k-1}(u^{-1}a)^{k} + \sum_{k=0}^{n-1}(-1)^{k}(u^{-1}a)^k \\
+                &= (-u^{-1}a)^0 = 1
+            \end{align*}
+            since only the element at power $0$ survives.
+        \item \underline{\emph{$f \in A[x]$ is nilpotent $\iff$ all its coefficients are nilpotent:}}
+            \begin{itemize}
+                \item \underline{($\impliedby$):}
+                    Let $f = a_0 + a_1x + a_mx^m \in A[x]$ with $a_0^{n_0} = \dots = a_m^{n_m} = 0$.
+                    Then we can now use the multinomial formula to get $f^{n_0+\cdots+n_m} = 0$ the same way we used the binomial formula in (1.a).
+                \item \underline{($\implies$):}
+                    Suppose now that $f^n = 0$ for some $n$ (write $f$ by coefficients as in the converse).
+                    We will do a sort of induction on the degree $\deg f$.
+                    If $\deg f = 0$ then the statement trivially holds, as all higher coefficients are zero.
+                    For the induction step suppose $\deg f = m$.
+                    Since
+                    \[
+                        f^n(x) = x^{mn}a_m^n + \cdots + a_0^{n} = 0
+                    \]
+                    we get in particular that $a_0$ is nilpotent.
+                    By (1.a), it follows that
+                    \[
+                        f - a_0 = a_1x + \cdots + a_mx^m = x(a_1 + a_2x + \cdots + a_mx^{m-1})
+                    \]
+                    is nilpotent, but this will happen precisely when $g(x) = a_1 + \cdots a_mx^{m-1}$ is nilpotent.
+                    Notice that $\deg g < \deg f$, so by the induction hypothesis, all coefficients of $g$ are nilpotent.
+                    By construction, all coefficient of $f$ are nilpotent and the proof is complete.
+            \end{itemize}
+        \item \underline{\emph{$f \in A[x]$ is a unit $\iff$ $a_0$ is a unit and the other coefficients are nilpotent:}}
+            \begin{itemize}
+                \item \underline{($\impliedby$):}
+                    If $a_0$ is a unit and $a_1,\dots,a_m$ are nilpotent,
+                    then by (1.c) the polynomial $g(x) = a_1x + \cdots + a_mx^m$ is nilpotent,
+                    hence by (1.b) the polynomial $f = a_0 + g$ is a unit.
+                \item \underline{($\implies$):}
+                    Suppose $g = f^{-1}$ with $g(x) = b_0 + \cdots + b_rx^r$.
+                    Again we prove the claim by induction on $\deg f$.
+                    If $\deg f = 0$, then the statement trivially holds, as all higher coefficients are zero.
+                    Suppose $\deg f = m$ and multiply
+                    \[
+                        1 = fg = \sum_{k=0}^{m+r}c_kx^k
+                    \]
+                    where
+                    \[
+                        c_k = \sum_{i+j=k}a_ib_j
+                    \]
+                    Clearly, $b_0 = a_0^{-1}$, so $a_0$ is a unit.
+                    We now compare coefficients from the other end.
+                    Since $a_mb_r = 0$, we get
+                    \begin{align*}
+                        a_{m-1}b_r + a_mb_{r-1} = 0 &\overset{a_m\cdot}{\implies} a_m^2b_{r-1} = 0 \\
+                        a_{m-2}b_r + a_{m-1}b_{r-1} + a_mb_{r-2} = 0 &\overset{a_m^2\cdot}{\implies} a_m^3b_{r-2} = 0 \\
+                        &\cdots \\
+                        \sum_{i+j = k} a_ib_j &\overset{a_m^{r-k}\cdot}{\implies} a_m^{r+1-k}b_k = 0 \\
+                    \end{align*}
+                    and hence $a_m^{r+1}b_0 = 0$, but since $b_0$ is a unit, $a_m$ is nilpotent.
+                    Then by (1.b), $h(x) = f(x) - a_mx^m$ is a unit and a polynomial with $\deg h < \deg f$.
+                    By the induction hypothesis, we get that $a_1,\dots,a_{m-1}$ are nilpotent,
+                    so the proof is complete.
+            \end{itemize}
+        \item \underline{\emph{$f \in A[x]$ is a zero divisor $\iff$ there exists a non-zero $a \in A$ with $af=0$:}}
+            \begin{itemize}
+                \item \underline{($\impliedby$):}
+                    Obvious, since $A \hookrightarrow A[x]$ via constant polynomials.
+                \item \underline{($\implies$):}
+                    Let $fg = 0$ for non-zero polynomials $f$ and $g$, and denote the coefficients of $f$ and $g$ as above.
+                    If $\deg f = 0$ the statement is again trivially true, as $f \in A$ via the identification from the converse.
+                    Suppose $\deg f = m$.
+                    Then clearly $a_mb_r = 0$, so $b_rf$ is a polynomial with $(b_rf)g = 0$ with $\deg b_rf < \deg f$.
+                    By the induction hypothesis, there exists a non-zero constant $a \in A$ such that $ab_rf = 0$.
+                    Then, by associativity, $a(b_rf) = (ab_r)f = 0$ and $a b_r \in A$ non-zero.
+            \end{itemize}
+    \end{enumerate}
+\end{Exercise}
+
+\begin{Exercise}
+    Let $C = \left\{ (x, y) \in \A^2 ; \; y^2 - x^3 = 0 \right\}$.
+    \begin{itemize}
+        \item Is the map $\varphi \colon \A^1 \to C$, defined by $\varphi(t) = (t^2, t^3)$, an isomorphism of affine varieties?
+
+            \underline{NO}.
+            A map $\phi$ is an isomorphism of affine varieties if and only if the map $\phi^*$ is an algebra isomorphism.
+            In our case we have $\im\varphi^* = F[t^3, t^2]$, which is not isomorphic to $F[t]$.
+            Indeed, $t \notin \im\varphi^*$.
+
+            Another way to see this is by noticing that
+            \[
+                \psi(x, y) = \varphi^{-1}(x, y) =
+                \begin{cases}
+                    \frac{y}{x} ; \; x \neq 0 \\
+                    0 ; \; x = 0
+                \end{cases}
+            \]
+            is not a morphism, since it is not a regular map.
+            (This exercise is a typical example to show that isomorphism $\neq$ bijective morphism.)
+        \item Is $\varphi$ a homeomorphism with respect to the Zariski topology?
+
+            \underline{YES}.
+            The map $\varphi$ is clearly Zariski-continuous as a polynomial map.
+            It is also bijective (we have the inverse above), so what remains to show is that $\psi$ is also Zariski-continuous.
+            Since $\psi \colon C \to \A^1$ and since the Zariski topology on $\A^1$ is precisely the finite-complements topology,
+            it is enough to see that $\psi^{-1}(c)$ is Zariski-closed in $C$ (or $\A^2$) for every point $c \in A^1$,
+            which is obvious as points are closed in $C$ ($\psi$ is bijective, hence $1-1$).
+    \end{itemize}
+\end{Exercise}
+
+\begin{Exercise}
+    We want to find the irreducible components of the affine variety
+    \[
+        V(x - yz, xz - y^2) \subset \A^3.
+    \]
+    We calculate
+    \begin{align*}
+        V(x - yz, xz - y^2)
+        &= V(x - yz, yz^2 - y^2) \\
+        &= V(x - yz, y(z^2 - y)) \\
+        &= V(x - yz) \cap (V(y) \cup V(z^2 - y)) \\
+        &= (V(x -yz) \cap V(y)) \cup (V(x - yz) \cap V(z^2 - y)) \\
+        &= (V(x) \cap V(y)) \cup (V(x - z^3) \cap V(y - z^2)) \\
+        &= V(x, y) \cup V(x - z^3, y - z^2)
+    \end{align*}
+    which are both clearly irreducible.
+    The first component is the $z$-axis and the second component is the curve $t \mapsto (t^3, t^2, t)$.
+    Alternatively, both associated ideals are clearly prime, since $F[x, y, z]/(x,y) \iso F[z]$ and $F[x, y, z]/(x-z^3,y-z^2) \iso F[z]$ are domains.
+\end{Exercise}
+
+\begin{Exercise}
+    Let us determine the radical of the ideal $I = (x^3 - y^6, xy - y^3) \subideal \C[x, y]$.
+
+    Let us first think of the solution informally:
+    \begin{align*}
+        &x^3 = y^6 \implies x = y^2 \implies y^2 - x = 0 \\
+        &xy = y^3 \implies y(y^2 - x) = 0
+    \end{align*}
+    So we start suspecting that $(y^2 -x ) = \sqrt{I}$.\footnote{Calculating this ideal in Macaulay 2 (with $\Q$ coefficients) also gives this solution, which is a strong indicator.}
+    \begin{itemize}
+        \item \underline{($\subseteq$):}
+            Take $f \in (y^2 - x)$, that is, $f = g \cdot (y^2 - x)$ for some $g \in \C[x, y]$.
+            We calculate
+            \begin{align*}
+                f^3
+                &= g^3\cdot (y^2 - x)^3 \\
+                &= g^3 \cdot (y^6 - 3y^4x + 3y^2x^2 - x^3) \\
+                &= g^3 \cdot (y^6 - x^3) + 3g^3 \cdot (y^2x^2 - y^4x) \\
+                &= g^3 \cdot (y^6 - x^3) + 3g^3 \cdot xy \cdot (xy - y^3) \in I
+            \end{align*}
+            Hence, $f \in \sqrt{I}$.
+        \item \underline{($\supseteq$):}
+            Let $f \in I$, that is, $f = a \cdot (x^3 - y^6) + b \cdot (xy - y^3)$ for some $a, b \in \C[x, y]$.
+            Further, we calculate
+            \begin{align*}
+                f &= a \cdot (x^3 - y^6) + b \cdot (xy - y^3) \\
+                &= a \cdot (x - y^2)^3 + 3a \cdot xy \cdot (xy - y^3) + b \cdot (xy - y^3) \\
+                &= a \cdot (x - y^2)^3 + (3axy + b)\cdot xy \cdot (x - y^2) \in (y^2 - x)
+            \end{align*}
+            Hence, $I \subseteq (y^2 - x)$, but $(y^2 - x)$ is clearly radical, e.g. $\C[x, y]/(y^2-x) \iso \C[y]$ is reduced.
+            So, $\sqrt{I} \subseteq (y^2 - x)$.
+    \end{itemize}
+\end{Exercise}
+
+\begin{Exercise}
+    Let $X$ be the union of the three coordinate axes.
+    We will compute the generators of the ideal $I(X)$ and show that $I$ cannot be generated by fewer than three elements.
+
+    We write
+    \[
+        X = V(x,y) \cup V(y, z) \cup V(z, x)
+    \]
+    So we get
+    \[
+        I(X) = I(V(x, y)) \cap I(V(y, z)) \cap I(V(z, x)) = (x, y) \cap (y, z) \cap (z, x)
+    \]
+    since each of the ideals is clearly radical.
+    Denote $I_1 = (x, y)$, $I_2 = (y, z)$, and $I_3 = (z, x)$.
+    If we take, e.g., the ideals $I_1$ and $I_2$ and canonically gather coefficients at $y$,
+    we get that the remaining coefficient of an element in $I_1 \cap I_2$ has to be divided by both $x$ and $z$, hence by $xz$.
+    Taking all other combinations of ideals, we get that each element in $I_1 \cap I_2 \cap I_3$ can be written as a combination of elements $xy$, $yz$, and $xz$.
+    Hence $I_1 \cap I_2 \cap I_3 \subseteq (xy, yz, xz)$, and clearly $(xy, yz, xz) \subseteq I_i$ for $i = 1, 2, 3$, so we get $I_1 \cap I_2 \cap I_3 = (xy, yz, xz)$.\footnote{We also get the same result if we calculate the intersection with Macaulay 2.}
+
+    Now, suppose for contradiction that there exist $p, q \in F[x, y]$ such that $I = I(X) = (p, q)$.
+    Notice, that $I$ is a homogeneous ideal, as we have seen it can be generated by three homogeneous elements.
+    Take the homogeneous maximal ideal $M = (x, y, z)$ and consider the quotient $I/MI$ of $F$-modules, which is now an $F$-vector space.
+    Then by assumption, $\overline{p}$ and $\overline{q}$ generate $I/MI$, so $\dim_F I/MI \leq 2$ (in the case where $p$ and $q$ are not linearly independent, we can get $1$).
+    However, $\overline{xy}$, $\overline{yz}$, and $\overline{xz}$ are $F$-linearly independent in $I/MI$.
+    Indeed, take $\alpha, \beta, \gamma \in F$ and consider
+    \[
+        \alpha \overline{xy} + \beta \overline{yz} + \gamma \overline{xz} = 0
+    \]
+    Since we are in the quotient, we get that
+    \[
+        \alpha xy + \beta yz + \gamma xz \in MI
+    \]
+    However, since the product of ideals can be obtained by simply multiplying all generators,
+    $MI$ is generated by homogeneous monomials of degree $3$, that is,
+    take the product of generating sets $\lbrace x, y, z \rbrace$ and $\lbrace xy, yz, xz \rbrace$ (minus redundancy).
+    Hence, no element in $MI$ has non-zero terms of degree $2$, so all $\alpha, \beta, \gamma$ must be zero.
+    So $\dim_F I/MI \geq 3$, a contradiction.
+\end{Exercise}
+
+\begin{Exercise}
+    Let $Y$ be a non-empty irreducible subvariety of an affine variety $X$ and denote $U = X \setminus Y$.
+    We assume that the coordinate ring $F[X] = \mathcal{O}_X(X)$ of $X$ is a unique factorization domain.
+    We will show that $\mathcal{O}_X(U) = \mathcal{O}_X(X)$ if and only if $\codim Y \geq 2$.
+
+    Firstly, recall that $F[X]$ is a unique factorization domain precisely when every prime ideal of codimension $1$ is principal.
+    Furthermore, every irreducible variety of codimension $1$ is then defined by a single irreducible polynomial.
+    Now, suppose $\codim Y < 2$. Then $Y = V(f)$, hence $U = D(f)$.
+    Another theorem from the lectures then tells us that $\mathcal{O}_X(U) = F[X]_f$, which is not isomorphic to $F[X]$.
+    Conversely, let $\codim Y \geq 2$.
+    We want to show that every regular function on $U$ extend to a regular function on $X$.
+    If that is indeed the case, the extension is unique by a Corollary from lectures, as the extensions would match on the open set $U$.
+    Write $Y = V(I)$, where $I$ is the associated prime ideal to the irreducible subvariety $Y$.
+    Then $U = \bigcup_{f \in I} D(f)$.
+    Furthermore, there exist independent irreducible polynomials $f_1,\dots,f_r$ for some $r \geq \codim Y$ such that $U = \bigcup_{i = 1}^{r} D(f_i)$
+    (the important part is not how many there are per se, but rather that $r \geq 2$ and that they do not divide each other).
+    Indeed, since $\codim I \geq 2$, there exist prime ideals $P_0, P_1, P_2 \subideal F[X]$ such that
+    \[
+        (0) \subsetneq P_0 \subsetneq P_1 \subsetneq P_2 \subseteq I
+    \]
+    Then there exist polynomials $f_1$ and $f_2$ such that $f_1 \in P_1$ but $f_1 \notin P_0$, and $f_2 \in P_2$ but $f_2 \notin P_1$.
+    Since the ideals are prime, $f_1$ and $f_2$ must necessarily be independent, and clearly $D(f_1),D(f_2) \subseteq U$.
+    We work in Noetherian rings so we can always find finitely many, but as we have seen, at least two.
+    Now, take $\varphi \in \mathcal{O}_X(U)$.
+    On $D(f_i)$ we have that $\varphi = \frac{g_i}{f_i^{k_i}}$ for some $g_i \in F[X]$ and $k_i \in \N_0$, where $g_i$ is not divisible by $f_i$.
+    Since $r \geq 2$, we look at intersections.
+    On $D(f_i) \cap D(f_j)$ we have
+    \[
+        \frac{g_i}{f_i^{k_i}} = \frac{g_j}{f_j^{k_j}} \implies g_if_j^{k_j} = g_jf_i^{k_i}
+    \]
+    hence $k_i = 0$ for all $i = 1,\dots, r$ and all $g_i$ are equal, as they pairwise match on open intersections.
+    Since $D(f_i)$ cover $U$, we have found an extension of $\varphi$ to $X$ as a regular function, hence $\varphi \in \mathcal{O}_X(X)$ and the proof is complete.
+
+    Lastly, we will find a counter-example if $\mathcal{O}_X(X)$ is not a unique factorization domain.
+    We take, e.g., the $3$-dimensional affine variety $X = V(x_1x_4 - x_2x_3) \subset \A^4$,
+    where the element $x_1x_4 = x_2x_3$ has two ways of factoring in $F[X] = F[x_1,x_2,x_3,x_4]/(x_1x_4 - x_2x_3)$.
+    For $Y$ we take the irreducible subvariety $V(x_1x_4-x_2x_3, x_1, x_2) = V(x_1, x_2)$.
+    Indeed, we know from tutorials that $J = (x_1, x_2)$ is a prime ideal in $F[X]$ of $\codim J = 1$, which is, importantly, not principal.
+    We therefore get that $U = D(x_1) \cup D(x_2)$ and continue as above to obtain $\mathcal{O}_X(U) = \mathcal{O}_X(X)$, even though $\codim Y = \codim J = 1$.
+\end{Exercise}
+
+\end{document}

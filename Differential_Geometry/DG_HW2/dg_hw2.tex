@@ -1,0 +1,445 @@
+\documentclass[a4paper, 12pt]{article}
+
+\usepackage[english]{babel}
+\usepackage[margin=0.5in]{geometry}
+
+\input{basic}
+\input{math}
+
+\title{Differential Geometry - $2^{\text{nd}}$ homework}
+\author{Benjamin Benčina}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{Exercise}
+    Let $\xi \colon E \to F$ be a smooth morphism of vector bundles $\pi_E \colon E \to M$ and $\pi_F \colon F \to M$ and denote $\xi_p = \xi|_{E_p} \colon E_p \to F_p$.
+    We will show that $\ker(\xi)$ and $\im(\xi)$ are vector subbundles of $E$ and $F$, respectively, precisely when the morphism $\xi$ has constant rank.
+    \begin{itemize}
+        \item \underline{($\implies$):}
+            This implication follows directly from the definition of the vector bundle,
+            as all fibres must have the same dimension.
+            Since the fibres of our subbundles are $(\ker\xi)_p = \ker\xi_p$ and $(\im\xi)_p = \im\xi_p$, which are all of the same dimension,
+            then necessarily $\dim\im\xi_p$ is also the same for all $p \in M$.
+        \item \underline{($\impliedby$):}
+            To prove the converse implication, we will use The Subbundle Characterization Lemma (SCL) from tutorials.
+            Firstly, since $\xi_p$ is a vector homomorphism for every $p \in M$,
+            we have that $\ker\xi_p$ and $\im\xi_p$ are indeed vector subspaces of $E_p$ and $F_p$, respectively.
+            Denote $k = \rank E$ and $l = \rank F$, and assume that $\xi$ has constant rank $r$.
+
+            \underline{\emph{The image:}}
+
+            Take $p \in M$ and a local frame $(\sigma_1,\dots,\sigma_k)$ for the vector bundle $E$ over some neighbourhood $U$ of point $p$.
+            Then for all $i = 1,\dots,k$ we have that $\xi\circ\sigma_i \colon U \to F$ are a smooth local sections of $F$ that span $(\im\xi)|_{U}$.
+            Since $\dim\im\xi_p = r$, w.l.o.g. the set $\left\{ \xi\circ\sigma_1(p),\dots,\xi\circ\sigma_r(p) \right\}$ is a basis for the vector space $\im\xi_p \leq F_p$,
+            and by continuity, these vectors remain linearly independent also in some neighbourhood $U_0$ of $p$ (i.e., replacing $p$ with points in $U_0$).
+            We can take $U_0 \subseteq U$, otherwise replace it with $U \cap U_0$.
+            Now, since $\xi$ has constant rank $r$, the collection $(\xi\circ\sigma_1,\dots,\xi\circ\sigma_r)$ forms a smooth local frame for $\xi$ over $U_0$.
+            Because the point $p$ was chosen arbitrarily, we can do the same at every $p \in M$.
+            By SCL, $\im\xi$ is a smooth subbundle of $F$.
+
+            \underline{\emph{The kernel:}}
+
+            Keep $U_0$ and $(\sigma_i)_i$ as above, and denote $V \subseteq E|_{U_0}$ the smooth subbundle spanned by $\left\{ \sigma_1,\dots,\sigma_r \right\}$.
+            By the argument for the image, the smooth bundle homomorphism $\xi|_V \colon V \to (\im\xi)|_{U_0}$ is bijective (map $\sigma_i(q) \mapsto \xi\circ\sigma_i(q)$, basis to basis) and thus a smooth vector bundle isomorphism.
+            We now define a smooth bundle homomorphism $\psi \colon E|_{U_0} \to E|_{U_0}$ by
+            \[
+                \psi(v) = v - (\xi|_V)^{-1}\circ\xi(v)
+            \]
+            If $v \in V$, then $\xi(v) = \xi|_V(v)$, so
+            \[
+                \xi\circ\psi(v) = \xi(v) - \xi\circ(\xi|_V)^{-1}\circ(\xi|_V)(v) = \xi(v) - \xi(v) = 0
+            \]
+            If $v \in \ker\xi$, then $\psi(v) = v$, so $\psi|_{\ker\xi} = id$ and again $\xi\circ\psi(v) = \xi(v) = 0$.
+            Since $(\ker\xi)|_{U_0}$ and $V$ together span $E|_{U_0}$ (by definitions of linear maps $\xi_p$ for $p \in U_0$),
+            it follows that $\psi$ takes values on $(\ker\xi)|_{U_0}$, where it restricts to $id$, so $\im\psi = (\ker\xi)|_{U_0}$.
+            Since for every $p$, we have $\dim\im\xi_p = r$ and by linear algebra $\dim\ker\xi_p = k - r$ is also constant,
+            the map $\psi$ has constant rank.
+            Hence, by the argument for the image, $(\ker\xi)|_{U_0} = \im\psi$ is a smooth submanifold of $E|_{U_0}$.
+            Again by SCL, since we can do this at each point $p \in M$, $\ker\xi$ is a smooth vector subbundle of $E$.
+    \end{itemize}
+\end{Exercise}
+
+\begin{Exercise}
+    A basis for the Lie algebra $\mathfrak{sl}(2, \R)$ of the Lie group $SL(2, \R)$ is given by the matrices
+    \[
+        E =
+        \begin{bmatrix}
+            0 & 1 \\
+            0 & 0
+        \end{bmatrix},
+        \quad
+        F =
+        \begin{bmatrix}
+            0 & 0 \\
+            1 & 0
+        \end{bmatrix},
+        \quad
+        H =
+        \begin{bmatrix}
+            1 & 0 \\
+            0 & -1
+        \end{bmatrix}.
+    \]
+    We will compute the expressions of their left-invariant vector fields $E^L, F^L, H^L$ on $SL(2, \R)$, their commutators and flows.
+
+    Recall from Tutorials that
+    \[
+        A^L\Big|_x = d(L_x)_I(A) = xA
+    \]
+    so we get local expressions
+    \begin{align*}
+        E^L &=
+        \begin{bmatrix}
+            x & y \\
+            z & w
+        \end{bmatrix}
+        \begin{bmatrix}
+            0 & 1 \\
+            0 & 0
+        \end{bmatrix}
+        =
+        \begin{bmatrix}
+            0 & x \\
+            0 & z
+        \end{bmatrix}
+        = x \partial_y + z \partial_w \\
+        F^L &=
+        \begin{bmatrix}
+            x & y \\
+            z & w
+        \end{bmatrix}
+        \begin{bmatrix}
+            0 & 0 \\
+            1 & 0
+        \end{bmatrix}
+        =
+        \begin{bmatrix}
+            y & 0 \\
+            w & 0
+        \end{bmatrix}
+        = y \partial_x + w \partial_z \\
+        H^L &=
+        \begin{bmatrix}
+            x & y \\
+            z & w
+        \end{bmatrix}
+        \begin{bmatrix}
+            1 & 0 \\
+            0 & -1
+        \end{bmatrix}
+        =
+        \begin{bmatrix}
+            x & -y \\
+            z & -w
+        \end{bmatrix}
+        = x \partial_x - y \partial_y + z \partial_z - w \partial_w
+    \end{align*}
+    We can then compute the commutators
+    \begin{align*}
+        [E^L, F^L]
+        &= (E^Ly - 0) \partial_x + (0 - F^L(x)) \partial_y + (E^L(w) - 0) \partial_z + (0 - F^L(z)) \partial_w \\
+        &= x \partial_x - y \partial_y + z \partial_z - w \partial_w = H^L \\
+        [F^L, H^L]
+        &= (F^L(x) - H^L(y)) \partial_x + (0 - 0) \partial_y + (F^L(z) - H^L(w)) \partial_z + (0 - 0) \partial_w \\
+        &= (y + y) \partial_x + (w + w) \partial_z = 2F^L \\
+        [H^L, E^L]
+        &= (0 - 0) \partial_x + (H^L(x) - E^L(-y)) \partial_y + (0 - 0) \partial_z + (H^L(z) - E^L(-w)) \partial_w \\
+        &= (x + x) \partial_y + (z + z) \partial_w ) = 2E^L
+    \end{align*}
+    but we could have done this more elegantly by using the fact that the Lie bracket corresponds to the usual commutator in matrix groups.
+    Indeed, we get
+    \begin{align*}
+        [E, F] &= H \\
+        [F, H] &= 2F \\
+        [H, E] &= 2E
+    \end{align*}
+    as matrices.
+    Regarding the flows, recall from Tutorials that
+    \[
+        \phi_t^{A^L} = R_{e^{tA}}
+    \]
+    We will therefore consider the exponentials of our matrices $E, F, H$.
+    We calculate
+    \begin{align*}
+        E^2 &= 0 \\
+        F^2 &= 0 \\
+        H^2 &= I
+    \end{align*}
+    so we get
+    \begin{align*}
+        e^{tE}
+        &= I + tE=
+        \begin{bmatrix}
+            1 & t \\
+            0 & 1
+        \end{bmatrix} \\
+        e^{tF}
+        &= I + tF =
+        \begin{bmatrix}
+            1 & 0 \\
+            t & 1
+        \end{bmatrix} \\
+        e^{tH}
+        &= I + tH + \frac{t^2}{2}I + \frac{t^3}{6}H + \cdots =
+        \begin{bmatrix}
+            e^t & 0 \\
+            0 & e^{-t}
+        \end{bmatrix}
+    \end{align*}
+    and hence the flows of our left-invariant vector fields equal right multiplications with the respective matrices above.
+\end{Exercise}
+
+\begin{Exercise}
+    Let $G$ be a matrix Lie group, i.e. a closed subgroup and an embedded submanifold of $GL(n, \F)$.
+    \begin{enumerate}[label=(\roman*)]
+        \item A one-parametric subgroup of $G$ is a smooth homomorphism $\alpha \colon \R \to G$ of Lie groups.
+            \begin{enumerate}[label=(\alph*)]
+                \item We show that given $v \in \mathfrak{g}$, $t \mapsto e^{tv}$ is a one-parametric subgroup of $G$.
+                    
+                    Recall from Tutorials that the map $t \mapsto e^{tA}$ is smooth as a map $\R \to GL(n, \F)$.
+                    Since $G$ is an embedded submanifold in $GL(n, \F)$, we know from Homework 1 that $t \mapsto e^{tv}$ is smooth as a map $\R \to G$.
+                    Denote the above map $\varphi_v$.
+                    Then clearly $v = \frac{d\varphi_v}{dt}(0) \in \mathfrak{g}$, so the map is well-defined.
+                    Since $e^{(t + s)v} = e^{tv}e^{sv}$, the map $\varphi_v$ is a smooth homomorphism as a map $\R \to G$, and hence a one-parametric subgroup of $G$.
+                \item Conversely, given a one-parametric subgroup $\alpha$ of $G$, we show that there holds
+                    \[
+                        \alpha(t) = e^{t\alpha'(0)}.
+                    \]
+                    Indeed, we calculate
+                    \[
+                        \frac{d}{dt}\Big|_{t=s} \alpha(t) = \frac{d}{dt}\Big|_{r=0}\alpha(s+r) = \frac{d}{dt}\Big|_{r=0}\alpha(s)\alpha(r) = \alpha(s)\alpha'(0)
+                    \]
+                    so if we define $\gamma_x(t) = x\alpha(t)$, then
+                    \[
+                        \gamma_x'(s) = \gamma_x(s)\alpha'(0) = \alpha'(0)^L\Big|_{\gamma_x(s)}
+                    \]
+                    Hence, $\gamma_x(t)$ is an integral curve for $\alpha'(0)^L$.
+                    We know from Tutorials that also $xe^{t\alpha'(0)}$ is an integral curve for $\alpha'(0)^L$.
+                    By uniqueness, it follows that $\alpha(t) = e^{t\alpha'(0)}$.
+            \end{enumerate}
+        \item Let $H$ be another matrix Lie group and let $\phi \colon G \to H$ be a homomorphism of Lie groups.
+            We show that the diagram
+            
+            \adjustbox{scale=1, center}{
+                \begin{tikzcd}
+                    G \arrow[r, "\phi"] & H \\
+                    \mathfrak{g} \arrow[u, "\text{exp}"] \arrow[r, "d\phi_I"] & \mathfrak{h} \arrow[u, "\text{exp}"]
+                \end{tikzcd}
+            }
+            commutes.
+            We define
+            \[
+                \alpha(t) = \phi(e^{tv})
+            \]
+            for $v \in \mathfrak{g}$.
+            By (3i) and since $\phi$ is a Lie group homomorphism, $\alpha$ is a one-parametric subgroup in $H$.
+            Then, by (3i.b), we get
+            \[
+                \phi(e^{tv}) = e^{t\alpha'(0)}
+            \]
+            We calculate
+            \[
+                \alpha'(0) = \frac{d}{dt}\Big|_{t=0}\phi(e^{tv}) = d\phi_I\circ (e^{tv})'(0) = d\phi_I v
+            \]
+            By inserting $t = 1$ in the above equation, we get
+            \[
+                \phi(e^{v}) = e^{\alpha'(0)} = e^{d\phi_Iv}
+            \]
+            which is what we wanted to prove.
+
+            We now use this result on the conjugation map $C_g \colon G \to G$, $C_g(h) = ghg^{-1}$, where $g \in G$.
+            We get
+            \[
+                e^{d(C_g)_Iv}) = ge^{v}g^{-1}
+            \]
+            We calculate
+            \begin{align*}
+                d(C_g)_I v &= \frac{d}{dt}\Big|_{t=0}C_g(I + tv) = \frac{d}{dt}\Big|_{t=0}g(I+tv)g^{-1} \\
+                &= \frac{d}{dt}\Big|_{t=0}(gIg^{-1} + tgvg^{-1}) = gvg^{-1} = C_g(v)
+            \end{align*}
+            and thusly obtain
+            \[
+                e^{gvg^{-1}} = ge^{v}g^{-1}
+            \]
+        \item Let $\phi \colon G \to H$ be a homomorphism of matrix Lie groups.
+            Let us show that $\phi$ is an immersion $\iff$ $\ker\phi$ is discrete.
+            \begin{itemize}
+                \item \underline{($\implies$):}
+                    Since $\phi$ is an immersion, for every $g \in G$ we have that $d\phi_g$ is injective.
+                    In particular, the function $d\phi_I$ is injective and so bijective onto its image.
+                    Now take $I \in \ker\phi$.
+                    We know that $\phi$ is a local embedding at every point,
+                    so in particular there exists a neighbourhood $U_I$ of $I$ such that $U_I \homeo \phi(U_I) \subseteq H$.
+                    Also, since $\text{exp}$ is a local diffeomorphism at $0 \in \mathfrak{g}$,
+                    there exists a neighbourhood $V$ of $0$ in $\mathfrak{g}$ such that $V \iso \text{exp}(V)$.
+                    Note that $I \in \phi(U_I)$ and $I \in \text{exp}(V)$.
+                    Let now $W = U_I \cap \text{exp}(V)$ be a neighbourhood of $I$ in $G$.
+
+                    \adjustbox{scale=1, center}{
+                        \begin{tikzcd}
+                            W \arrow[r, "\phi"] & \phi(W) \\
+                            \text{exp}^{-1}(W) \arrow[u, "\text{exp}"] \arrow[r, "d\phi_I"] & \text{exp}^{-1}(\phi(W)) \arrow[u, "\text{exp}"]
+                        \end{tikzcd}
+                    }
+                    Since the diagram commutes and the left, right, and top arrows are bijective maps,
+                    so is the bottom one, i.e., the set in the bottom-right corner is indeed in the image of $d\phi_I$.
+                    It now follows from the commutativity of the above diagram that $W \cap \ker\phi = \lbrace I \rbrace$.
+                    Since $L_g$ is a diffeomorphism of $G$ by the definition of a Lie group,
+                    $L_p(W)$ is a neighbourhood for $p \in \ker\phi$ with the property $L_p(W) \cap \ker\phi = \lbrace p \rbrace$.
+                    Hence every point of $\ker\phi$ is open in $\ker\phi$, so $\ker\phi$ is discrete.
+                \item \underline{($\impliedby$):}
+                    Let us first prove that $d\varphi_g$ is injective for a $g \in G$ precisely when $d\varphi_I$ is injective.
+                    Indeed, consider the following diagram
+
+                    \adjustbox{scale=1, center}{
+                        \begin{tikzcd}
+                            T_IG \arrow[r, "d\phi_I"] \arrow[d, "d(L_g)_I"] & T_IH \arrow[d, "d(L_{\phi(g)})_I"] \\
+                            T_gG \arrow[r, "d\phi_g"] & T_{\phi(g)}H
+                        \end{tikzcd}
+                    }
+                    where both vertical arrows are vector space isomorphisms.
+                    This diagram commutes because of the chain rule:
+                    \begin{align*}
+                        &d(L_{\phi(g)})_I \circ d\phi_I = d(L_{\phi(g)})_{\phi(I)}\circ d\phi_I = d(L_{\phi(g)} \circ \phi)_I \\
+                        & d\phi_g \circ d(L_g)_I = d\phi_{L_g(I)} \circ d(L_g)_I = d(\phi \circ L_g)_I
+                    \end{align*}
+                    which are equal since $\phi$ is a homomorphism, i.e., $\phi(gx) = \phi(g)\phi(x)$.
+                    
+                    So, it is enough to prove that $d\phi_I$ is injective.
+                    Take $I \in \ker\phi$ and let $U_I$ be a neighbourhood of $I$ such that $\ker\phi \cap U_I = \lbrace I \rbrace$.
+                    Since $\text{exp}$ is a local diffeomorphism at $0$, there exists a neighbourhood $V$ for $0$ in $\mathfrak{g}$ such that $V \iso \text{exp}(V)$.
+                    Let $W = U_I \cap \text{exp}(V)$ be an open neighbourhood of $I$ in $G$.
+                    Now, suppose for contradiction that $\dim\ker d\phi_I > 0$.
+                    Then there exists a $1$-dimensional vector subspace $A$ in $\mathfrak{g}$ with $A \leq \ker d\phi_I$.
+                    Denote $A_0 = A \cap \text{exp}^{-1}(W)$.
+                    Then for every point $a \in A_0$ (and there is infinitely many of them) we get
+                    \[
+                        \text{exp}(d\phi_I(a)) = \text{exp}(0) = I
+                    \]
+                    but by (3ii) also
+                    \[
+                        \text{exp}(d\phi_I(a)) = \phi(\text{exp}(a)) = I
+                    \]
+                    In other words, each element $a \in A_0$ gives us an element $\text{exp}(a) \in \ker\phi$ with $\text{exp}(a) \in U_I$,
+                    a contradiction with the choice of $U_I$.
+
+                    Hence, $\dim\ker d\phi_I = 0$, i.e., $d\phi_I$ is injective and by above so is $d\phi_g$ for every $g \in G$.
+                    By definition, $\phi$ is an immersion.
+            \end{itemize}
+    \end{enumerate}
+\end{Exercise}
+
+\begin{Exercise}
+    Let $\sigma_1, \sigma_2, \sigma_3$ be the Pauli matrices and denote $\sigma(\vec{s}) = is^j\sigma_j$ for $\vec{s} \in \R^3$.
+    \begin{enumerate}[label=(\roman*)]
+        \item Let us show that
+            \[
+                e^{t\sigma(\vec{s})} = \cos(t)I + \sin(t)\sigma(\vec{s})
+            \]
+            for all $\vec{s} \in \S^2$.
+
+            We simply calculate
+            \begin{align*}
+                \sigma(\vec{s})^2
+                &= \left( i \sum_{j=1}^{3}s_j\sigma_j \right)^2
+                = -\left( (s_1^2 + s_2^2 + s_3^3)I + s_1s_2\left\{ \sigma_1,\sigma_2 \right\} + s_2s_3\left\{ \sigma_2,\sigma_3 \right\} + s_1s_3\left\{ \sigma_3,\sigma_1 \right\} \right) \\
+                &= -(I + 0 + 0 + 0) = -I
+            \end{align*}
+            Furthermore, we get $\sigma(\vec{s})^{2n} = (-1)^nI$.
+            It then follows that $\sigma(\vec{s})^{2n+1} = (-1)^n\sigma(\vec{s})$.
+            Therefore
+            \begin{align*}
+                e^{t\sigma(\vec{s})}
+                &= I + t\sigma(\vec{s}) + \frac{t^2}{2}\sigma(\vec{s})^2 + \frac{t^3}{6}\sigma(\vec{s})^3 + \cdots \\
+                &= I\cdot\left( 1 - \frac{t^2}{2} + \frac{t^4}{24} - \cdots \right) + \sigma(\vec{s}) \cdot \left( t - \frac{t^3}{6} + \frac{t^5}{120} - \cdots \right) \\
+                &= I \cdot \cos(t) + \sigma(\vec{s}) \cdot \sin(t)
+            \end{align*}
+        \item Let us now prove that for every $\vec{s} \in \R^3$ we have
+            \[
+                e^{\sigma(\vec{s})} \in SU(2) = \left\{ A \in \C^{2\times 2} ; \; AA^* = A^*A = I, \; \det A = 1 \right\}
+            \]
+            Firstly, we know from algebra that $(e^{A})^* = e^{A^*}$,
+            so we want to show that $\sigma(\vec{s})^* = -\sigma(\vec{s})$
+            We write
+            \[
+                \sigma(\vec{s}) =
+                \begin{bmatrix}
+                    0 & is_1 \\
+                    is_1 & 0
+                \end{bmatrix}
+                +
+                \begin{bmatrix}
+                    0 & s_2 \\
+                    -s_2 & 0
+                \end{bmatrix}
+                +
+                \begin{bmatrix}
+                    is_3 & 0 \\
+                    0 & -is_3
+                \end{bmatrix}
+            \]
+            and calculate
+            \[
+                \sigma(\vec{s})^*
+                =
+                \begin{bmatrix}
+                    0 & -is_1 \\
+                    is_1 & 0
+                \end{bmatrix}
+                +
+                \begin{bmatrix}
+                    0 & -s_2 \\
+                    s_2 & 0
+                \end{bmatrix}
+                +
+                \begin{bmatrix}
+                    -is_3 & 0 \\
+                    0 & is_3
+                \end{bmatrix}
+                = -\sigma(\vec{s})
+            \]
+            Secondly, the Jacobi formula for $2\times 2$ complex matrices gives us
+            \[
+                \det(e^{A}) = e^{\tr(A)}
+            \]
+            so we get
+            \[
+                \det(e^{\sigma(\vec{s})}) = e^{\tr(\sigma(\vec{s}))} = e^{is_3 - is_3} = e^{0} = 1
+            \]
+            which proves the statement.
+        \item We define the map $\pi \colon SU(2) \to SO(3)$ by
+            \[
+                \pi\left( e^{\frac{\varphi}{2}\sigma(\vec{s})} \right) = R_{\vec{s},\varphi}
+            \]
+            for $\vec{s} \in \S^2$ and $\varphi \in \R$.
+            This map is smooth and surjective. We will show that
+            \[
+                \ker\pi = \left\{ I, -I \right\}
+            \]
+            Let us extend this map as
+            \[
+                \S^2 \times \R \xrightarrow{(4ii)} SU(2) \xrightarrow{\pi} SO(3), \; (\vec{s}, \varphi) \mapsto R_{\vec{s},\varphi}
+            \]
+            (the first map is actually slightly modified as $(\vec{s}, \varphi) \mapsto e^{\frac{\varphi}{2}\sigma(\vec{s})}$).
+            Since both of these maps are surjective, so is their composition.
+            We get the $I$ on the right for every $\vec{s} \in \S^2$ precisely when $\varphi = 2\pi k$ for some $k \in \Z$.
+            In the middle, we get that for elements in the kernel we have
+            \[
+                e^{\frac{\varphi}{2}\sigma(\vec{s})}
+                = e^{\pi k \sigma(\vec{s})}
+                \overset{(4i)}{=} \cos(\pi k) I + \sin(\pi k) \sigma(\vec{s}) = \pm I
+            \]
+            
+            Now, since $\ker \pi$ is finite and hence discrete, $\pi$ is by (3iii) an immersion.
+            Then $\pi$ is locally an embedding, so a local homeomorphism.
+            Since $\pi$ is smooth, it is a local diffeomorphism.
+            Alternatively, since $\pi$ is an immersion, all derivative maps are injective vector homomorphisms between tangent spaces.
+            But since the dimensions of the two manifolds match, the derivative maps are also surjective and hence vector isomorphisms.
+            By the characterization theorem, $\pi$ is a local diffeomorphism.
+    \end{enumerate}
+\end{Exercise}
+
+\end{document}
