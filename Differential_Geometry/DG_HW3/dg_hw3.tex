@@ -1,0 +1,581 @@
+\documentclass[a4paper, 12pt]{article}
+
+\usepackage[english]{babel}
+\usepackage[margin=0.5in]{geometry}
+
+\input{basic}
+\input{math}
+
+\title{Differential Geometry - $3^\text{rd}$ homework}
+\author{Benjamin Benčina}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{Exercise}
+    Let $M$ be a smooth manifold.
+    \begin{enumerate}[label=(\roman*)]
+        \item Let us show that any connected orientable manifold $M$ admits precisely two orientations.
+
+            Suppose $\mathcal{A} = (U_i, \varphi_i)_i$ and $\mathcal{B} = (V_j, \psi_j)_j$ are two compatible and oriented atlases on $M$.
+            Suppose in addition that there exists a point $p \in M$ and two neighbourhood charts $(U_i, \varphi_i) \in \mathcal{A}$ and $(V_j, \psi_j) \in \mathcal{B}$
+            such that $\det(d(\psi_j\circ\varphi_i^{-1})_{\varphi_i(p)}) > 0$.
+            We want to show that $\mathcal{A} \cup \mathcal{B}$ is an oriented atlas.
+
+            Indeed, first take any other possible neighbourhood chart $(U_k, \varphi_k) \in \mathcal{A}$ that contains $p$.
+            Then we have
+            \begin{align*}
+                \det(d(\psi_j \circ \varphi_i)_{\varphi_i(p)})
+                &= \det(d(\psi_j \circ \varphi_k^{-1} \circ \varphi_k \circ \varphi_i)_{\varphi_i(p)}) \\
+                &= \det(d(\psi_j \circ \varphi_k^{-1})_{\varphi_k(p)}\cdot d(\varphi_k \circ \varphi_i^{-1})_{\varphi_i(p)}) \\
+                &= \det(d(\psi_j \circ \varphi_k^{-1})_{\varphi_k(p)})\cdot \underbrace{\det(d(\varphi_k \circ \varphi_i^{-1})_{\varphi_i(p)})}_{> 0} > 0
+            \end{align*}
+            hence we may take any chart in $\mathcal{A}$ that contains $p$.
+            Symmetrically, we may also take any chart in $\mathcal{B}$ that contains $p$.
+
+            Secondly, since $\det$ is a continuous map, the above determinant is greater than zero in the entire (connected) intersection of chart neighbourhoods.
+            If it was negative in some $p'$ in the intersection, then there would exist a point on some (compact) path between $p$ and $p'$ where the $\det$ would be zero,
+            which would contradict the fact that the derivative there is actually a transition matrix between two consistently oriented local frames.
+
+            Thirdly, since $M$ is a connected manifold, it is path-connected.
+            Let $q \in M$ be any other point and let $\gamma$ be a path between $p$ and $q$.
+            Since $\gamma$ is compact, we can cover it with finitely many charts of both $\mathcal{A}$ and $\mathcal{B}$, respectively, which sequentially have non-empty intersections (otherwise we have a separation for the interval).
+            Let those charts be $(U_i, \varphi_i)$ for $i = 1,\dots, k$ and $(V_j, \psi_j)$ for $j = 1,\dots, l$, where each point of $\gamma$ is in at most two charts $U_i$ and at most two charts $V_j$.
+            Then we pick intersection points $x_{i, i+1} \in U_i \cap U_{i+1}$.
+            Using the argument from step two sequentially on $p, x_{1, 2}$, $x_{2, 3}, \dots, q$ and invariance of the choice of chart from step one,
+            we inductively get that the determinant of the derivative must be greater than zero on any chart neighbourhood intersection of $q$.
+            In other words, $\mathcal{A} \cup \mathcal{B}$ is an oriented atlas.
+
+            What we have effectively proved is that such compatibility of orientation is an equivalence relation.
+            Since the existence condition is binary (such a point $p$ either exists or not), we get that we have at most two equivalence classes, i.e., possible orientations.
+            To see that we actually get two orientations, take any oriented atlas $\mathcal{A} = (U_i, \varphi_i = (x^k))_i$
+            and denote $\mathcal{A}^-$ the same atlas, with the difference that instead of the $x^1$ coordinate, we have $-x^1$.
+            Then $\mathcal{A}$ and $\mathcal{A}^-$ are obviously compatible but give different orientations.
+
+            \underline{\emph{Alternative solution}:}
+            We form the following two sets
+            \begin{align*}
+                A^+ &= \left\{ q \in M ; \; \text{there exist $(U,\varphi) \in \mathcal{A}$ and $(V,\psi) \in \mathcal{B}$ s.t. $\det(d(\psi\circ\varphi^{-1})_{\varphi(q)}) > 0$} \right\} \\
+                A^- &= \left\{ q \in M ; \; \text{there exist $(U,\varphi) \in \mathcal{A}$ and $(V,\psi) \in \mathcal{B}$ s.t. $\det(d(\psi\circ\varphi^{-1})_{\varphi(q)}) < 0$} \right\}
+            \end{align*}
+            Both are clearly open and $M = A^+ \cup A^-$.
+            By the first step from the first solution above (invariance of neighbourhood),
+            we also have $A^+ \cap A^- = \emptyset$.
+            Since $M$ is connected, and these sets define a separation for $M$,
+            one of them must be empty.
+            By assumption, $p \in A^+$, hence $M = A^+$ and $\mathcal{A} \cup \mathcal{B}$ is by definition an oriented atlas.
+        \item We will prove that $M$ is orientable iff it admits a volume form.
+            \begin{itemize}
+                \item \underline{($\impliedby$):}
+                    % Lee - Diff. Geom., p. 328
+                    Let $\omega$ be a nowhere vanishing differential $n$-form on $M$.
+                    Take a connected open chart $U$ and let $(x^i)$ be local coordinates on $U$.
+                    Then $\omega$ has a local coordinate expression
+                    \[
+                        \omega = f dx^1 \wedge \dots \wedge dx^n
+                    \]
+                    for some smooth coefficient function $f$.
+                    Since $\omega$ is nowhere vanishing, so must be $f$.
+                    We have
+                    \[
+                        \omega(\frac{\partial}{\partial x^1},\dots,\frac{\partial}{\partial x^n})
+                        = f \det I
+                        = f
+                    \]
+                    which is nowhere zero for this local frame, and since $U$ is connected, either always positive or always negative on $U$.
+                    If it is negative, we have seen in (1i) we can replace $x^1$ for $-x^1$ and obtain an always positive function $f$ on $U$.
+                    Hence compatible charts where $\omega$ is a positive multiple of the form $dx^1\wedge\cdots\wedge dx^n$ form an oriented atlas on $M$.
+                    %Hence the atlas of charts (so local coordinates) that send $\omega$ to a positive multiple of the Euclidean volume form $f dx^1\wedge\dots\wedge dx^n$ is oriented.
+                    %Hence, the pointwise orientation of tangent vector spaces of $M$ determined by $\omega$ (rather, $f$), is continuous,
+                    %that is, the entire local frame $\frac{\partial}{\partial x^1},\dots,\frac{\partial}{\partial x^n}$ is consistently oriented.
+                    %Equivalently, the atlas consisting of such charts is oriented and $M$ is orientable.
+                \item \underline{($\implies$):}
+                    % Spivak - Diff Geom. I, pp. 209-210
+                    Let $\mathcal{A} = (U_i, \varphi_i = (x^k))_i$ be an oriented atlas on $M$ and let $(\phi_U)_U$ be a partition of unity subordinate to $\mathcal{A}$.
+                    Denote the orientation given by the condition in (1i) by $\mu_p$ (recall the point $p$).
+                    For each chart $U$ and its local coordinates choose an $n$-form $\omega_U$ such that ``orients'' the local frame $(\frac{\partial}{\partial x^k})$,
+                    that is, for each $p \in U$ for a basis $(v_1,\dots,v_n)$ of $T_pM$ we have
+                    \[
+                        \omega_U(v_1,\dots,v_n) > 0 \iff (v_1,\dots,v_n) \text{ orient $U$ as $\mu_p$}
+                    \]
+                    (we can just define $\omega_U$ as in the converse using the second step of (1i)).
+                    We now define
+                    \[
+                        \omega = \sum_{U \in \mathcal{A}} \phi_U \omega_U
+                    \]
+                    which is now a smooth $n$-form.
+                    For each $p \in M$, if the basis $(v_1,\dots,v_n) \in T_pM$ give the same orientation as $\mu_p$
+                    then
+                    \[
+                        (\phi_U\omega_U)(p)(v_1,\dots,v_n) \geq 0
+                    \]
+                    for each chart neighbourhood $U$ of $p$, with a strict inequality for at least one $U$ (otherwise (1i) fails).
+                    Hence $\omega$ is nowhere vanishing.
+            \end{itemize}
+
+            Now suppose we have two volume forms $\omega$ and $\Omega$ on $M$ that determine the same orientation.
+            We then have $\omega = f dx^1 \wedge \dots \wedge dx^n$ and
+            $\Omega = g dx^1 \wedge \dots \wedge dx^n$ for two positive smooth functions $f, g$.
+            Hence, $\omega = \frac{f}{g}\Omega$, where $\frac{f}{g}$ is well-defined, positive, and smooth.
+            The converse trivially follows from the above proof of the right-to-left implication.
+        \item Let $(M, g)$ be an oriented Riemannian manifold, i.e., $g$ is a Riemannian metric on $M$.
+            % Lee - Diff. Geom., pp. 342-343
+            Let us prove that there exists a unique volume form $\omega_g$ determined by the property:
+            for any $p \in M$ if $(v_1,\dots,v_n)$ is an ordered oriented orthonormal basis for $T_pM$, then $\omega_g(v_1,\dots,v_n) = 1$.
+            
+            As usual, we first prove uniqueness.
+            Let $\omega$ be such a form (existence later).
+            Since $M$ is oriented, for every $p$ in a neighbourhood chart $U$ the basis $(v_1,\dots,v_n)$ forms an ordered oriented orthonormal local frame $(E_1,\dots,E_n)$ for $U$.
+            Let $(\varepsilon^1,\dots,\varepsilon^n)$ be its dual frame.
+            Then locally $\omega = f \varepsilon^1 \wedge \dots \wedge \varepsilon^n$.
+            The defining condition for $\omega$ above then implies $f = 1$, hence $\omega = \varepsilon^1\wedge\dots\wedge\varepsilon^n$ is unique.
+
+            To prove existence, we define $\omega$ as we have determined it to be above.
+            Let $(F_1,\dots,F_n)$ be another ordered oriented orthonormal frame (determined by some other continuous choice of bases pointwise),
+            and let $(f^1,\dots,f^n)$ be its dual frame.
+            Define $\Omega = f^1\wedge\dots\wedge f^n$, so as above, but for the new frame.
+            As in the remark, we can write $F_i = A_i^j E_j$ (we mean pointwise, of course) for some matrix $(A_i^j)$ of smooth functions.
+            Since both frames are orthonormal, we get that the matrix $(A_i^j(p))$ is orthogonal for each $p$,
+            so its determinant is either $1$ or $-1$.
+            By choosing a consistently oriented second frame, we get the positive determinant $1$.
+            We now apply $\omega$ to the new frame pointwise
+            \[
+                \omega(F_1,\dots,F_n) = \det(\varepsilon^j(F_i)) = \det(A_i^j) = 1 = \Omega(F_1,\dots,F_n)
+            \]
+            Hence, $\omega = \Omega$ (independently of frames) so defining $\omega_g$ locally as in the proof of uniqueness gives a global $n$-form which is nowhere vanishing, that satisfies the desired property.
+    \end{enumerate}
+\end{Exercise}
+
+\begin{Exercise}
+    \begin{enumerate}[label=(\roman*)]
+        \item Let us show that $\mathcal{L}_V\alpha$ is $C^\infty(M)$-multilinear in its arguments.
+
+            For addition, this is simply a matter of elementary properties of vector and tensor fields as they are both $C^\infty(M)$-additive.
+            To check homogeneity it is enough to check the case where we replace $X_1$ by $fX_1$, by symmetry.
+            Indeed, we get
+            \[
+                \mathcal{L}_V\alpha(fX_1,X_2,\dots,X_k) = \underbrace{V(f\alpha(X_1,\dots,X_2))}_{A_1} \underbrace{-\alpha([V,fX_1],X_2,\dots,X_k)}_{A_2} + r
+            \]
+            where $r$ is the uninteresting remainder, since $\alpha$ is $C^\infty(M)$-multilinear already.
+            We will now deal with the Leibniz rule.
+            Firstly, at $A_1$ we get
+            \[
+                V(f\alpha(X_1,\dots,X_k)) = fV(\alpha(X_1,\dots,X_k)) + V(f)\alpha(X_1,\dots,X_k)
+            \]
+            and at $A_2$ we get
+            \[
+                -V(f)\alpha(X_1,\dots,X_k) - f\alpha([V,X_1],X_2,\dots,X_k)
+            \]
+            so the unwanted parts indeed cancel out.
+        \item A quick calculation shows that for any $0$-form $f$ we have $\mathcal{L}_V(df) = d(\mathcal{L}_Vf)$.
+            
+            On the one hand, we have
+            \[
+                \mathcal{L}_V(df)(X) = V(df(X)) - df([V,X])
+                = V(X(f)) - (V(X(f)) - X(V(f))) = X(V(f))
+            \]
+            and on the other hand
+            \[
+                (d(\mathcal{L}_Vf))(X) = X(\mathcal{L}_Vf) = X(V(f))
+            \]
+        \item We will prove that there holds
+            \[
+                \mathcal{L}_V(\alpha\otimes\beta) = (\mathcal{L}_V\alpha)\otimes\beta + \alpha\otimes(\mathcal{L}_V\beta)
+            \]
+            for any two $k-$ and $l-$ tensor fields $\alpha$ and $\beta$.
+
+            Since the operator $\mathcal{L}_V$ is clearly linear in its argument,
+            it is enough to consider simple tensor fields.
+            Since the tensor product of two simple tensor fields is again a simple tensor field,
+            it suffices to only consider one such simple tensor field and prove that locally we have
+            \[
+                \mathcal{L}_V\alpha = (\mathcal{L}_Vf)dx^{i_1}\otimes \cdots \otimes dx^{i_k} + f\mathcal{L}_V(dx^{i_1})\otimes\cdots\otimes dx^{i_k} + \cdots + f dx^{i_1}\otimes\cdots\otimes\mathcal{L}_V(dx^{i_l})
+            \]
+            where $\alpha = f dx^{i_1} \otimes \cdots \otimes dx^{i_k}$ locally.
+
+            This equality trivially holds if $\alpha$ is a $0$-tensor field.
+            Suppose $\alpha = f dx^i$ is a $1$-tensor field.
+            Then on the one hand
+            \begin{align*}
+                \mathcal{L}_V(fdx^i)(X)
+                &= V(fdx^i(X)) - fdx^i([V,X])
+                = fV(X^i) + V(f)X^i - f(V(X^i) - X(V^i)) \\
+                &= V(f)X^i + fX(V^i)
+            \end{align*}
+            and on the other hand
+            \[
+                (\mathcal{L}_Vf)dx^i (X) + f(\mathcal{L}_V(dx^i))(X)
+                = V(f) X^i + f dV^i (X) = V(f) X^i + fX(V^i)
+            \]
+            so the equality indeed holds.
+            For higher tensor fields we calculate similarly.
+            By (2i) it is enough to look at coordinate vector fields,
+            and we clearly get a non-zero result only if the vector fields $(X_{i_j})_j$ are a permutation of the coordinate vector fields $(\partial_{i_j})_j$.
+            Without loss of generality, $\alpha = fdx^1\otimes\cdots\otimes dx^k$ and $X_i = \partial_i$.
+            If we calculate the left-hand side, we get
+            \[
+                \mathcal{L}_V(fdx^1\otimes\cdots\otimes dx^k)(\partial_1,\dots,\partial_k)
+                = V(f\det I) - \alpha([V,\partial_1],\partial_2,\dots,\partial_k) - \cdots - \alpha(\partial_1,\dots,[V,\partial_k])
+            \]
+            notice now that
+            \[
+                [V,\partial_i] = (V(\delta_{i,j}) - \partial_i(V^j))\partial_j = - \partial_i(V^j)\partial_j
+            \]
+            which turns those minuses into pluses we see on the right-hand side!
+            If we calculate the right-hand side as well
+            (recall, $\mathcal{L}_V(dx^i)(X) = X(V^i)$),
+            we get
+            \[
+                RHS(\partial_1,\dots,\partial_k)
+                = V(f)\det I + f dV^1\otimes\cdots\otimes dx^k(\partial_1,\dots,\partial_k) + f dx^1\otimes\cdots\otimes dV^k(\partial_1,\dots,\partial_k)
+            \]
+            which is the same as above after we calculate the determinants (we get sums at each term, same as for the left-hand side).
+        \item We now have
+            \[
+                \mathcal{L}_V(\omega\wedge\eta) = (\mathcal{L}_V\omega)\wedge\eta + \omega\wedge(\mathcal{L}_V\eta)
+            \]
+            for any two $k-$ and $l-$ differential forms $\omega$ and $\eta$.
+
+            Indeed, any differential form is just an alternating linear combination of tensor fields,
+            and as we have already noticed, $\mathcal{L}_V$ is a linear operator.
+            Concretely,
+            \[
+                \omega\wedge\eta = \frac{(k+1)!}{k!l!}\text{Alt}(\omega\otimes\eta)
+            \]
+        \item Let us show that there holds $\iota_V\circ\iota_V = 0$ and
+            \[
+                \iota_V(\omega\wedge\eta) = (\iota_V\omega)\wedge\eta + (-1)^{k}\omega\wedge(\iota_V\eta)
+            \]
+            for any two $k-$ and $l-$ differential forms $\omega$ and $\eta$.
+            
+            The first property is straight-forwardly checked.
+            If $k \geq 2$, then 
+            \[
+                \iota_V\iota_V\omega (X_1,\dots,X_{k-2}) = \omega(V, V, X_1,\dots,X_{k-2}) = 0
+            \]
+            since $\omega$ is alternating.
+            Otherwise this follows from the fact that for a $0$-form we have $\iota_Vf = 0$.
+            
+            The second property is a bit messier.
+            Again it is enough to verify the property for simple forms.
+            More generally, we will prove that for a collection of $k$ many simple $1$-forms we have
+            \[
+                \iota_V(\omega^1 \wedge \cdots \wedge \omega^k) = \sum_{i = 1}^{k} (-1)^{i-1} \omega^i(V)\cdot \omega^1\wedge\cdots\hat{\omega^i}\wedge\cdots\wedge\omega^k
+            \]
+            from which the property immediately follows by linearity.
+            Take $k$ vector fields $V, X_2,\dots,X_k$ (consider $V = X_1$).
+            We have to prove that
+            \begin{align*}
+                \iota_V(\omega^1\wedge\cdots\wedge\omega^k)(X_2,\dots,X_k)
+                &= (\omega^1\wedge\cdots\wedge\omega^k)(V, X_2,\dots,X_k) \\
+                &= \sum_{i=1}^{k}(-1)^{i-1}\omega^i(V)(\omega^1\wedge\cdots\hat{\omega^i}\wedge\cdots\omega^k)(X_2,\dots,X_k)
+            \end{align*}
+            We know from Lectures that the left-hand side is the determinant of the matrix
+            \[
+                A_i^j = \omega^i(X_j)
+            \]
+            while the right-hand side is by the same argument precisely the expansion of $\det A$ by minors along the first column,
+            so equal to $\det A$.
+        \item We now prove \emph{Cartan's magic formula} for differential forms:
+            \[
+                \mathcal{L}_V\omega = \iota_V(d\omega) + d(\iota_V\omega)
+            \]
+
+            Here we use induction on $k$.
+            If $f$ is a $0$-form, then clearly $\mathcal{L}_Vf = V(f)$ and also
+            \[
+                \iota_V(df) + d(\iota_Vf) = df(V) + 0 = V(f)
+            \]
+            Let now $k \geq 1$ and suppose the formula holds for all $l$-forms for $l<k$.
+            Let $\omega$ be a $k$-form, locally written as
+            \[
+                \omega = \sum_{I} \omega_I dx^{i_1}\wedge\cdots\wedge dx^{i_k}
+            \]
+            Denote $u = x^{i_1}$ and $\beta = \omega_I dx^{i_2}\wedge\cdots\wedge dx^{i_k}$,
+            so each term of $\omega$ is locally the sum of $du \wedge \beta$, where $u$ is a smooth function.
+            By (2ii) we have $\mathcal{L}_V(du) = d(\mathcal{L}_Vu) = d(V(u))$, and by (2iv)
+            \begin{align*}
+                \mathcal{L}_V(du \wedge \beta)
+                &= (\mathcal{L}_Vu)\wedge\beta + du\wedge(\mathcal{L}_V\beta)
+                \overset{\text{I.H.}}{=} d(V(u))\wedge\beta + du \wedge (\iota_V(d\beta) + d(\iota_V\beta))
+            \end{align*}
+            But since $d$ is an antiderivative, and by (2v) so is $\iota_V$, plus $\iota_Vdu = du(V) = V(u)$ and $d\circ d = 0$,
+            we compute
+            \begin{align*}
+                \iota_V(d(du \wedge \beta)) + d(\iota_V(du\wedge\beta))
+                &= \iota_V(-du \wedge d\beta) + d(Vu)\beta - du \wedge \iota_V\beta \\
+                &= -(Vu)d\beta + du \wedge (\iota_V(d\beta)) + d(Vu) \wedge \beta + (Vu)d\beta + d(\iota_V\beta)
+            \end{align*}
+            which is precisely $\mathcal{L}_V(du \wedge \beta)$ by the above.
+            Now use linearity to extend this beyond simple forms.
+        \item We will now use this formula to prove that for any differential form $\omega$ we have
+            \[
+                \mathcal{L}_V(d\omega) = d(\mathcal{L}_V\omega)
+            \]
+            and that for any $1$-form $\omega$ and any two vector fields $X,Y$ on $M$ there holds
+            \[
+                d\omega(X, Y) = X(\omega(Y)) - Y(\omega(X)) - \omega([X, Y])
+            \]
+
+            The first equality is a matter of simple calculation where we will merely use the formula and the fact that $d \circ d = 0$.
+            On the one hand we have
+            \[
+                \mathcal{L}_V(d\omega) = \iota_V(dd\omega) + d(\iota_V(d\omega)) = d(\iota_V(d\omega)) 
+            \]
+            and on the other hand
+            \[
+                d(\mathcal{L}_V\omega) = d(\iota_V(d\omega)) + dd(\iota_V\omega) = d(\iota_v(d\omega))
+            \]
+            so we indeed have equality.
+
+            For the second equality first notice that for any $1$-form $\omega$ we have
+            \[
+                \mathcal{L}_V\omega(X) = V(\omega(X)) - \omega([V,X])
+            \]
+            This gives us the idea to consider the difference of appropriate Lie derivatives in two different ways.
+            Firstly, by definition, we get
+            \begin{align*}
+                \mathcal{L}_X\omega(Y) - \mathcal{L}_Y\omega(X)
+                &= X(\omega(Y)) - \omega([X, Y]) - (Y(\omega(X)) - \omega([Y, X]) \\
+                &= X(\omega(Y)) - Y(\omega(X)) - 2 \omega([X, Y])
+            \end{align*}
+            Secondly, by the formula, we get
+            \begin{align*}
+                \mathcal{L}_X\omega(Y) - \mathcal{L}_Y\omega(X)
+                &= \iota_X(d\omega)(y) + d(\iota_X\omega)(Y) - \iota_Y(d\omega)(X) - d(\iota_Y\omega)(X) \\
+                &= 2 d\omega(X, Y) + Y(\omega(X)) - X(\omega(Y))
+            \end{align*}
+            Equating both approaches, rearranging, and dividing by $2$ yields the desired equality.
+    \end{enumerate}
+\end{Exercise}
+
+\begin{Exercise}
+    Let $M$ be an orientable smooth manifold and $\omega$ a volume form on $M$.
+    \begin{enumerate}[label=(\roman*)]
+        \item Let $M = \R^n$ and $\omega = dx^1\wedge\cdots\wedge dx^n$.
+            We will calculate $\text{div}_\omega(X)$ for a given vector field $X = X^i\partial_i$ in standard coordinates.
+
+            Firstly, we use Cartan's magic formula to get
+            \[
+                \text{div}_\omega(X)\omega = \mathcal{L}_X\omega = \iota_X(d\omega) + d(\iota_X \omega) = d(\iota_X \omega)
+            \]
+            since all $(n+1)$-forms, in particular $d\omega$, are zero.
+            We know from Lectures that for $\alpha = \sum_{I}a_Idx^I$ we have
+            \[
+                d\alpha = \sum_{I} da_I\wedge dx^I
+            \]
+            so we have to find the local expression of the $(n-1)$-form $\iota_X\omega$.
+            For any $n-1$ vector fields $Y_1,\dots,Y_{n-1}$ we have
+            \begin{align*}
+                \iota_X\omega(Y_1,\dots,Y_{n-1})
+                &= \omega(X, Y_1,\dots,Y_{n-1})
+                = \sum_{i = 1}^{n}X^i\omega(\partial_i,Y_1,\dots,Y_{n-1}) \\
+                &= \sum_{i = 1}^{n}X^i \det
+                \begin{bmatrix}
+                    0 & Y_1^1 & \cdots & Y_{n-1}^1 \\
+                    \vdots &  & & \vdots \\
+                    1 & Y_1^i & \cdots & Y_{n-1}^i \\
+                    \vdots &  & & \vdots \\
+                    0 & Y_1^n & \cdots & Y_{n-1}^n \\
+                \end{bmatrix}
+                = \sum_{i=1}^{n}(-1)^{i+1}X^i \det A_i
+            \end{align*}
+            where $A_i$ is the minor of the above matrix with the first column and $i$-th row taken out.
+            Hence clearly
+            \[
+                d(\iota_X\omega)
+                = \sum_{i=1}^{n}(-1)^{i+1}\frac{\partial X^i}{\partial x^i}dx^i\wedge (dx^1\wedge \cdots \hat{dx^i}\wedge\cdots dx^n)
+                = \left( \sum_{i=1}^{n}\frac{\partial X^i}{\partial x^i} \right) \omega
+            \]
+            where in the last equality we have to transpose $dx^i$ $(i-1)$ times to the right, so the minuses cancel.
+            We have finally got
+            \[
+                \text{div}_\omega(X) = \sum_{i=1}^{n}\frac{\partial X^i}{\partial x^i},
+            \]
+            the definition we remember from Analysis 2.
+        \item Let now $(M, g)$ be an oriented Riemannian manifold.
+            We will show that the Riemannian volume form from (1iii) is expressed as
+            \[
+                \omega_g = \sqrt{\det[g_{ij}]}dx^1 \wedge \cdots \wedge dx^n
+            \]
+            in any oriented chart $(U, \varphi = (x^i))$, where $g_{ij} = g(\partial_i, \partial_j)$.
+
+            Indeed, let $(U, \varphi)$ be an oriented smooth chart from the instructions.
+            Then as in (1iii) we have $\omega_g = f dx^1 \wedge \cdots \wedge dx^n$ for some positive function $f$.
+            Recall, that the condition on $\omega_g$ regards any smooth orthonormal oriented frame,
+            so pick such a frame $(E_i)$ defined on a neighbourhood of some point $p \in M$.
+            Denote by $(\varepsilon^i)$ its dual frame.
+            As in (1iii) we again have that $\partial_i = A_i^jE_j$, so we calculate
+            \[
+                f
+                = \omega_g(\partial_1,\dots,\partial_n)
+                = \varepsilon^1\wedge\cdots\wedge\varepsilon^n(\partial_1,\dots,\partial_n)
+                = \det(\varepsilon^j\partial_i)
+                = \det(A_i^j)
+            \]
+            Consider now $g_{ij}$
+            \[
+                g_{ij}
+                = g(\partial_i,\partial_j)
+                = (A_i^kE_k,A_j^lE_l)
+                = A_i^kA_j^l g(E_k, E_l)
+                = \sum_{k = 1}^{n}A_i^kA_j^k
+            \]
+            which is precisely the $(i,j)$-th element of the matrix $A^TA$.
+            Hence clearly
+            \[
+                \det[g_{ij}] = \det(A^TA) = \det(A)^2
+            \]
+            So we finally have
+            \[
+                f = \det A = \pm\sqrt{\det[g_{ij}]}
+            \]
+            Since both frames $(\partial_i)_i$ and $(E_j)_j$ are oriented, the sign is positive.
+        \item Let $(M, g)$ be an oriented Riemannian manifold and $(U, \varphi = (x^i))$ and oriented chart.
+            Let us show that for a vector field $X$ on $M$, expressed locally as $X = X^i\partial_i$,
+            we have
+            \[
+                \text{div}_{\omega_g}(X) = \frac{1}{\sqrt{\det[g_{ij}]}} \partial_k\left( \sqrt{\det[g_{ij}]}X^k \right)
+            \]
+
+            Indeed, since $\omega_g = \sqrt{\det[g_{ij}]}dx^1\wedge\cdots\wedge dx^n$,
+            we have that
+            \begin{align*}
+                \iota_X\omega_g(Y_1,\dots,Y_{n-1}
+                &= \omega_g(X, Y_1,\dots,Y_{n-1})
+                = \sum_{i = 1}^{n}X^i\omega_g(\partial_i,Y_1,\dots,Y_{n-1}) \\
+                &= \sum_{i = 1}^{n}\sqrt{\det[g_{ij}]}X^i \det
+                \begin{bmatrix}
+                    0 & Y_1^1 & \cdots & Y_{n-1}^1 \\
+                    \vdots &  & & \vdots \\
+                    1 & Y_1^i & \cdots & Y_{n-1}^i \\
+                    \vdots &  & & \vdots \\
+                    0 & Y_1^n & \cdots & Y_{n-1}^n \\
+                \end{bmatrix}
+                = \sum_{i=1}^{n}(-1)^{i+1}\sqrt{\det[g_{ij}]}X^i \det A_i
+            \end{align*}
+            Now, we get
+            \begin{align*}
+                d(\iota_X\omega_g)
+                &= \sum_{i=1}^{n}(-1)^{i+1}\frac{\partial (\sqrt{\det[g_{ij}]}X^i)}{\partial x^i}dx^i\wedge (dx^1\wedge \cdots \hat{dx^i}\wedge\cdots dx^n) \\
+                &= \left( \sum_{i=1}^{n}\frac{\partial (\sqrt{\det[g_{ij}]} X^i)}{\partial x^i} \right) \omega
+                = \frac{1}{\sqrt{\det[g_{ij}]}}\left( \sum_{i=1}^{n}\frac{\partial (\sqrt{\det[g_{ij}]} X^i)}{\partial x^i} \right) \omega_g
+            \end{align*}
+            which is precisely what we wanted to prove.
+        \item Let $M$ be an orientable smooth manifold, $\omega$ a volume form on $M$,
+            and let $\phi_t^X$ denote the flow of a vector field $X$ on $M$.
+            Let us prove that there holds
+            \[
+                \text{div}_\omega(X) = 0 \iff (\phi_t^X)^*\omega = \omega \text{ for any appropriate $t$}
+            \]
+            % Lee - Smooth, pp.424-426
+            \begin{itemize}
+                \item \underline{($\implies$):}
+                    This direction follows trivially from the hint.
+                    If $\text{div}_\omega(X) = 0$ then by definition $\mathcal{L}_V\omega = 0$ at every point.
+                    By the hint, $(\phi_t^X)^*\omega$ is a constant function at every point.
+                    Since at $t = 0$ we have identity, we get that $(\phi_t^X)^* \omega = \omega$ for all $t$.
+                \item \underline{($\impliedby$):}
+                    Suppose $\text{div}_\omega(X) \neq 0$ in at least a point.
+                    Then, by continuity, there exists a neighbourhood of that point such that $\text{div}_\omega(X)$ is either positive or negative.
+                    Without loss of generality, assume $\text{div}_\omega(X) < 0$ in some $U$.
+                    Now take a compact coordinate ball $B \subset U$ and small enough $t > 0$ such that still $\phi_t^X(B) \subset U$.
+                    Then by the hint
+                    \[
+                        \frac{d}{dt}\Big|_{t = 0}\left( (\phi_t^X)^*\omega \right)_p < \omega|_p
+                    \]
+                    for every point $p \in B$, so $(\phi_t^X)^*\omega < \omega$ for every $p \in B$ since the flow is defined here by our choices of $t$.
+                    This proves the contrapositive.
+            \end{itemize}
+    \end{enumerate}
+\end{Exercise}
+
+\begin{Exercise}
+    Suppose $(q, p)$ are the standard coordinates on $\R^2 \iso T^*\R$.
+    Suppose that $\omega$ is a differential $2$-form on $\R^2$ given by $\omega = dq \wedge dp$
+    and let $H \in C^\infty(\R^2)$ be a smooth function.
+    Define the Hamiltonian vector field $X_H$ on $\R^2$ by the implicit identity $\iota_{X_H}\omega = dH$.
+    \begin{enumerate}[label=(\roman*)]
+        \item Let us first express the vector field $X_H$ on $\R^2$ in the coordinates $(q,p)$.
+            We write
+            \[
+                X_H = a \partial_q + b \partial_p
+            \]
+            for some smooth local coefficient functions.
+            On the one hand we have
+            \[
+                \iota_{a\partial_q + b\partial_p}(dq \wedge dp)
+                = a dp - bdq
+            \]
+            and on the other hand we have
+            \[
+                dH = \frac{\partial H}{\partial q}dq + \frac{\partial H}{\partial p}dp
+            \]
+            so by equating we immediately get
+            \[
+                X_H = \frac{\partial H}{\partial p} \partial_q - \frac{\partial H}{\partial q} \partial_p
+            \]
+            From this it then directly follows that the integral curves of $X_H$ are given by the system of differential equations
+            \[
+                \dot{q} = \frac{\partial H}{\partial p} \quad \quad \dot{p} = - \frac{\partial H}{\partial q}
+            \]
+            
+            Let now
+            \[
+                H(q, p) = \frac{p^2}{2m} + \frac{1}{2}kq^2
+            \]
+            for some positive real numbers $m,k$.
+            Let us calculate the flow of $X_H$, and for this we need to actually calculate the integral curves of $X_H$.
+            From the above formulae we get
+            \[
+                \dot{q} = \frac{p}{m} \quad \quad \dot{p} = -kq
+            \]
+            By differentiating again and inputting equations, we get
+            \[
+                \ddot{q} = -\frac{k}{m}q \quad \quad \ddot{p} = -\frac{k}{m}p
+            \]
+            hence
+            \[
+                q(t) = A\cos\left(\sqrt{\frac{k}{m}}t\right) + B\sin\left(\sqrt{\frac{k}{m}}t\right) \quad\quad
+                p(t) = C\cos\left(\sqrt{\frac{k}{m}}t\right) + D\sin\left(\sqrt{\frac{k}{m}}t\right)
+            \]
+            Picking a starting point $\gamma(0) = (x, y)$ we get $A = x$ and $C = y$,
+            and then by inputting this solutions into the original differential equations,
+            we also get $B = \frac{y}{\sqrt{km}}$ and $D = -x \sqrt{km}$.
+            Therefore
+            \[
+                \phi_t^{X_H}(x, y) = \gamma_{(x, y)}(t) = \left(
+                x\cos\left(\sqrt{\frac{k}{m}}t\right) + \frac{y}{\sqrt{km}}\sin\left(\sqrt{\frac{k}{m}}t\right),
+                y\cos\left(\sqrt{\frac{k}{m}}t\right) - x\sqrt{km}\sin\left(\sqrt{\frac{k}{m}}t\right)
+                \right)
+            \]
+        \item We will now show that $X_H(H) = 0$, indeed
+            \[
+                X_H(H)
+                = \left( \frac{\partial H}{\partial p} \partial_q - \frac{\partial H}{\partial q} \partial_p \right) (H)
+                = \frac{\partial H}{\partial p}\frac{\partial H}{\partial q} - \frac{\partial H}{\partial q}\frac{\partial H}{\partial p}
+                = 0
+            \]
+        \item We now want to compute $\text{div}_\omega(X_H)$, $\mathcal{L}_{X_H}\omega$,
+            and show that there holds $(\phi_t^{X_H})^*\omega = \omega$.
+            For the divergence, we simply use (3i) to get
+            \[
+                \text{div}_\omega(X_H)
+                = \frac{\partial X_H^q}{\partial q} + \frac{\partial X_H^p}{\partial p}
+                = \frac{\partial^2 H}{\partial p \partial q} - \frac{\partial^2 H}{\partial q \partial p}
+                = 0
+            \]
+            The Lie differentiation follows immediately from the definition of divergence
+            \[
+                \mathcal{L}_{X_H}\omega = \text{div}_\omega (X_H) \omega = 0
+            \]
+            and finally, by (3iv), since the divergence is zero, there holds
+            \[
+                (\phi_t^{X_H})^*\omega = \omega
+            \]
+    \end{enumerate}
+\end{Exercise}
+
+\end{document}
