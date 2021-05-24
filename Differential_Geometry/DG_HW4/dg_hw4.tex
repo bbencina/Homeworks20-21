@@ -1,0 +1,577 @@
+\documentclass[a4paper, 12pt]{article}
+
+\usepackage[slovene]{babel}
+\usepackage[margin=0.5in]{geometry}
+
+\input{basic}
+\input{math}
+
+\title{Differential Geometry - $4^{\text{th}}$ homework}
+\author{Benjamin Benčina}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{Exercise}
+    Let $\nabla$ be a covariant derivative on $TM$.
+    % Lee - Riemannian pp.95-97
+    \begin{enumerate}[label=(\roman*)]
+        \item Let us show that the map $\nabla \colon \mathfrak{X}(M)\times\Omega^1(M) \to \Omega^1(M)$,
+            given by
+            \[
+                (X, \omega) \mapsto (\nabla_X\omega)(Y) = X(\omega(Y)) - \omega(\nabla_XY)
+            \]
+            determines a covariant derivative on $T^*M$.
+
+            We first check that the defining expression is $C^\infty(M)$-multilinear in $X$.
+            Take $f_1, f_2 \in C^(M)$ and $X_1, X_2 \in \mathfrak{X}(M)$ and calculate
+            \begin{align*}
+                (\nabla_{f_1X_1 + f_2X_2}\omega)(Y)
+                &= (f_1X_1 + f_2X_2)(\omega(Y)) - \omega(\nabla_{f_1X_1 + f_2X_2}Y) \\
+                &= f_1X_1(\omega(Y)) + f_2X_2(\omega(Y)) - \omega(f_1\nabla_{X_1}Y + f_2\nabla_{X_2}Y) \\
+                &= f_1X_1(\omega(Y)) - f_1\omega(\nabla_{X_1}Y) + f_2X_2(\omega(Y)) - f_2\omega(\nabla_{X_2}Y) \\
+                &= f_1(\nabla_{X_1}\omega)(Y) + f_2(\nabla_{X_2}\omega)(Y)
+            \end{align*}
+            Next, we check $\R$-linearity in $\omega$.
+            Take $a_1, a_2 \in \R$ and $\omega_1, \omega_2 \in \Omega^1(M)$ and calculate
+            \begin{align*}
+                (\nabla_X(a_1\omega_1 + a_2\omega_2))(Y)
+                &= X((a_1\omega_1 + a_2\omega_2)(Y)) - (a_1\omega_1 + a_2\omega_2)(\nabla_XY) \\
+                &= a_1X(\omega_1(Y)) - a_1\omega_1(\nabla_XY) + a_2X(\omega_2(Y)) - a_2\omega_2(\nabla_XY) \\
+                &= a_1(\nabla_X\omega_1)(Y) + a_2(\nabla_X\omega_2)(Y)
+            \end{align*}
+            We need to check the expression satisfies the product rule.
+            Take $f \in C^\infty(M)$ and calculate
+            \begin{align*}
+                (\nabla_X(f\omega))(Y)
+                &= X(f\omega(Y)) - f\omega(\nabla_XY) \\
+                &= X(f)\omega(Y) + fX(\omega(Y)) - f\omega(\nabla_XY) \\
+                &= X(f)\omega(y) + f(\nabla_X\omega)(Y)
+            \end{align*}
+            Lastly, we want to see that this formula is $C^\infty(M)$-linear in $Y$.
+            Indeed, the addition part is trivial, and the new terms that arise due to the Leibniz and product rule, respectively, cancel out.
+            \begin{align*}
+                (\nabla_X\omega)(fY)
+                &= X(f\omega(Y)) - \omega(\nabla_X(fY)) \\
+                &= X(f)\omega(Y) + fX(\omega(Y)) - \omega(f\nabla_XY + X(f)Y) \\
+                &= X(f)\omega(Y) + fX(\omega(Y)) - f\omega(\nabla_XY) - X(f)\omega(Y) \\
+                &= f(\nabla_X\omega)(Y)
+            \end{align*}
+            
+            We will now prove that in any local coordinates $(x^i)$,
+            the $1$-form $\nabla_X\omega$ is given by
+            \[
+                \nabla_X\omega = (X(\omega_k) - X^i\omega_j\Gamma_{ik}^{j})dx^k
+            \]
+            
+            Let $(\partial_i)$ be the frame associated to $(x^i)$ and let $(dx^i)$ be its dual frame.
+            We know that $\Gamma_{ik}^{j}$ are the coefficients of $\nabla$ (on $TM$) in this frame.
+            We write $X = X^i\partial_i$, $\omega = \omega_jdx^j$, and $\nabla_{\partial_i}\partial_j = \Gamma_{ij}^{k}\partial_k$.
+            We then get
+            \begin{align*}
+                (\nabla_X\omega)(\partial_k)
+                &= X(\omega(\partial_k)) - \omega(\nabla_X\partial_k) \\
+                &= X(\omega_k) - \omega(X^i\Gamma_{ik}^{j}\partial_j) \\
+                &= X(\omega_k) - X^i\omega_j\Gamma_{ik}^j
+            \end{align*}
+            Repeat this for all $\partial_k$ and use that $dx^i(\partial_j) = \delta_{ij}$, then extend by linearity.
+        \item We now explain why the map $\mathfrak{X}(M)\times\Gamma^\infty(T^{(k,l)}TM) \to \Gamma^\infty(T^{(k,l)}TM)$,
+            given by
+            \begin{align*}
+                (\nabla_XA)(\omega^1,\dots,\omega^k,Y_1,\dots,Y_l)
+                &= X(A(\omega^1,\dots,\omega^k,Y_1,\dots,Y^l)) \\
+                &- \sum_{i = 1}^{k}A(\omega^1,\dots,\nabla_X\omega^i,\dots,\omega^k,Y_1,\dots,Y_l) \\
+                &- \sum_{j = 1}^{l} A(\omega^1,\dots,\omega^k,Y_1,\dots,\nabla_XY_j,\dots,Y_l)
+            \end{align*}
+            determines a covariant derivative on $T^{(k,l)}TM$.
+
+            Indeed, this is nothing but a generalization of (1i).
+            For $C^\infty(M)$-multilinearity in $\omega$'s and $Y$'s,
+            we merely insert $f\omega^i$ or $fY_j$, and use (1i) in the former case.
+            To prove the three defining properties of a connection,
+            we also proceed as above and use $(1i)$ whenever we are dealing with $\nabla_X\omega^i$.
+    \end{enumerate}
+\end{Exercise}
+
+\begin{Exercise}
+    Let $(M, g)$ be a Riemannian manifold.
+    \begin{enumerate}[label=(\alph*)]
+        \item Let us first prove that the map $\overline{g} \colon \mathfrak{X}(M) \to \Omega^1(M)$,
+            given by $\overline{g}(X) = g(X, \cdot)$ is an isomorphism of vector spaces,
+            which induces an isomorphism of vector bundles $TM$ and $T^*M$.
+
+            Indeed, this is easy as $g$ provides an inner product at every point.
+            It then immediately follows that $\overline{g}$ is a homomorphism, since $g$ is linear in the first component.
+            The map $\overline{g}$ is then uniquely determined by where it maps the basis elements of any local $(v_i)$.
+            Since clearly $\ker\overline{g} = 0$, by dimension count, $\overline{g}$ is bijective and hence a vector space isomorphism at every point.
+            Since $g$ locally operates on frames, $\overline{g}$ extends to an isomorphism of vector bundles.
+            Take now a local frame $(E_i)$ and denote by $(\varepsilon^j)$ its dual frame.
+            We get the local expression
+            \[
+                \overline{g}(X) = (g_{ij}X^i)\varepsilon^j
+            \]
+            where $[g_{ij}]$ is the matrix of $g$.
+            If we denote by $[g^{ij}]$ its inverse matrix (the inverse of the map will clearly be given by the inverse of the matrix for $g$),
+            we get the local expression for the inverse
+            \[
+                \overline{g}^{-1}(\omega) = (g^{ij}\omega_j)E_i
+            \]
+        \item We now show that the definition of the trace of a $(1,1)$-tensor field is independent of the chosen coordinates.
+
+            Let $(E_i)$ and $(F_i)$ be two local frames given by two sets of local coordinates around a point $p \in M$,
+            and let $(\varepsilon^j)$ and $(f^j)$ be their dual frames, respectively.
+            Write locally $A = A_j^iE_i\otimes\varepsilon^j = B_j^iF_i\otimes f^j$.
+            For every sensible point $p$ we would like to then have
+            \[
+                \sum_{i = 1}^{n} A_i^i(p) = \sum_{i = 1}^{n}B_i^i(p)
+            \]
+            but this is of course true, since the trace is independent of the basis in any (finite dimensional) vector space.
+    \end{enumerate}
+    Now, let $\nabla$ denote the Levi-Civita connection on $(M, g)$.
+    \begin{enumerate}[label=(\roman*)]
+        \item We define the \emph{gradient} of a function $f \in C^\infty(M)$ as the vector field
+            \[
+                \nabla f = \overline{g}^{-1}(df)
+            \]
+            Let us express $\nabla f$ in local coordinates.
+
+            Let $(x^i)$ be some local coordinates on $M$.
+            We know that
+            \[
+                df = (\partial_i f) dx^i
+            \]
+            so we get
+            \[
+                \nabla f = (g^{ij}(\partial_j f)) \partial_i
+            \]
+            
+            We would also like to express $\nabla f$ in spherical coordinates on $\R^3$ for $f \in C^\infty(\R^3)$.
+            Recall from Tutorials that in $\R^3$ we have
+            \[
+                [g_{ij}] =
+                \begin{bmatrix}
+                    1 & & \\
+                    & r^2 & \\
+                    & & r^2\sin^2\theta
+                \end{bmatrix}
+            \]
+            in spherical coordinates $(r, \theta, \varphi)$.
+            This is a diagonal matrix, so obtaining its inverse is trivial.
+            By the above local formula we get
+            \[
+                \nabla f
+                = \sum_{i = 1}^{3} g^{ii} (\partial_if) \partial_i
+                = \frac{\partial f}{\partial r} \partial_r + \frac{1}{r^2}\frac{\partial f}{\partial\theta} \partial_\theta + \frac{1}{r^2\sin^2\theta}\frac{\partial f}{\partial\varphi}\partial_\varphi
+            \]
+        \item Let $X \in \mathfrak{X}(M)$ be a vector field and $(x^i)$ some local coordinates on $M$.
+            Let us show that there holds
+            \[
+                \tr(\nabla X) = (\nabla_{\partial_k}X)^k = \frac{1}{\sqrt{\det[g_{ij}]}} \partial_k\left( \sqrt{\det[g_{ij}]} X^k \right)
+            \]
+            
+            Since the trace operator is independent of the choice of the local coordinates,
+            let without loss of generality $(x^i)$ be some normal coordinates on $M$,
+            centered at $p \in M$.
+            Recall from Tutorials that normal coordinates define an orthonormal frame,
+            hence $g_{ij}(p) = \delta_{ij}$.
+            But this property makes the RHS equal to $\partial_k(X^k)$,
+            which is precisely the LHS.
+
+            We will now express $\text{div}(X) = \tr(\nabla X)$ in spherical coordinates on $\R^3$.
+            \[
+                \text{div}(X)
+                = \frac{1}{r^2\sin\theta}\sum_{i = 1}^{3} \partial_i (r^2\sin\theta X^i)
+                = \frac{1}{r^2} (r^2 \frac{\partial X^r}{\partial r} + 2rX^r) + \frac{1}{\sin\theta} (\sin\theta \frac{\partial X^\theta}{\partial \theta} + \cos\theta X^\theta) + \frac{\partial X^\varphi}{\partial \varphi}
+            \]
+        \item Define the covariant Hessian of a function $f \in C^\infty(M)$ as $H(f)$, given by
+            \[
+                H(f)(X,Y) = (\nabla_X df)(Y)
+            \]
+            
+            This defines a $2$-tensor field, since by the properties of a covariant derivative (or a connection),
+            the definition is bilinear.
+            We know from (1i) that for a $1$-form $df$, its covariant derivative in the direction of $X$ can be computed as
+            \[
+                (\nabla_X df)(Y) = X(df(Y)) - df(\nabla_XY) = X(Y(f)) - (\nabla_XY)(f)
+            \]
+            and we also know how to express this locally.
+            So let $(x^i)$ be some local coordinates on $M$.
+            Then, writing $X = X^i\partial_i$ and $Y = Y^j\partial_j$, we get
+            \[
+                H(f) = (\partial_i\partial_j f - \Gamma_{ij}^k\partial_k f)dx^i \otimes dx^j
+            \]
+            It is clearly symmetric, since $\partial_i\partial_j = \partial_j\partial_i$,
+            and because $\nabla$ is Levi-Civita and hence symmetric, i.e. $\Gamma_{ij}^k = \Gamma_{ji}^k$.
+        \item Lastly, we define the Laplacian of a function $f \in C^\infty(M)$ by
+            \[
+                \Delta f = \text{div}(\nabla f)
+            \]
+            
+            In local coordinates $(x^i)$, we can express this as
+            \[
+                \Delta f
+                = \text{div}((g^{ij}(\partial_j f))\partial_i)
+                = \frac{1}{\sqrt{\det[g_{ij}]}} \partial_i \left( \sqrt{\det[g_{ij}]} (g^{ij}\partial_j f) \right)
+            \]
+            Now write
+            \[
+                \Delta f = \text{div}(\nabla f)
+                \overset{(2ii)}{=} \tr(\nabla\nabla f)
+            \]
+            since the trace operator is independent of the choice of coordinates,
+            choose normal coordinates $(x^i)$.
+            In this case $g_{ij} = g^{ij} = \delta_{ij}$,
+            hence $\nabla f = (\partial_j f) \partial_i$.
+            We also have $\Gamma_{ij}^k = 0$, so $H(f) = (\partial_i\partial_j f)dx^i\otimes dx^j$.
+            Hence $H(f)^\sharp = (\partial_i\partial_k f) \partial_j \otimes dx^k$
+            and its trace is precisely $\partial_i \partial_k f$,
+            but $\Delta f$ in these coordinates is also given by $\partial_i\partial_j f$,
+            which are the same expressions.
+
+            Furthermore, since we are in normal coordinates, this frame is orthonormal and we get the usual formula
+            \[
+                \Delta f = \partial_i \partial_i f
+            \]
+            we know from analysis.
+    \end{enumerate}
+\end{Exercise}
+
+\begin{Exercise}
+    Let $M$ and $\tilde{M}$ be smooth manifolds.
+    \begin{enumerate}[label=(\roman*)]
+        \item Let $f \colon M \to \tilde{M}$ be a diffeomorphism and $\tilde{\nabla}$ a connection on $\tilde{M}$.
+            Let $f^*\tilde{\nabla} \colon \mathfrak{X}(M) \times \mathfrak{X}(M) \to \mathfrak{X}(M)$, given by
+            \[
+                \left( f^*\tilde{\nabla} \right)_X Y = (f^{-1})_* \left( \tilde{\nabla}_{f_*X}f_*Y \right)
+            \]
+            be the pullback of connection $\tilde{\nabla}$.
+            Let us prove that $f^*\tilde{\nabla}$ is a connection on $M$.
+
+            Recall, that $f_*X$ is the unique vector field over $\tilde{M}$ such that $df_p(X_p) = (f_*X)_{f(p)}$ for all $p \in M$.
+            It is then obvious that the above definition is $\R$-linear in $Y$, since $\tilde{\nabla}$, $df$ and $df^{-1}$ are all $\R$-linear.
+            Next, we take $g \in C^\infty(M)$ and prove $C^\infty(M)$-linearity in $X$.
+            Denote $\tilde{g} = g \circ f^{-1}$, so we have $f_*(gX) = \tilde{g} f_*X$.
+            We calculate
+            \[
+                \left( f^*\tilde{\nabla} \right)_{gX} Y
+                = (f^{-1})_* (\tilde{\nabla}_{\tilde{g}f_*X}(f_*Y))
+                = (f^{-1})_* (\tilde{g}\tilde{\nabla}_{f_*X}(f_*Y))
+                = g \left( f^*\tilde{\nabla} \right)_X Y
+            \]
+            Lastly, we need to show the product rule holds.
+            Let $g \in C^\infty(M)$ and denote $\tilde{g}$ as above.
+            Notice that the definition of the push-forward of a vector field coincides with that of the two vector fields being $f$-related.
+            We then know from Tutorials that this implies (actually equivalent) that
+            $(f_*X)(\tilde{g}) = (Xg) \circ f^{-1}$.
+            We then calculate
+            \[
+                \left( f^*\tilde{\nabla} \right)_X(fY)
+                = (f^{-1})_* (\tilde{\nabla}_{f_*X}(\tilde{g}f_*Y))
+                = (f^{-1})_* (\tilde{g}\tilde{\nabla}_{f_*X}(f_*Y) + (f_*X)(\tilde{g})f_*Y)
+                = g(f_*\tilde{\nabla})_XY + (Xg)Y
+            \]
+            which finishes the proof.
+        \item Denote now $\nabla = f^*\tilde{\nabla}$.
+            Let $\gamma$ be a smooth path in $M$ and $V$ a vector field along $\gamma$.
+            We will prove that
+            \[
+                df \circ D_\gamma V = \tilde{D}_{f\circ\gamma}(df \circ V)
+            \]
+
+            Recall that we have
+            \[
+                D_\gamma V (t)
+                = \nabla_{\gamma'(t)}V
+                = (f^*\tilde{\nabla})_{\gamma'(t)}V
+                = (f^{-1})_*(\tilde{\nabla}_{f_*\gamma'(t)} f_*V)
+                = df^{-1}\circ(\tilde{\nabla}_{(f\circ\gamma)'(t)} (df\circ V))
+            \]
+            and
+            \[
+                \tilde{D}_{f\circ\gamma}(df\circ V)
+                = \tilde{\nabla}_{(f\circ\gamma)'} (df\circ V)
+            \]
+            so composing the former with $df$ finishes the proof.
+            This then shows that $f$ maps $\nabla$-geodesics to $\tilde{\nabla}$-geodesics,
+            since inputting $V = \gamma'$ in the LHS for $\gamma$ a geodesic makes the LHS vanish,
+            so $D_{f\circ\gamma}((f\circ\gamma)') = 0$ by the above equality, i.e., $f\circ\gamma$ is a geodesic.
+        \item Suppose $f \colon M \to \tilde{M}$ is an isometry between Riemannian manifolds $M$ and $\tilde{M}$.
+            Denote by $\nabla$ and $\tilde{\nabla}$ the Levi-Civita connections on $M$ and $\tilde{M}$, respectively.
+            Let us show that $f^*\tilde{\nabla} = \nabla$.
+
+            Since \underline{the} Levi-Civita connection is unique on a Riemannian manifold,
+            it suffices to show that $f^*\tilde{\nabla}$ is metric-compatible with $g$ and symmetric.
+            Since $f$ is an isometry, $df_p$ is a linear isometry at every $p \in M$,
+            so we have for any two vector fields $X, Y$ and $p \in M$
+            \[
+                \langle X_p, Y_p \rangle
+                = \langle df_p(X_p), df_p(Y_p) \rangle = \langle (f_*X)_{f(p)}, (f_*Y)_{f(p)}\rangle
+            \]
+            and hence
+            \begin{align*}
+                Z \langle X, Y \rangle
+                &= Z(\langle f_*X, f_*Y \rangle \circ f) \\
+                &= ((f_*Z) \langle f_*X, f_*Y \rangle) \circ f \\
+                &= (\langle \tilde{\nabla}_{f_*Z}(f_*X), f_*Y \rangle + \langle f_*X, \tilde{\nabla}_{f_*Z}(f_*Y) \rangle )\circ f \\
+                &= \langle (f^{-1})_* \tilde{\nabla}_{f_*Z}(f_*X), Y \rangle + \langle X, (f^{-1})_*\tilde{\nabla}_{f_*Z}(f_*Y) \rangle \\
+                &= \langle (f^*\tilde{\nabla})_Z X, Y \rangle + \langle X, (f^* \tilde{\nabla})_Z Y \rangle
+            \end{align*}
+            For symmetricity, we calculate
+            \[
+                (f^*\tilde{\nabla})_X Y - (f^*\tilde{\nabla})_Y X
+                = (f^{-1})_* (\tilde{\nabla}_{f_*X}(f_*Y) - \tilde{\nabla}_{f_*Y}(f_*X))
+                = (f^{-1})_* [f_*X, f_*Y ]
+                = [X, Y]
+            \]
+        \item We will now prove that an isometry of Riemannian manifolds maps geodesics to geodesics.
+
+            This is of course a direct consequence of (3iii) and the conclusion of (3ii).
+        \item A local isometry of Riemannian manifolds also maps geodesics to geodesics,
+            since being a geodesic is a local property.
+            That is, a geodesic is defined as a solution of a system of ordinary differential equations,
+            which we know has a unique solution defined locally in a neighbourhood of the given initial condition.
+    \end{enumerate}
+\end{Exercise}
+
+\begin{Exercise}
+    Let $(\H, g_\H)$ denote the hyperbolic half-plane, that is
+    \[
+        \H = \R \times (0, \infty), \quad g_\H = \frac{1}{y^2}(dx^2 + dy^2)
+    \]
+    \begin{enumerate}[label=(\roman*)]
+        \item Let us calculate the Christoffel symbols of the Levi-Civita connection $\nabla$ on $\H$ with respect to the standard coordinates $(x, y)$.
+            Recall from Tutorials the equation for Christoffel symbols of the Levi-Civita connection
+            \[
+                \Gamma_{ij}^k = \frac{1}{2}g^{kl} (\partial_i g_{jl} + \partial_j g_{il} - \partial_l g_{ij})
+            \]
+            The matrix $g$ is clearly given by
+            \[
+                [g_{ij}] =
+                \begin{bmatrix}
+                    \frac{1}{y^2} & \\
+                    & \frac{1}{y^2}
+                \end{bmatrix}
+                ,\quad \quad
+                [g^{ij}] =
+                \begin{bmatrix}
+                    y^2 & \\
+                    & y^2
+                \end{bmatrix}
+            \]
+            so $\partial_x g_{ij} = \partial_x g^{ij} = 0$ for all $i,j$.
+            We get
+            \begin{align*}
+                &\Gamma_{xx}^x = 0
+                &\Gamma_{xx}^y = \frac{1}{2} y^2 (-\frac{-2}{y^3}) = \frac{1}{y} \\
+                &\Gamma_{xy}^x = \Gamma_{yx}^x = \frac{1}{2} y^2 (\frac{-2}{y^3}) = -\frac{1}{y}
+                &\Gamma_{xy}^y = \Gamma_{yx}^y = 0 \\
+                &\Gamma_{yy}^x = 0
+                &\Gamma_{yy}^y = \frac{1}{2} y^2 (\frac{-2}{y^3}) = -\frac{1}{y}
+            \end{align*}
+        \item We will now write down the connection $1$-form $\omega$ of the
+            Levi-Civita connection $\nabla$ with respect to the standard
+            coordinates $(x, y)$ and then calculate the curvature $2$-form $F$.
+
+            By definition, we get
+            \[
+                \omega_j^k(X)\partial_k
+                = \nabla_X\partial_j
+                = X^i\nabla_{\partial_i}\partial_j
+                = X^i\Gamma_{ij}^k\partial_k
+            \]
+            and hence $\omega_j^k(X) = X^i\Gamma_{ij}^k$.
+            For any vector field $X = X^1 \partial_x + X^2\partial_y$ we therefore have
+            \[
+                \omega(X) =
+                \begin{bmatrix}
+                    -\frac{X^2}{y} & -\frac{X^1}{y} \\
+                    \frac{X^1}{y} & -\frac{X^2}{y}
+                \end{bmatrix}
+            \]
+            so if we consider $\omega$ acting on $X$ by each $(i, j)$-component separately, we can write
+            \[
+                \omega =
+                \begin{bmatrix}
+                    -\frac{1}{y}dy & -\frac{1}{y} dx \\
+                    \frac{1}{y} dx & -\frac{1}{y} dy
+                \end{bmatrix}
+            \]
+            The curvature $2$-form $F$ is then expressed in the same local coordinates as
+            \[
+                F = d\omega + \omega\wedge\omega
+            \]
+            where
+            \[
+                (\omega\wedge\omega)_{ij} = \sum_{k=1}^{n}\omega_{ik}\wedge\omega_{kj}
+            \]
+            and $d\omega$ is calculated component-wise.
+            Since
+            \[
+                d\left( \frac{1}{y} \right) = 0\cdot dx - \frac{1}{y^2}dy = -\frac{1}{y^2}dy
+            \]
+            we get
+            \[
+                d\omega =
+                \begin{bmatrix}
+                    0 & -\frac{1}{y^2} dx \wedge dy \\
+                    \frac{1}{y^2} dx\wedge dy & 0
+                \end{bmatrix}
+            \]
+            and by the above formula
+            \begin{align*}
+                (\omega\wedge\omega)_{11}
+                &= \omega_{11}\wedge_{11} + \omega_{12}\wedge\omega_{21}
+                = 0 \\
+                (\omega\wedge\omega)_{12}
+                &= \omega_{11}\wedge\omega_{12} + \omega_{12}\wedge\omega_{22}
+                = -\frac{1}{y^2}dx\wedge dy + \frac{1}{y^2}dx \wedge dy
+                = 0 \\
+                (\omega\wedge\omega)_{21}
+                &= \omega_{21}\wedge\omega_{11} + \omega_{22}\wedge\omega_{21}
+                = -\frac{1}{y^2}dx \wedge dy + \frac{1}{y^2} dx \wedge dy
+                = 0 \\
+                (\omega\wedge\omega)_{22}
+                &= \omega_{21}\wedge\omega_{12} + \omega_{22}\wedge\omega_{22}
+                = 0
+            \end{align*}
+            hence
+            \[
+                F =
+                \begin{bmatrix}
+                    0 & -\frac{1}{y^2} dx \wedge dy \\
+                    \frac{1}{y^2} dx \wedge dy & 0
+                \end{bmatrix}
+            \]
+        \item Let $(\D, g_\D)$ be the hyperbolic disk, that is
+            \[
+                \D = D(0, 1), \quad g_\D = \frac{4}{(1 - x^2 - y^2)^2}(dx^2 + dy^2)
+            \]
+            Let us show that the M\"obius transformation $\tau \colon \H \to \D$, given by
+            \[
+                \tau(z) = \frac{1 + iz}{z + i}
+            \]
+            is an isometry.
+
+            We already know from Complex Analysis that $\tau$ is a diffeomorphism.
+            Indeed, this is the M\"obius transformation that maps
+            \[
+                i \mapsto 0 \quad 1 \mapsto 1 \quad ``\infty'' \mapsto i
+            \]
+            (this makes more sense looking at the inverse map,
+            we open up the edge of the disk into the $x$-axis).
+            We only need to check that it is indeed metric-preserving,
+            that is, $g_\H = \tau^* g_\D$.
+
+            Take a more general case;
+            let $\tau \colon (M, g) \to (N, h)$ be a smooth map between Riemannian manifolds
+            Let $p \in M$ and $\partial_i$ an orthogonal frame around $p$.
+            Then at point $p$ we have by definition of the pull-back that
+            the equality $\tau^* h = g$ implies
+            \[
+                h_{\tau(p)} \cdot d\tau_p = d\tau_p \cdot g_p
+            \]
+            Since our local frame is orthogonal,
+            the inverse of the differential on the RHS is given by its transposed matrix,
+            so we get
+            \[
+                d\tau_p^T \cdot h_{\tau(p)} \cdot d\tau_p = g_p
+            \]
+            Now identify
+            \[
+                x + iy \idtfy
+                \begin{bmatrix}
+                    x & -y \\
+                    y & x
+                \end{bmatrix}
+            \]
+            which is precisely the form of the Jacobi matrix of a function
+            that solves the Cauchy-Riemann equations.
+            Indeed, since M\"obius transformations are biholomorphisms of the Riemann sphere,
+            in particular $\tau$,
+            the Cauchy-Riemann system of equations holds for $\tau$.
+            Also notice that in the above identification,
+            complex conjugation corresponds to matrix transposition,
+            and taking the square of the absolute value corresponds to the determinant.
+            Now, since the coefficients in front of the inner products at each point $z$ are
+            $\frac{1}{\text{Im}(z)^2}$ for $g_\H$ and $\frac{4}{(1 - |z|^2)^2}$ for $g_\D$,
+            we can rewrite the above condition as
+            \[
+                \overline{\tau'(z)} \frac{4}{(1 - |\tau(z)|^2)^2} \tau'(z) = \frac{1}{\text{Im}(z)^2}
+            \]
+            We now merely verify that this equality holds.
+            We calculate the derivative
+            \[
+                \tau'(z)
+                = (\frac{1 + iz}{z + i})'
+                = \frac{i(z + i) - (1 + iz)}{(z + i)^2}
+                = \frac{-2}{z^2 + 2iz - 1}
+            \]
+            hence
+            \[
+                \overline{\tau'(z)}\tau'(z)
+                = |\tau'(z)|^2
+                = \frac{4}{(x^2 - y^2 - 2y -1)^2 + (2xy + 2x)^2}
+                = \frac{4}{(x^2 + y^2 + 2y + 1)^2}
+            \]
+            and similarly
+            \[
+                1 - |\tau(z)|^2
+                = 1 - \frac{(1 - y)^2 + x^2}{x^2 + (1 + y)^2}
+                = \frac{4y}{x^2 + y^2 + 2y + 1}
+            \]
+            so the equality indeed holds.
+        \item Let $v = \partial_x|_{(0, 0)}$ and $w = \partial_y|_{(0,0)}$ be
+            two vector fields in $(\D, g_\D)$.  Let us describe the maximal
+            geodesics $\gamma_v$ and $\gamma_w$ of the space $(\D,g_\D)$.
+
+            We know from Tutorials that the geodesics in $\H$ are precisely
+            half-circles with their centers on the $x$-axis, and also vertical lines.
+            We know from (3iv) that $\tau$ maps geodesics to geodesics,
+            and we know from Complex Analysis that $\tau$ is a conformal map.
+            Hence all geodesics on $\D$ must be precisely circle arcs that touch the
+            edge of $\D$ in a perpendicular manner, and diameter lines.
+            In particular, the maximal geodesics $\gamma_v$ and $\gamma_w$ must be
+            the horizontal and the vertical diameter, respectively.
+            Indeed, these are precisely the unit half-circle through $i$ and the
+            vertical line through $i$ in $\H$, respectively,
+            since $\tau$ maps $1 \mapsto 1$ and $-1 \mapsto -1$.
+        \item Let $A = \begin{bmatrix} a & b \\ c & d \end{bmatrix} \in SL(2, \R)$ and
+            let $\tau_A \colon \H \to \H$ be the M\"obius transformation
+            \[
+                \tau_A(z) = \frac{a z + b}{c z + d}
+            \]
+            We will show that $\tau_A$ is an isometry of $(\H, g_\H)$.
+
+            We know already that $\tau_A$ is a biholomorphism (and hence a diffeomorphism) of the upper half-plane.
+            We therefore have to prove that $\tau_A$ is metric-preserving,
+            that is, at every point $z \in \H$ we want that
+            \[
+                g_z(X_z, Y_z) = g_{\tau_A(z)}(\tau_A'(z)X_z, \tau_A'(z)Y_z)
+            \]
+            holds for any two vector fields $X, Y$ on $\H$.
+            We calculate
+            \[
+                \tau_A'(z)
+                = \frac{a(cz + d) - (az + b)c}{(cz + d)^2}
+                = \frac{1}{(cz + d)^2}
+            \]
+            and for the new coefficient
+            \[
+                \text{Im}(\tau_A(z))
+                = \text{Im}\left( \frac{(az + b)\overline{(cz + d)}}{|cz + d|^2} \right)
+                = \frac{\text{Im}(z)}{|cz + d|^2}
+            \]
+            It then follows that
+            \begin{align*}
+                g(\tau_A '(z) X_z, \tau_A '(z) Y_z)
+                &= \frac{|cz+d|^4}{\text{Im}(z)^2} g(\frac{1}{(cz+d)^2}X_z, \frac{1}{(cz+d)^2}Y_z) \\
+                &= \frac{|cz+d|^4}{\text{Im}(z)^2} \frac{1}{(cz+d)^2} \frac{1}{\overline{(cz+d)}^2} g(X_z, Y_z) \\
+                &= \frac{1}{\text{Im}(z)^2} g(X_z, Y_z)
+            \end{align*}
+            so $\tau_A$ is indeed an isometry.
+    \end{enumerate}
+\end{Exercise}
+
+\end{document}
