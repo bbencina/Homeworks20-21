@@ -1,0 +1,351 @@
+\documentclass[a4paper, 12pt]{article}
+
+\usepackage[english]{babel}
+\usepackage[margin=0.5in]{geometry}
+
+\input{basic}
+\input{math}
+
+\title{Introduction to Algebraic Geometry - $2^{\text{nd}}$ homework}
+\author{Benjamin Benčina}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{Exercise}
+    \begin{enumerate}[label=(\roman*)]
+        \item Let $R = \C[x,y]$ and $f(x, y) = x^4 + y^3 + 4y^2 + 6y + 3$ a polynomial in $R$.
+            Let us check that $J = (f)$ is a prime ideal.
+            
+            Indeed, write $\C[x,y] = \C[y][x]$ and
+            \[
+                f(x, y) = 1 \cdot x^4 + (y^3 + 4y^2 + 6y + 3) \cdot 1
+                = 1 \cdot x^4 + (y + 1)(y^2 + 3y + 3) \cdot 1
+            \]
+            so if we take $P = (y + 1) \subideal \C[y]$ we see that,
+            of course, $a_4 = 1 \notin P$, $a_0 \in P$ and clearly $a_0 \notin P^2$.
+            Hence, by Eisenstein's criterion, $f$ is irreducible and hence prime,
+            since $\C[y]$ and $\C[x,y]$ are unique factorization domains.
+        \item Let us now find all maximal ideals that contain $J$.
+
+            Since the above equation defines a curve,
+            maximal ideals containing $J$ are precisely those given by points on the curve.
+            That is, for any $b \in \C$ we get $4$ maximal ideals $M_i = (x - a_i, y - b)$ for $i = 1,\dots,4$,
+            where
+            \begin{align*}
+                a_1 &= \sqrt[4]{-b^3 - 4b^2 - 6b - 3} \\
+                a_2 &= -\sqrt[4]{-b^3 - 4b^2 - 6b - 3} \\
+                a_3 &= i\sqrt[4]{-b^3 - 4b^2 - 6b - 3} \\
+                a_4 &= -i\sqrt[4]{-b^3 - 4b^2 - 6b - 3}
+            \end{align*}
+            some of which may be the same.
+        \item We homogenize the above polynomial with respect to coordinates $[x, y, z]$ in $\P^2$.
+            \[
+                f^h(x, y, z) = x^4 + y^3z + 4y^2z^2 + 6yz^3 + 3z^4
+            \]
+            This is now a homogeneous polynomial of degree $4$ (we added the
+            new coordinate at the end instead of the beginning, which is
+            equivalent).
+        \item Let us find the homogeneous ideals that contain $J' = (f^h)$.
+
+            We know that $J'$ defines a curve in $\P^2$ (represented by a conic surface in $\A^3$.
+            By the Projective Nullstelensatz, radical homogeneous ideals that contain $J'$
+            are precisely given by projective subvarieties of the above projective curve,
+            and these will in turn be given by finite intersections of maximal ideals $M_p$
+            of polynomials vanishing at a point $p$ on the above curve (given by a line in $\A^3$ through $p$ and the origin).
+            Note that these ideals are not actually maximal, since they are all properly contained in the irrelevant ideal $I_0$,
+            they are merely maximal in their respective local rings at $p$.
+
+            To find all of these point ideals for every $p$ on the curve, we consider the affine covering.
+            In $U_2$ where $z = 1$, we immediately see that the points on the curve are $[a, b, 1]$ for $(a, b)$ zeros of $f$.
+            From the procedure from tutorials we get point ideals
+            \[
+                M_{[a, b, 1]} = (x - az, y - bz)
+            \]
+            In $U_1$ where $y = 1$, we get a similar result.
+            We are searching for solutions of
+            \[
+                x^4 + z + 4z^2 + 6z^3 + 3z^4 = 0
+            \]
+            which are as above given by
+            \begin{align*}
+                a_1 &= \sqrt[4]{-c(1 + 4c + 6c^2 + 3c^3)} \\
+                a_2 &= -\sqrt[4]{-c(1 + 4c + 6c^2 + 3c^3)} \\
+                a_3 &= i\sqrt[4]{-c(1 + 4c + 6c^2 + 3c^3)} \\
+                a_4 &= -i\sqrt[4]{-c(1 + 4c + 6c^2 + 3c^3)}
+            \end{align*}
+            for any $c \in \C$, where some solutions may be the same.
+            We then similarly get point ideals
+            \[
+                M_{[a,1,c]} = (x - ay, z - by)
+            \]
+            In $U_0$ where $x = 1$, we get the equation
+            \[
+                1 + y^3z + 4y^2z^2 + 6yz^3 + 3z^4 = 0
+            \]
+            and denote by $(b, c)$ its solutions.\footnote{I solved the equation in \texttt{Mathematica}.}
+            We then obtain point ideals
+            \[
+                M_{[1, b, c]} = (y - bx, z - cx)
+            \]
+            This last step is luckily not necessary,
+            since the only possible zero not covered by $U_1$ and $U_2$ is $[1, 0, 0]$,
+            which is not even on the curve.
+
+            Lastly, these are all contained in $I_0$ which is also a radical ideal.
+    \end{enumerate}
+\end{Exercise}
+
+\begin{Exercise}
+    Let $C \subset \A^2$ be an algebraic curve given by the equation
+    \[
+        x^4 - x^2y - y^3 = 0
+    \]
+    \begin{enumerate}[label=(\roman*)]
+        \item Let us find all the singular points of $C$.
+
+            We are solving the system of equations
+            \[
+                F(p) = \frac{\partial F}{\partial x}(p) = \frac{\partial F}{\partial y}(p) = 0
+            \]
+            In our case, we are solving
+            \begin{align*}
+                x^4 - x^2y - y^3 &= 0 \\
+                2x^3 - xy &= 0 \\
+                x^2 + 3y^2 &= 0
+            \end{align*}
+            If $x = 0$ it immediately follows that $y = 0$.
+            If $x \neq 0$, the second equation yields $y = 2x^2$ and hence
+            \[
+                x^4 - 2x^4 - 8x^6 = 0
+                \implies x^4(1 + 8x^2) = 0
+                \overset{x\neq 0}{\implies} x^2 = -\frac{1}{8}
+            \]
+            We then have $y = -\frac{1}{4}$ and inputting into the third equation
+            \[
+                -\frac{1}{8} + \frac{3}{16} = \frac{1}{16} \neq 0
+            \]
+            We therefore have the one singularity $p = (0, 0)$.
+        \item We show that $C$ is rational by parametrizing it.
+            Indeed, let us use the usual method of lines through the origin.
+            Write $y = tx$ and calculate
+            \[
+                x^4 - tx^3 -t^3x^3 = 0
+                \implies x^4 - (t+t^3)x^3 = 0
+                \implies x^3\left( x - (t + t^3) \right) = 0
+            \]
+            Since without loss of generality $x \neq 0$, we get the parametrization
+            \[
+                x = t + t^3, \quad\quad y = t^2 + t^4
+            \]
+            The birational map $\A^1 \to C$ is then given by
+            \[
+                t \mapsto (t + t^3, t^2 + t^4)
+            \]
+            For the corresponding projective curve $\overline{C}$ we simply
+            homogenize and get the birational map $\P^1 \to \overline{C}$ as
+            \[
+                [t, s] \mapsto [ts^3 + t^3s, t^2s^2 + t^4, s^4]
+            \]
+        \item Now consider the blow-up $\pi \colon \widetilde{\A^2} \to \A^2$
+            at the singular point $p = (0, 0)$.
+            Denote by $E$ its exceptional line.
+            Let us explicitly describe $\overline{\pi^{-1}(C \setminus (0, 0))} \cap E$.
+
+            We know that
+            \[
+                \pi^{-1}(C)
+                = \left\{ ((x, y), [t, s]) ; \; x^4 - x^2y - y^3 = 0, \; ty = sx \right\}
+            \]
+            Now take the lowest degree terms and calculate the tangents at $p$ as
+            \[
+                x^2y + y^3 = y(x^2 + y^2) = y(y + ix)(y - ix) = 0
+            \]
+            hence the tangents at $p$ are precisely
+            \[
+                y = 0, \quad\quad y = ix, \quad\quad y = -ix.
+            \]
+            From the $ty = sx$ we then get that the intersection contains $3$ points,
+            namely
+            \[
+                \overline{\pi^{-1}(C \setminus (0, 0))} \cap E
+                = \left\{ [1, 0], [1, i], [1, -i] \right\}.
+            \]
+    \end{enumerate}
+\end{Exercise}
+ 
+ \begin{Exercise}
+     The curve $C_k \subset \P^2$ is given by
+     \[
+         y^2z - x(x - z)(x - kz) = 0
+     \]
+     for a parameter $k \in \C$.
+     \begin{enumerate}[label=(\roman*)]
+         \item We first find all of the values of $k$ such that $C_k$ is smooth,
+             that is, without singularities.
+
+             We are solving the system of equations
+             \begin{align*}
+                 y^2z - x(x-z)(x-kz) &= 0 \\
+                 (x-z)(x-kz) + x(x-kz) + x(x-z) &= 0 \\
+                 yz &= 0 \\
+                 y^2 + x(x-kz) + kx(x-z) &= 0
+             \end{align*}
+             Note that this curve clearly has a singularity in $(0, 0, 0)$, but
+             this does not interest us, since we are looking at it in the
+             projective space.  We follow the third equation and suppose $z=0$.
+             Then from the first equation $x=0$ and from the fourth $y=0$, so
+             this yields nothing.  Now suppose $y = 0$.  If $x = z$, then $x =
+             kz$, hence $k=1$.  If $x \neq z$, then $kz =(2-k)x$.  If $k \neq
+             0$, then it follows that either $k=1$ or $x = z = 0$, both leading
+             nowhere.  The only case to check is $k=0$, which gives us a
+             solution for all $z \in \C$.  We have therefore obtained that
+             $C_0$ has a singularity in $[0,0,1]$ and $C_1$ has a singularity
+             in $[1,0,1]$.  For all other values of $k$ the curve $C_k$ is
+             smooth in $\P^2$.
+
+             From now on assume that $C_k$ is smooth, that is, $k \neq 0, 1$.
+         \item Let the map $\Phi \colon \P^2 \to \P^2$ be given by $[x, y, z] \mapsto [x, -y, z]$.
+             Notice that this map has the property $\Phi(C_k) \subseteq C_k$,
+             since $C_k$ is purely quadratic in $y$.  Let us show that there
+             exist $p, q, r, s \in C_k$ such that they are all fixed by $\Phi$.
+
+             By (3.i) we immediately get three points
+             \[
+                 p = [0, 0, 1], \quad\quad q = [1, 0, 1], \quad\quad r = [k, 0, 1],
+             \]
+             which are clearly fixed by $\Phi$.
+             But the projective transformation $\Phi$ is of course equivalently
+             given by $[x, y, z] \mapsto [-x, y, -z]$, which yields the fourth
+             point
+             \[
+                 s = [0, 1, 0]
+             \]
+             also on the curve $C_k$.
+         \item We will now prove that the automorphisms of $\P^1$ are given by
+             \[
+                 [t,s] \mapsto [at+bs, ct+ds]
+             \]
+             and write down the condition on $a, b, c, d \in \C$.
+
+             We recall that $\P^1$ is actually the Riemann sphere $\C\P^1$.
+             Indeed, denote $\infty := [0, 1]$, then identify $[t,s] \idtfy [1,\frac{s}{t}]$.
+             Automorphisms of $\P^1$ must then correspond to automorphisms of $\C\P^1$,
+             which are precisely non-degenerate M\"obius transformations, that is,
+             functions of the form
+             \[
+                 z \mapsto \frac{cz + d}{az + b}
+             \]
+             where $ad - bc \neq 0$.
+             Since $z \idtfy \frac{s}{t}$, multiplying by $t$ yields the desired result.
+
+             If this feels like cheating, we can approach the problem more
+             algebraically.  As above denote $\infty := [0, 1]$ and consider
+             the embedding $\C = U_0 \to \P^1$ via $s \mapsto [1, s]$.  Suppose
+             $f$ is an automorphism of $\P^1$ and assume without loss of
+             generality that $f(\infty) = \infty$. Indeed, once we have our
+             automorphisms, if $f(\infty) = a = [1, a]$, consider the
+             automorphism $g \colon [t, s] \mapsto [t - as, s]$.  Then $(g\circ
+             f)(\infty) = \infty$, so the assumption really preserves
+             generality.
+             Consider now the restriction $f_0 = f|_{U_0}$.
+             Since $f$ is an automorphism and hence bijective, $f_0$ is a polynomial bijection $\C \to \C$.
+             But by the Fundamental Theorem of Algebra, $f_0$ must have degree $1$,
+             say $f_0(s) = \alpha + \beta s$.
+             Repeat this for $f_1 = f|_{U_1}$ and obtain $f_1(t) = \gamma t + \delta$.
+             To go back to the projective setting, we need to merely homogenize the above polynomials
+             with appropriate variables and we obtain that $f$ must be of the form
+             \[
+                 [t, s] \mapsto [ at + bs, ct + ds]
+             \]
+             The relation on the complex coefficients is also obtained locally.
+             If we restrict the above to $U_1$ and without loss of generality assume $s = 1$,
+             then we obtain that
+             \[
+                 [t, 1] \mapsto \frac{a t + b}{ct + d}
+             \]
+             must be an automorphism of $\C$, so we get the condition from above $ad - bc \neq 0$.
+         \item Next we show that every automorphism of $\P^1$ with more than $2$ fixed points
+             is equal to the identity.
+
+             One solution is again from Complex Analysis.
+             Since automorphisms of $\P^1$ correspond to automorphisms of $\C\P^1$,
+             we get that
+             \[
+                 \frac{az + b}{cz + d} = z
+                 \iff az + b = cz^2 + dz
+                 \iff cz^2 + (d-a)z - b = 0
+             \]
+             which is a degree $2$ polynomial and hence has at most $2$ different zeros.
+
+             Algebraically, we know that $[t, s]$ is a fixed point of an automorphism $f$ of $\P^1$,
+             if
+             \begin{align*}
+                 a t + b s &= \lambda t \\
+                 c t + d s &= \lambda s
+             \end{align*}
+             From Linear Algebra, we know that $\lambda$ must be some eigenvalue of
+             \[
+                 \begin{bmatrix}
+                     a & b \\
+                     c & d
+                 \end{bmatrix}
+             \]
+             and the solutions must be its eigenvectors.
+             Therefore we can have at most $2$ projective solutions,
+             unless $f = id$.
+             Furthermore, since by (3.iii) this matrix is non-degenerate,
+             we always get precisely $2$ solutions.
+             %Algebraically, let $[t_0, s_0]$ and $[t_1, s_1]$ be fixed points of
+             %a generic automorphism $f$ of $\P^1$.
+             %Then
+             %\begin{align*}
+                 %(a-1)t_0 + bs_0 &= 0 \\
+                 %ct_0 + (d-1)s_0 &= 0 \\
+                 %(a-1)t_1 + bs_1 &= 0 \\
+                 %ct_1 + (d-1)s_1 &= 0
+             %\end{align*}
+             %is a non-degenerate system of linear equations that uniquely determines the coefficients $a, b, c, d$.
+             %Any other fixed point will then either violate the system or already be one of the solutions,
+             %except if $f = id$.
+         \item Lastly, let us show that $C_k$ is not a rational curve.
+
+             This is of course just a consequence of (3.ii-iv).
+             Indeed, $C_k$ is by definition rational if there exists a birational map
+             \[
+                 \varphi \colon \P^1 \to C_k
+             \]
+             which is equivalent to them containing open dense $\varphi$-isomorphic subsets.
+             But this is a problem, since $\Phi$ from (3.ii) induces an automorphism on $C_k$ with $4$ fixed points.
+             Let $U \subseteq \P^1$ and $V \subseteq C_k$ be some $\varphi$-isomorphic dense open sets and consider
+
+             \adjustbox{scale=1, center}{
+                 \begin{tikzcd}
+                     U \arrow[r, "f"] \arrow[d, "\varphi"] & U \arrow[d, "\varphi"] \\
+                     V \arrow[r, "\Phi"] & V
+                 \end{tikzcd}
+             }
+             where $f$ is such a function that makes the above diagram commute.
+             By density and since compositions of morphisms are again
+             morphisms, $f$ is induced by some automorphism on $\P^1$ (also
+             denoted by $f$).  But then $f$ has more than $2$ fixed points,
+             hence $f = id$, but $\Phi \neq id$, a contradiction.  Thus, the
+             curve $C_k$ cannot be rational.
+
+             Alternatively, we can recall a theorem from Tutorials,
+             stating that any birational equivalence between smooth curves is an isomorphism.
+             Then we clearly get the induced automorphism $f$ given by
+
+             \adjustbox{scale=1, center}{
+                 \begin{tikzcd}
+                     \P^1 \arrow[r, "f"] \arrow[d, "\varphi"] & \P^1 \arrow[d, "\varphi"] \\
+                     C_k \arrow[r, "\Phi"] & C_k
+                 \end{tikzcd}
+             }
+             which clearly has $4$ fixed points, implying $f = id$, contradicting $\Phi \neq id$.
+     \end{enumerate}
+ \end{Exercise}
+
+\end{document}
