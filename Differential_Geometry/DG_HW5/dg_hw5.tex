@@ -1,0 +1,597 @@
+\documentclass[a4paper, 12pt]{article}
+
+\usepackage[english]{babel}
+\usepackage[margin=0.5in]{geometry}
+
+\input{basic}
+\input{math}
+
+\title{Differential Geometry - $5^{\text{th}}$ homework}
+\author{Benjamin Benčina}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{Exercise}
+    % Lee- Riemannian pp. 212-213
+    Let $V$ be a vector space with $\dim V = n$ and let $\mathcal{B}(V^*)$
+    denote the set of all covariant $4$-tensors $\alpha \in T^4(V^*)$ following
+    \begin{enumerate}[label=(\alph*)]
+        \item $\alpha(w, z, x, y) = -\alpha(z, w, x, y)$,
+        \item $\alpha(w, z, x, y) = -\alpha(w, z, y, x)$,
+        \item $\alpha(w, z, x, y) = \alpha(x, y, w, z)$,
+    \end{enumerate}
+    for all $x, y, z, w \in V$.
+    We denote by $\mathcal{R}(V^*) \subset \mathcal{B}(V^*)$ with the additional property
+    \begin{enumerate}[resume,label=(\alph*)]
+        \item $\alpha(w, z, x, y) + \alpha(w, x, y, z) + \alpha(w, y, z, x) = 0$.
+    \end{enumerate}
+    We call the elements of $\mathcal{R}(V^*)$ the \emph{algebraic curvature tensors} on $V$.
+    \begin{enumerate}[label=(\roman*)]
+        \item We briefly explain why $\mathcal{B}(V^*)$ and $\mathcal{R}(V^*)$ are vector subspaces of $T^4(V^*)$.
+
+            Since properties (a-c) are entirely linear, it is obvious why $\mathcal{B}(V^*)$ is a vector subspace.
+            For example
+            \[
+                f\alpha(w,z,x,y) + g\beta(w,z,x,y)
+                = -f\alpha(z,w,x,y) - g\beta(z,w,x,y)
+            \]
+            so property (a) indeed holds for $f\alpha + g\beta$.
+            Properties (b) and (c) are analogous.
+            Property (d) is also trivially checked for tensors in $\mathcal{R}(V^*)$
+            \begin{align*}
+                &f\alpha(w,z,x,y) + g\beta(w,z,x,y) + f\alpha(w,x,y,z) + g\beta(w,x,y,z) + f\alpha(w,y,z,x) + g\beta(w,y,z,x) \\
+                &= f(\alpha + \alpha + \alpha) + g(\beta + \beta + \beta) = 0
+            \end{align*}
+        \item Let us determine the dimension of $\mathcal{B}(V^*)$.
+
+            By the hint we consider $S = S^2(\Lambda^2(V^*))$.
+            We define a map $\Phi \colon S \to \mathcal{B}(V^*)$ by
+            \[
+                \Phi(A)(w,z,x,y) = A(w \wedge z, x \wedge y)
+            \]
+            This map is indeed well defined, since $A$ is linear and $a \wedge b = -b \wedge a$
+            (property (c) is achieved since $A$ is symmetric),
+            and it is clearly linear, since the entire construction is as well.
+            Let us prove that $\Phi$ is an isomorphism by constructing its inverse.
+            We choose a basis $(b_i)_i$ for $V$, so the collection $\left\{ b_i\wedge b_j ; \; i < j \right\}$ is a basis for $\Lambda^2(V)$.
+            The inverse $\Psi$ of $\Phi$ is then clearly defined on the basis by
+            \[
+                \Psi(B)(b_i\wedge b_j, b_k \wedge b_l) = B(b_i, b_j, b_k, b_l)
+            \]
+            where $i < j$ and $k<l$.
+
+            It now follows that the dimensions of $\mathcal{B}(V^*)$ and $S$ must match.
+            Since $\dim \Lambda^2(V) = \binom{n}{2} = \frac{n(n-1)}{2}$,
+            and the space of symmetric bilinear forms on a vector space of dimension $m$ is $\frac{m(m+1)}{2}$,
+            we obtain
+            \[
+                \dim\mathcal{B}(V^*)
+                = \dim S
+                = \frac{\binom{n}{2}\left( \binom{n}{2} + 1 \right)}{2}
+                = \frac{n(n-1)(n^2-n+2)}{8}
+            \]
+        \item Let us now prove that the restriction $\text{Alt}|_{\mathcal{B}(V^*)}$ is given by
+            \[
+                \text{Alt}|_{\mathcal{B}(V^*)}(\alpha)(w,z,x,y)
+                = \frac{1}{3} \left( \alpha(w,z,x,y) + \alpha(w, x,y,z) + \alpha(w,y,z,x) \right)
+            \]
+            and show it is onto as a map $\mathcal{B}(V^*) \to \Lambda^4(V^*)$.
+
+            Recall that
+            \[
+                \text{Alt}(\alpha)
+                = \frac{1}{24} \sum_{\sigma\in S_4} \text{sign}(\sigma)\alpha^\sigma
+            \]
+            but our space $\mathcal{B}(V^*)$ is equipped with the symmetries (a-c).
+            From permutations
+            \[
+                id,(12),(34),(12)(34),(13)(24),(14)(23),(1324),(1423)
+            \]
+            we get $8\cdot\alpha(w, z, x, y)$,
+            and similarly the other two groups of eight permutations give $8\times$ the other two terms.
+            Hence the formula indeed holds.
+
+            The restriction is surjective, since every $\alpha \in \Lambda^4(V^*)$ satisfies (a-c) and thus lies in $\mathcal{B}(V^*)$,
+            so $\text{Alt}|_{\mathcal{B}(V^*)}(\alpha) = \alpha$.
+        \item We now determine the dimension of $\mathcal{R}(V^*)$.
+
+            Since $\mathcal{R}(V^*)$ is precisely the kernel of the above restriction,
+            by Rank-Nullity Theorem we have
+            \[
+                \dim\mathcal{R}(V^*)
+                = \dim\mathcal{B}(V^*) - \dim\Lambda^4(V^*)
+                = \frac{n(n-1)(n^2-n+2)}{8} - \binom{n}{4}
+                = \frac{n^2(n^2-1)}{12}
+            \]
+    \end{enumerate}
+\end{Exercise}
+
+\begin{Exercise}
+    Let $(M, g)$ be a Riemannian manifold, $p \in M$ and $V \subset T_pM$ an
+    open neighbourhood of zero on which $\text{exp}_p$ is a diffeomorphism onto
+    $U \subset M$.
+    Let $v, w \in T_pM$ be non-zero linearly independent vectors that span $\pi = \Lin(v, w) \leq T_pM$,
+    and denote by $S(\pi) = \text{exp}_p(V \cap \pi)$ the embedded Riemannian $2$-submanifold of $M$,
+    swept out by geodesics whose initial velocities lie in $\pi$.
+    We define the \emph{sectional curvature} of the plane $\pi$ as
+    \[
+        \text{sec}(\pi) = \text{sec}(v, w) = \frac{1}{2} R_{S(\pi)}(p)
+    \]
+    where $R_{S(\pi)}$ denotes the intrinsic scalar curvature of $S(\pi)$.
+    \begin{enumerate}[label=(\roman*)]
+        \item Let us show that there holds
+            \[
+                \text{sec}(v, w) = \frac{R(v, w, v, w)}{|| v \wedge w ||^2}
+            \]
+            where $||v \wedge w||^2 = ||v||^2||w||^2 - \langle v, w \rangle^2$.
+            % Lee - Riemannian pp.251-252
+            
+            We first show that the Second Fundamental Form of $S(\pi)$ vanishes at $p$.
+            Let $z \in \pi$ be an arbitrary vector and let $\gamma_z$ be the $g$-geodesic
+            with initial velocity $z$ whose image lies in $S(\pi)$ for some $t$ small enough.
+            By the Gauss Formula from Tutorials, we get
+            \[
+                0 = D_t\gamma_z' = \hat{D}_t\gamma_z' + \text{II}(\gamma_z', \gamma_z')
+            \]
+            where we denote by $\hat{\cdot}$ induced objects on $S(\pi)$, e.g., $\hat{g}$ is the metric induced by $g$ on $S(\pi)$.
+            Since the terms on the RHS are by definition orthogonal, they must both vanish.
+            If we evaluate at $t = 0$ we get $\text{II}(z, z) = 0$, and since $z \in \pi = T_pS(\pi)$
+            was arbitrarily chosen and $\text{II}$ is symmetric, $\text{II}$ must be zero at $p$.
+            The Gauss Equation from Tutorials then yields that at $p$ we have
+            \[
+                R(w, z, x, y) = \hat{R}(w, z, x, y)
+            \]
+            
+            We now prove the equality for the case where $v, w$ are orthonormal.
+            Indeed, $(v, w)$ is then an orthonormal basis for $\pi$,
+            and recall that the scalar curvature is locally given by $R = g^{ij}R_{ij} \overset{ONB}{=} R_{11} + R_{22}$.
+            The sectional curvature of $\pi$ must then be
+            \begin{align*}
+                \text{sec}(v, w)
+                &= \frac{1}{2}R_{S(\pi)}(p) \\
+                &= \frac{1}{2} \left( \hat{R}(v, w, v, w) + \hat{R}(w, v, w, v) \right) \\
+                &= \hat{R}(v, w, v, w) \\
+                &= R(v, w, v, w)
+            \end{align*}
+            which is precisely our formula, since
+            \[
+                ||v \wedge w||^2 = ||v||^2||w||^2 - \langle v, w \rangle^2 = 1 \cdot 1 - 0 = 1
+            \]
+            To generalize to any basis of $\pi$ we employ Gram-Schmidt.
+            Let now $(v, w)$ denote an arbitrary basis of $\pi$.
+            By the Gram-Schmidt algorithm we get
+            \begin{align*}
+                &b_1 = \frac{v}{|v|} &b_2 = \frac{w - \langle w, b_1 \rangle b_1}{| w - \langle w, b_1 \rangle b_1|}
+            \end{align*}
+            The above calculation then yields
+            \begin{align*}
+                \text{sec}(v, w)
+                &= \frac{1}{2}R_{S(\pi)}(p) \\
+                &= R(b_1, b_2, b_1, b_2) \\
+                &= R\left( \frac{v}{|v|}, \frac{w - \langle w, b_1 \rangle b_1}{| w - \langle w, b_1 \rangle b_1|}, \frac{v}{|v|}, \frac{w - \langle w, b_1 \rangle b_1}{| w - \langle w, b_1 \rangle b_1|} \right) \\
+                &= \frac{R(v, w, v, w)}{|v|^2 |w - \langle w, b_1 \rangle b_1 |^2}
+            \end{align*}
+            where we use the fact that $b_1$ is by construction a multiple of $v$ and hence
+            $R(v, b_1, \cdot, \cdot) = R(\cdot,\cdot, v, b_1) = 0$.
+            The denominator is then simplified into
+            \[
+                |v|^2 |w - \langle w, b_1 \rangle b_1|^2
+                = |v|^2 \left( |w|^2 - 2\frac{\langle w, v\rangle^2}{|v|^2} + \frac{\langle w, v \rangle^2}{|v|^2} \right) = |v|^2|w|^2-\langle v, w\rangle^2 = |v\wedge w|^2
+            \]
+            which proves the formula.
+        \item Suppose that $R_1$ and $R_2$ are two algebraic curvature tensors on some finite dimensional vector space $V$ such that
+            \[
+                R_1(v, w, v, w) = R_2(v, w, v, w)
+            \]
+            for any $v, w \in V$.
+            Let us prove that $R_1 = R_2$.
+            % Lee - Riemannian pp.252-253
+
+            First of all, we can assume without loss of generality that $v,w$ are linearly independent, otherwise the equation reads $0=0$.
+            %In this case $|v \wedge w|^2 \neq 0$ and we get the equivalent equation
+            %\[
+                %\frac{R_1(v, w, v, w)}{|| v \wedge w||^2} = \frac{R_2(v, w, v, w)}{|| v \wedge w||^2}
+            %\]
+            As usual in such proofs, we define $D = R_1 - R_2$.
+            Since algebraic curvature tensors form a vector space, $D$ is also an algebraic curvature tensor,
+            and we have that $D(v,w,v,w) = 0$ for all $v, w \in V$.
+            We get
+            \begin{align*}
+                0
+                &= D(v + w, x, v + w, x) \\
+                &= D(v, x, v, x) + D(v, x, w, x) + D(w, x, v, x) + D(w, x, w, x) \\
+                &= 2 D(v, x, w, x)
+            \end{align*}
+            and it follows that
+            \begin{align*}
+                0
+                &= D(v, x + u, w, x + u) \\
+                &= D(v, x, w, x) + D(v, x, w, u) + D(v, u, w, x) + D(v, u, w, u) \\
+                &= D(v, x, w, u) + D(v, u, w, x) \\
+                &\overset{(b)}{=} - D(v, x, u, w) - D(v, u, x, w)
+            \end{align*}
+            The Bianchi Identity from Tutorials now yields
+            \begin{align*}
+                0
+                &= D(v, w, x, u) + D(w, x, v, u) + D(x, v, w, u) \\
+                &= D(v, w, x, u) + D(w, v, x, u) + D((v, x, w, u) \\
+                &= 3D(v, w, x, u)
+            \end{align*}
+            for all $v, w, u, x$.
+            Therefore $D = 0$.
+        \item Let us prove that the following are equivalent:
+            \begin{enumerate}[label=(\alph*)]
+                \item For any plane $\pi \leq T_pM$ there holds $\text{sec}(\pi) = C$.
+                \item There holds $R(x, y)z = C\cdot(\langle y, z\rangle x - \langle z, x\rangle y)$ for any $x, y, z \in T_pM$.
+                \item There holds $R(x, y)z = C\cdot(x - \langle x, y\rangle y)$ for any $x, y \in T_pM$ where $y$ has unit length.
+            \end{enumerate}
+            \begin{itemize}
+                \item \underline{$(a)\implies(b)$:}
+                    Recall that
+                    \[
+                        R(w, z, x, y) = \langle w, R(x, y)z\rangle
+                    \]
+                    and define
+                    \[
+                        S(w, z, x, y) = \langle w, S(x, y)z\rangle
+                    \]
+                    for $S(x, y)z = k(\langle y, z\rangle x - \langle z, x\rangle y)$.
+                    Let $v, w$ be some (linearly independent) basis for $\pi$.
+                    Then by definition $R(v, w, v, w) = S(v, w, v, w)$ with the constant $k = C$,
+                    hence by (2.ii) $R = S$
+                    By linearity of inner products
+                    \[
+                        R(x, y)z = S(x, y)z = C(\langle y, z\rangle x - \langle z, x \rangle y)
+                    \]
+                \item \underline{$(b)\implies(c)$:}
+                    Simply input $z = y$.
+                \item \underline{$(c)\implies(a)$:}
+                    Assume $||w|| = 1$ and calculate
+                    \begin{align*}
+                        R(v, w, v, w)
+                        &= \langle v, R(v, w)w\rangle \\
+                        &= \langle v, C(v - \langle v, w\rangle w)\rangle \\
+                        &= C(||v||^2 - \langle v, w \rangle^2) \\
+                    \end{align*}
+                    For a non-unit $w$ simply replace $w$ with $\frac{w}{||w||}$
+                    and obtain $C||v\wedge w||^2$.
+            \end{itemize}
+        \item Let $v \in T_pM$ be a unit tangent vector.
+            We will prove that there holds
+            \[
+                \text{Ric}(v, v) = \sum_{i=2}^{n}\text{sec}(v, v_i)
+            \]
+            where $v_2,\dots,v_n \in T_pM$ is any completion of $v_1 = v$ to an orthonormal basis of $T_pM$.
+            Furthermore, we will show that
+            \[
+                R(p) = \sum_{i\neq j} \text{sec}(v_i,v_j)
+            \]
+
+            Let $v$ be as above and let $(v_1,\dots,v_n)$ be any orthonormal basis with $v_1 = v$.
+            Then the Ricci curvature is given by
+            \[
+                \text{Ric}(v, v)
+                = R_{1k1}^k(p)
+                = \sum_{k=1}^{n} R(v_1,v_k,v_1,v_k)
+                = \sum_{k=2}^{n}\text{sec}(v, v_k)
+            \]
+            For the scalar curvature we calculate
+            \begin{align*}
+                R(p)
+                &= R_i^i(p)
+                = \sum_{i=1}^{n}\text{Ric}(v_i,v_i)
+                = \sum_{i=1,j=1}^{n}R(v_i,v_j,v_i,v_j)
+                = \sum_{i\neq j} \text{sec}(v_i,v_j)
+            \end{align*}
+        \item Suppose now that $(x^i)$ are some local coordinates on $M$
+            and that $(M, g)$ has constant sectional curvature $C$.
+            Let us show that there holds
+            \begin{align*}
+                R_{lkij} &= C(g_{li}g_{kj} - g_{lj}g_{ki}) \\
+                R_{ij} &= C(n-1)g_{ij} \\
+                R &= Cn(n-1)
+            \end{align*}
+            
+            The first equality follows from (3iii.b)
+            \[
+                R_{lkij}
+                =\langle \partial_l, R(\partial_i,\partial_j)\partial_k\rangle
+                = C \langle \partial_l, \langle \partial_j,\partial_k\rangle\partial_i - \langle \partial_k,\partial_i\rangle\partial_j\rangle
+                = C(g_{li}g_{kj} - g_{lj}g_{ki})
+            \]
+            The second equality goes similarly, since $R_{ij} = g^{kl}R_{kilj}$.
+            The third equality of course immediately follows from the last part of (2iv)
+            \[
+                R = \sum_{i\neq j} C = Cn(n-1)
+            \]
+        \item For any $C \in \R$ and $n \geq 2$ we now give an example of an $n$-dimensional Riemannian manifold with constant sectional curvature $C$.
+            % Lee - Riemanninan p.254
+            For $C = 0$ we clearly have that $(\R^n, g)$ has sectional curvature $0$ for any $n \geq 2$ with the standard Euclidean metric.
+            Indeed, its curvature tensor is identical to zero.
+
+            For $C > 0$ we have already calculated at Tutorials that all principal curvatures of $(\S^n(R), g_R)$ are $-\frac{1}{R}$,
+            which makes the sectional curvature of $\S^n(R)$ equal to $\frac{1}{R^2}$.
+            This can be easily verified since for any plane $\pi$ in $\S^n(R)$ we have that $S(\pi)$ is isomorphic to $\S^2(R)$ because it is spanned by two great circles.
+
+            With a similar thought process we get that $(\H^n(R), g_R)$ has sectional curvature $-\frac{1}{R^2}$ since we know from Tutorials that $\H$ has Gaussian curvature $-\frac{1}{R^2}$.
+    \end{enumerate}
+\end{Exercise}
+
+\begin{Exercise}
+    Let $U \subset \R^2$ be an open subset and let $\vec{r} \colon U \to \R^3$ be a smooth embedding,
+    so that $S = \vec{r}(U)$ is an embedded Riemannian submanifold of $\R^3$.
+    Denote by $\vec{r}(u, v) = (x(u, v), y(u, v), z(u, v))$ the elements of $S$.
+    \begin{enumerate}[label=(\roman*)]
+        \item Let us write down the metric $g$ and the scalar second fundamental form $h$ on $S$ in matrix form
+            \[
+                [g] =
+                \begin{bmatrix}
+                    E & F \\
+                    F & G 
+                \end{bmatrix},\quad
+                [h] =
+                \begin{bmatrix}
+                    L & M \\
+                    M & N
+                \end{bmatrix}
+            \]
+            in term of $\vec{r}$.
+            We will then write down the shape operator $S$ in $\R^3$
+            and provide a formula for the Gaussian curvature $\kappa$
+            and the principal curvatures.
+            
+            We follow the definition for $[g]$ and obtain
+            \begin{align*}
+                E &= \langle \vec{r}_u(u, v), \vec{r}_u(u, v) \rangle \\
+                F &= \langle \vec{r}_u(u, v), \vec{r}_v(u, v) \rangle \\
+                G &= \langle \vec{r}_v(u, v), \vec{r}_v(u, v) \rangle
+            \end{align*}
+            since our local frame at any point is now given by $\partial_u\vec{r}, \partial_v\vec{r}$.
+
+            For the Scalar Second Fundamental Form we use an exercise from Tutorials about the Weingarten equation.
+            Let $W$ be some unit field normal to $S$ in $\R^3$.
+            Then, since
+            \[
+                0
+                = \langle \partial_u\vec{r}(u, v), W(u, v) \rangle
+                = \langle \partial_v\vec{r}(u, v), W(u, v) \rangle
+            \]
+            by differentiating
+            \begin{align*}
+                0 &= \langle \partial_u\partial_u\vec{r}(u, v), W(u, v)\rangle + \langle \partial_u\vec{r}(u, v), \nabla_u W(u, v) \rangle \\
+                0 &= \langle \partial_u\partial_v\vec{r}(u, v), W(u, v)\rangle + \langle \partial_u\vec{r}(u, v), \nabla_u W(u, v) \rangle \\
+                0 &= \langle \partial_v\partial_u\vec{r}(u, v), W(u, v)\rangle + \langle \partial_v\vec{r}(u, v), \nabla_v W(u, v) \rangle \\
+                0 &= \langle \partial_v\partial_v\vec{r}(u, v), W(u, v)\rangle + \langle \partial_v\vec{r}(u, v), \nabla_v W(u, v) \rangle
+            \end{align*}
+            The rightmost terms are by definition of the scalar fundamental form precisely its coefficients,
+            hence
+            \begin{align*}
+                L &= \langle \vec{r}_{uu}(u, v), W(u, v)\rangle \\
+                M &= \langle \vec{r}_{uv}(u, v), W(u, v)\rangle \\
+                N &= \langle \vec{r}_{vv}(u, v), W(u, v)\rangle
+            \end{align*}
+            Of course finding $W$ is easy in $\R^3$.
+            We get
+            \[
+                W(u, v) = \frac{\vec{r}_u (u, v) \times \vec{r}_v (u, v)}{||\vec{r}_u (u, v) \times \vec{r}_v (u, v)||}
+            \]
+            where we get to choose the sign in the front, which then determines $h$.
+
+            The shape operator is given by the Weingarten equation
+            \begin{align*}
+                sX
+                &= -\nabla_XW \\
+                &= -X^j(\partial_jW^i)\partial_i \\
+                &= -X^uW_u^u\vec{r}_u - X^uW_u^v\vec{r}_v-X^vW_v^u\vec{r}_u - X^vW_v^v\vec{r}_v
+            \end{align*}
+            Note that in the last line, upper indices denote the component, and lower indices denote differentiation.
+            For principal curvatures we are looking for eigenvalues of $s$,
+            so the local extremes of the function
+            \[
+                \kappa_n(t, s) =
+                \begin{bmatrix}
+                    t & s
+                \end{bmatrix}
+                \begin{bmatrix}
+                    L & M \\
+                    M & N
+                \end{bmatrix}
+                \begin{bmatrix}
+                    t\\
+                    s
+                \end{bmatrix}
+            \]
+            where
+            \[
+                ||(t, s)||^2 =
+                \begin{bmatrix}
+                    t & s
+                \end{bmatrix}
+                \begin{bmatrix}
+                    E & F \\
+                    F & G
+                \end{bmatrix}
+                \begin{bmatrix}
+                    t\\
+                    s
+                \end{bmatrix}
+                = 1
+            \]
+            and we know from Introduction to differential geometry that we get the Gaussian curvature
+            \[
+                \kappa = \frac{LN - M^2}{EG - F^2} = \frac{\det [h]}{\det [g]}
+            \]
+        \item Let us express the second partial derivatives $\vec{r}_{uu}$, $\vec{r}_{uv}$,$\vec{r}_{vv}$
+            in terms of Christoffel symbols on $S$ and the components of the scalar second fundamental form $h$.
+            
+            From the Gauss formula
+            \[
+                \tilde{\nabla}_XY = \nabla_XY + \text{II}(X, Y)
+            \]
+            it directly follows that by components we have
+            \begin{align*}
+                \vec{r}_{uu} &= \Gamma_{uu}^u\vec{r}_u + \Gamma_{uu}^v\vec{r}_v + LW \\
+                \vec{r}_{uv} &= \Gamma_{uv}^u\vec{r}_u + \Gamma_{uv}^v\vec{r}_v + MW \\
+                \vec{r}_{vv} &= \Gamma_{vv}^u\vec{r}_u + \Gamma_{vv}^v\vec{r}_v + NW
+            \end{align*}
+            since $\vec{r}_u,\vec{r}_v,W$ form a basis of $\R^3$.
+        \item We will now show that the components of Riemann and Ricci curvature tensors on $S$
+            are given by
+            \begin{align*}
+                R_{lkij} &= \kappa(g_{li}g_{kj} - g_{lj}g_{ki}) \\
+                R_{ij} &= \kappa g_{ij}
+            \end{align*}
+            
+            The only non-zero Riemann tensor coefficients are of the form
+            $R_{ijij}$ and in both cases the first equation translates to
+            \[
+                R_{ijij} = \kappa (EG - F^2) = LN - M^2 = \det [h]
+            \]
+            which holds true by the Gauss Equation.
+            Again, the second equality follows, since $R_{ij} = g^{kl}R_{kilj}$.
+        \item We now consider a surface of revolution, parametrized by
+            \[
+                \vec{r}(u, v) = (f(u)\cos v, f(u) \sin v, g(u))
+            \]
+            where $f, g \colon I \to \R$ are defined on an open interval $I$,
+            so that $U = I \times (0, 2\pi)$ and $f$ is positive.
+
+            We first calculate the Gaussian curvature of $S$ for the case when $f'(u)^2 + g'(u)^2 = 1$,
+            i.e., when the curve $u \mapsto \vec{r}(u, 0)$ is naturally parametrized.
+            The naturality condition gives us a nice expression for the induced metric on $S$
+            \begin{align*}
+                \vec{r}^*\tilde{g}
+                &= d(f(u)\cos v)^2 + d(f(u)\sin v)^2 + dg(u)^2 \\
+                &= (f'(u)\cos v du - f(u)\sin v dv)^2 + (f'(u)\sin v du + f(u)\cos v dv)^2 + (g'(u)du)^2 \\
+                &= (f'(u)^2 + g'(u)^2)du^2 + f(u)^2dv^2 \\
+                &= du^2 + f(u)^2dv^2
+            \end{align*}
+            from which it immediately follows that
+            \[
+                E = 1,\quad F = 0,\quad G = f^2
+            \]
+            Furthermore, the second derivatives are as follows
+            \begin{align*}
+                \vec{r}_{uu} &= (f''(u)\cos v, f''(u)\sin v, g''(u)) \\
+                \vec{r}_{uv} &= (-f'(u)\sin v, f'(u)\cos v, 0) \\
+                \vec{r}_{vv} &= (-f(u)\cos v, -f(u) \sin v, 0)
+            \end{align*}
+            and the unit normal field is
+            \[
+                W
+                = \frac{(g'(u)f(u)\cos v, -g'f\sin v, f f' (\cos^2 v + \sin^2 v))}{\sqrt{f^2(u)(f'(u)^2 + g'(u)^2)}}
+                = (-g'(u)\cos v, -g'(u)\sin v, f'(u))
+            \]
+            which yields
+            \[
+                N = -g'f'' + f'g'',\quad M = 0,\quad N = fg'
+            \]
+            Notice also that
+            \[
+                f'^2 + g'^2 = 1
+                \implies 2f'f'' + 2g'g'' = 0
+                \implies g'g'' = -f'f''
+            \]
+            The Gaussian curvature is then calculated as
+            \[
+                \kappa
+                = \frac{(f'g'' - g'f'')fg'}{f^2}
+                = \frac{f'g'g'' - (g')^2f''}{f}
+                = \frac{-(f')^2f'' - (g')^2f''}{f}
+                = - \frac{f''}{f}
+            \]
+            
+            We now show that any meridian is a geodesic and that a parallel is a geodesic iff $f'(u_0) = 0$.
+            We write
+            \[
+                L = \frac{1}{2} (\dot{u}^2 + f(u)^2 \dot{v}^2)
+            \]
+            and consider the Euler-Lagrange equations
+            \begin{align*}
+                \underline{u}:\quad
+                & \frac{d}{dt}\left( \frac{\partial L}{\partial\dot{u}} \right) - \frac{\partial L}{\partial u}
+                = \ddot{u} - f(u)f'(u)\dot{v}
+                = 0 \\
+                \underline{v}:\quad
+                & \frac{d}{dt}\left( \frac{\partial L}{\partial\dot{v}} \right) - \frac{\partial L}{\partial v}
+                = f(u)^2\ddot{v}
+                = 0
+            \end{align*}
+            It is now clear that these equations are satisfied for any path $u \mapsto \vec{r}(u, v_0)$,
+            whereas in order to make the first equation hold for a path $v \mapsto \vec{r}(u_0,v)$,
+            we have to eliminate the second term, but since $f$ is positive, we must have $f'(u_0) = 0$.
+        \item We parametrize the torus $T(r, R)$ by $\vec{r} \colon U \to \R^3$,
+            \[
+                \vec{r}(u, v) = ((R + r\cos u)\cos v, (R + r\cos u)\sin v, r\sin u)
+            \]
+            where $r < R$.
+
+            Let us first calculate its Gaussian curvature.
+            We derive
+            \begin{align*}
+                \vec{r}_u &= (-r\sin u \cos v, -r\sin u \sin v, r\cos u) \\
+                \vec{r}_v &= (-(R + r\cos u)\sin v, (R + r\cos u)\cos v, 0)
+            \end{align*}
+            and obtain
+            \begin{align*}
+                E
+                &= r^2\sin^2u\cos^2v + r^2\sin^2u\sin^2v + r^2\cos^2u \\
+                &= r^2\sin^2u + r^2\cos^2u \\
+                &= r^2 \\
+                F
+                &= rR\sin u \sin v \cos v + r^2\sin u \sin v \cos u \cos v \\
+                &- rR\sin u \sin v\cos v - r^2\sin u\sin v\cos u\cos v \\
+                &= 0 \\
+                G
+                &= (R + r\cos u)^2 \sin^2v + (R + r\cos u)^2 \cos^2 v \\
+                &= (R + r\cos u)^2
+            \end{align*}
+            The second derivates are
+            \begin{align*}
+                \vec{r}_{uu} &= (-r\cos u\cos v, -r\cos u\cos v, -r\sin u) \\
+                \vec{r}_{uv} &= (r\sin u\sin v, -r\sin u\cos v, 0) \\
+                \vec{r}_{vv} &= (-(R + r\cos u)\cos v, -(R + r\cos u)\sin v, 0)
+            \end{align*}
+            and we see the normal is
+            \[
+                W = (\cos u \cos v, \cos u \sin v, \sin u)
+            \]
+            Its partial derivatives give us the shape operator
+            \begin{align*}
+                -s\vec{r}_u
+                &= W_u
+                = (-\sin u\cos v, -\sin u \sin v, \cos u) \\
+                -s\vec{r}_v
+                &= W_v
+                = (- \cos u \sin v, \cos u\cos v, 0)
+            \end{align*}
+            Comparing these to $\vec{r}_u,\vec{r}_v$ we obtain eigenvalues
+            \[
+                s\vec{r}_u = -\frac{1}{r}\vec{r}_u,\quad s\vec{r}_v = -\frac{\cos u}{R + r\cos u}\vec{r}_v
+            \]
+            Since $\kappa$ is the determinant of $s$, we get
+            \[
+                \kappa
+                = \det
+                \begin{bmatrix}
+                    -\frac{1}{r} & 0 \\
+                    0 & -\frac{\cos u}{R + r\cos u}
+                \end{bmatrix}
+                = \frac{\cos u}{r(R + r\cos u)}
+            \]
+
+            Finally, let us show that the integral of $\kappa$ over $T(r, R)$ is zero.
+            \begin{align*}
+                \int_{T(r, T)} \kappa dA
+                &= \int_{0}^{2\pi}\int_{0}^{2\pi} \kappa \sqrt{EG-F^2}dudv \\
+                &= \int_{0}^{2\pi}\int_{0}^{2\pi} \frac{r\cos u(R + r\cos u)}{r(R + r\cos u)} dudv \\
+                &= 2\pi \int_{0}^{2\pi} \cos u du \\
+                &= 0
+            \end{align*}
+    \end{enumerate}
+\end{Exercise}
+
+\end{document}
