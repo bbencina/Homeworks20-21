@@ -1,0 +1,876 @@
+\documentclass[a4paper, 12pt]{article}
+
+\usepackage[english]{babel}
+\usepackage[margin=0.5in]{geometry}
+
+\input{basic}
+\input{math}
+
+\begin{document}
+
+\begin{titlepage}
+\centering
+\textbf{\Huge{The de Rham Theorem}}
+%\vfill
+%\textbf{\LARGE{with applications to algebraic topology}}
+\vfill\vfill
+\textsc{\Large{Benjamin Benčina}}
+\vfill\vfill
+\textsc{\large{University of Ljubljana}}
+
+\textsc{\large{Faculty of Mathematics and Physics}}
+
+\textsc{\large{Department of Mathematics}}
+\vfill\vfill\vfill
+
+{\large\today}
+
+\end{titlepage}
+
+\tableofcontents
+\newpage
+
+\section{Introduction}
+
+The ability to assign simple algebraic objects to more complicated objects from
+various disciplines of mathematics and then deduce information about the object
+is an exceedingly powerful one, and this strongly becomes apparent when
+assigning homology groups to manifolds.  Homology and its dual, cohomology,
+have established themselves in the past century as important tools in the study
+of manifolds.  In this essay, we take a closer look at one of the prime
+examples of a cohomology theory that arises naturally from the study of smooth
+manifolds, in particular while studying differential forms.  What starts as a
+seemingly simple question -- is every closed form exact? -- turns into a
+beautiful theory that recontextualizes what we know about (co)homology in a
+concrete geometric setting.
+
+After discussing the necessary preliminary topics, integration on manifolds and
+singular (co)homology, we will dive right into the topic at hand and define the
+de Rham cohomology groups.  We will then see that these groups are not only
+invariant with respect to diffeomorphisms, but also with respect to
+homeomorphisms, which begs the question whether there exists a merely
+topological way of viewing these groups.  To answer this question we will
+construct an isomorphism between the de Rham cohomology groups and the singular
+cohomology groups, yielding the famous \emph{de Rham theorem}.  Finally, after
+performing some simple calculation, we will try to view the two products on
+singular (co)homology, cup and cap, in a new geometric light, and then restate
+the \emph{Poincar\'e duality}.
+
+\section{Preliminaries}
+
+This section will cover the two major necessary topics one needs to start
+working with the de Rham cohomology, namely differential topology and algebraic
+topology. The differential topology subsection will discuss integration of
+differential forms over manifolds and Stokes' Theorem.  We will then generalize
+this to \emph{manifolds with corners}, which will help us later when defining
+the \emph{de Rham homomorphism}.  The algebraic topology subsection will briefly
+discuss singular homology and cohomology, and some of its properties.  We
+intentionally omit proofs in this section, since Stokes' Theorem is not the
+topic of this essay, but sources will be provided.
+
+\subsection{Differential topology}
+
+A key concept involved in construction the de Rham homomorphism is integration of differential forms over manifolds.
+We first start with the real case.
+Let $D$ be a domain of integration in $\R^n$ and let $\omega$ be a (continuous) $n$-form on $\closure{D}$ written as
+$\omega = f dx^1\wedge\cdots dx^n$ for some continuous function $f \colon \closure{D} \to \R$.
+We define the \emph{integral of $\omega$ over $D$} to be
+\[
+    \int_{D} \omega = \int_{D} f \; dV
+\]
+That is, we compute the integral of such a form by simply erasing the wedges.
+The definition for the real half-space $\H^n$ is identical.
+
+To generalize this definition to the case of manifolds, we have to consider the integral of a pull-back of a differential form.
+The following proposition is proved in e.g. \cite[Prop. 16.1]{Lee2012}.
+
+Suppose $D$ and $E$ are open domains of integrations in $\R^n$ or $\H^n$,
+and $G \colon \closure{D} \to \closure{E}$ a smooth map that restricts to an orientation-preserving or orientation-reversing diffeomorphism from $D$ to $E$.
+If $\omega$ is an $n$-form on $\closure{E}$, then
+\[
+    \int_{D} G^*\omega =
+    \begin{cases}
+        + \int_{E} \omega &\text{if $G$ is orientation-preserving,} \\
+        - \int_{E} \omega &\text{if $G$ is orientation-reversing.}
+    \end{cases}
+\]
+
+Using the above proposition we can now define the integral of a differential form over an oriented manifold.
+Let $M$ be an oriented manifold with or without boundary and let $\omega$ be an $n$-form on $M$.
+Suppose $\omega$ is compactly supported in the domain of a single smooth chart $(U,\varphi)$ that is either positively or negatively oriented.
+We then define the \emph{integral of $\omega$ over $M$} to be
+\[
+    \int_{M} \omega = \pm \int_{\varphi(U)} \left( \varphi^{-1} \right)^*\omega
+\]
+with the positive sign for a positively oriented chart, and the negative sign otherwise.
+It is of course easy to see that this definition does not depend on the choice of chart containing the support of $\omega$.
+
+To integrate over the entire manifold, we combine this definition with a partition of unity.
+Let $M$ be an oriented manifold with or without boundary and let $\omega$ be a compactly supported $n$-form on $M$.
+Let $\left\{ U_i \right\}$ be a finite open cover of the support of $\omega$ by domains of positively or negatively oriented smooth charts,
+and let $\left\{ \psi_i \right\}$ be a subordinate smooth partition of unity.
+We define the \emph{integral of $\omega$ over $M$} to be
+\[
+    \int_{M} \omega = \sum_{i} \int_{M} \psi_i\omega
+\]
+This definition is independent of the choice of the finite cover or the partition of unity.
+For the zero-dimensional case the integral of a compactly supported $0$-form, i.e., a real valued function,
+is merely the sum of values of the function, adjusting for orientation with signs.
+As expected, this integral has the usual ``nice'' properties (\cite[Prop. 16.6]{Lee2012}).
+%As expected, this integral has the usual ``nice'' properties (proof in \cite[Prop. 16.6]{Lee2012}).
+%\begin{proposition}
+    %Suppose $M$ and $N$ are non-empty oriented smooth $n$-manifolds with or without boundary,
+    %and $\omega,\eta$ are compactly supported $n$-forms on $M$.
+    %\begin{enumerate}[label=(\alph*)]
+        %\item If $a, b \in \R$ then $\int_{M} a\omega + b\eta = a\int_{M} ;Gw + b\int_{M} \eta$.
+        %\item If $-M$ denotes $M$ with the opposite orientation then $\int_{-M}\omega = - \int_{M} \omega$.
+        %\item If $\omega$ is a positively oriented volume form then $\int_{M}\omega > 0$.
+        %\item If $F \colon N \to M$ is an orientation-preserving or orientation-reversing diffeomorphism then
+            %\[
+                %\int_{M} \omega =
+                %\begin{cases}
+                    %+\int_{N} F^*\omega &\text{if $F$ is orientation-preserving,} \\
+                    %-\int_{N} F^*\omega &\text{if $F$ is orientation-reversing.}
+                %\end{cases}
+            %\]
+    %\end{enumerate}
+%The last property gives us an easier method of actually calculating this integral via local parametrizations.
+%\end{proposition}
+
+We can now finally state Stokes' Theorem, one of the most important theorems in the theory of smooth manifolds (proof in \cite[Thm. 16.11]{Lee2012}).
+\begin{theorem}
+    Let $M$ be an oriented smooth $n$-manifold with boundary and let $\omega$ be a compactly supported smooth $(n-1)$-form on $M$.
+    Then
+    \[
+        \int_{M} d\omega = \int_{\partial M} \omega
+    \]
+\end{theorem}
+\begin{remark}
+    The manifold $\partial M$ is understood to have the induced orientation,
+    and the $\omega$ on the right-hand side is to be interpreted as $(\iota_{\partial M})^*\omega$,
+    i.e., pull-back with respect to the inclusion map $\iota \colon \partial M \to M$.
+\end{remark}
+
+Sadly, this construction alone is not enough, as the de Rham theorem will require us to integrate over simplices.
+To that effect, we define the so-called manifolds with corners.
+Denote
+\[
+    \overline{\R}_+^n = \left\{ (x^1,\dots,x^n) \in \R^n ; \; x^i \geq 0 \right\}
+\]
+Suppose $M$ is a (topological) $n$-manifold with boundary.
+A \emph{chart with corners} for $M$ is a pair $(U, \varphi)$ where $U \subseteq M$ is open and $\varphi$ is a homeomorphism $U \to \hat{U}\subseteq \overline{\R}_+^n$.
+We define a \emph{smooth structure with corners} and by extension a \emph{smooth manifold with corners} in the usual way.
+\begin{remark}
+Note that by definition any closed rectangle in $\R^n$ is a smooth $n$-manifold with corners,
+including all standard $n$-simplices (which are domains of singular $n$-simplices).
+\end{remark}
+
+One problem that arises when trying to integrate over the boundary of a smooth manifold with corners is that the boundary itself is not a smooth manifold with corners.
+However, this problem is easily circumvented.
+Denote by
+\[
+    H_i = \left\{ (x^1,\dots,x^n) \in \overline{\R}_+^n ; \; x^i = 0 \right\}
+\]
+the $i$-th $(n-1)$-dimensional smooth manifold with corners.
+Let $M$ be an oriented smooth $n$-manifold with corners, and suppose $\omega$ is an $(n-1)$-form on $\partial M$ compactly supported in the domain of a single oriented smooth chart with corners.
+We define the integral of $\omega$ over $\partial M$ by
+\[
+    \int_{\partial M} \omega = \sum_{i = 1}^{n}\int_{H_i} \left( \varphi^{-1} \right)^*\omega
+\]
+The Stokes' Theorem for smooth manifolds with corners can now be stated identically as above.
+
+\subsection{Algebraic topology}
+
+Let us now take a quick detour into the world of algebraic topology and recall singular homology.
+Let $X$ be any topological space and let us denote by $\Delta^n = [e_0,\dots,e_n]$ the standard $n$-simplex.
+A \emph{singular $n$-simplex} is a continuous map
+\[
+    \sigma \colon \Delta^n \to X
+\]
+For any $i = 0,\dots, n$ let $\varphi_i^n \colon \Delta^{n-1} \to \Delta^n$ be the $i$-th face map, defined by
+\[
+    \varphi_i^n(\Delta^{n-1}) = [e_0,\dots,\hat{e_i},\dots,e_n]
+\]
+For any $n\geq 0$, the \emph{$n$-th singular chain group} is the free Abelian group $C_n(X)$ generated by singular $n$-simplices in $X$.
+We define a \emph{boundary homomorphism} between chain groups $\partial = \partial_n \colon C_n(X) \to C_{n-1}(X)$ by
+\[
+    \partial_n(\sigma) = \sum_{i=0}^{n}(-1)^i\sigma\circ\varphi_i^n
+\]
+Since $\partial_n \circ \partial_{n+1} = 0$ for every $n \leq 0$, the collection $(C_\cdot, \partial_\cdot)$ is the \emph{singular chain complex of $X$}.
+A singular $n$-chain $c$ is called a \emph{cycle} if $\partial c = 0$,\footnote{cf. closed differential form.}
+and a \emph{boundary} of $c = \partial b$ for some singular $(n+1)$-chain $b$.\footnote{cf. exact differential form.}
+We define the \emph{$n$-th singular homology group of $X$} as the quotient group
+\[
+    H_n(X) = \frac{Z_n(X)}{B_n(X)} = \frac{\ker\partial_n}{\im\partial_{n+1}}
+\]
+Homology thus ``measures'' the amount of cycles of a particular dimension that are not boundaries.
+This construction allows the use of quite a few useful algebraic tools such as the Mayer-Vietoris sequence (\cite[p. 149]{Hatcher2002}),
+but we will not discuss them further.
+The only thing we note is that by taking an Abelian group $G$ and constructing $C_n^G(X) = C_n(X) \otimes G$ and $\partial^G = \partial \otimes id_G$,
+and then proceeding as above, we get \emph{homology groups with coefficients in $G$} by defining
+\[
+    H_n(X, G) = \frac{\ker\partial_n^G}{\im\partial_{n+1}^G}
+\]
+
+For us, the much more interesting notion is that of \emph{singular cohomology groups of $X$ with coefficients in $G$}.
+We define by $C_G^n(X) = \Hom(C_n^G(X), G)$ the \emph{$n$-th cochain group} and by $\delta^{n+1} \colon C_G^n(X) \to C_G^{n+1}(X)$,
+\[
+    \delta^{n+1}\alpha = \alpha\circ\partial_{n+1}
+\]
+for every $n\geq 0$ the \emph{$n$-th coboundary map}.
+We of course again have $\delta\circ\delta = 0$, so we define by analogy the \emph{$n$-th cohomology group of $X$}
+\[
+    H^n(X; G) = \frac{\ker\delta_G^{n+1}}{\im\delta_G^n}
+\]
+
+Many algebraic properties of homology transfer to cohomology, some of which we may need later.
+It is worth noting that the cohomology groups of $X$ do not tell us anything fundamentally new about our space,
+but rather give the same information in a more structured way.
+Namely, the collection of cohomology groups can be made into a graded ring.
+
+Of particular interest to us is the special case when $G = \R$.
+It is then easy to see that $H^n(X; \R)$ is a real vector space that is naturally isomorphic to the space $\Hom(H_n(X), \R)$.
+
+While this subsection may have been (overly) abstract, let us now approach a similar idea through a completely different, more concrete and geometric lens.
+
+\section{De Rham cohomology}
+
+Let us recall that a smooth differential form $\omega$ is
+\begin{itemize}
+    \item \emph{closed} if $d\omega = 0$, and
+    \item \emph{exact} if it can be written as $w = d\eta$,
+\end{itemize}
+where $d \colon \Omega^k(M) \to \Omega^{k+1}(M)$ is the exterior derivative on a smooth manifold $M$.
+We consider this immediate consequence of the Stokes' Theorem.
+\begin{corollary}
+    Let $M$ be a compact oriented smooth manifold and $\omega$ a form on $M$.
+    \begin{enumerate}[label=(\alph*)]
+        \item Suppose $M$ is without boundary and $\omega$ is exact,
+            then
+            \[
+                \int_{M} d\omega = 0.
+            \]
+        \item Suppose $M$ can have a boundary and $\omega$ is closed,
+            then
+            \[
+                \int_{\partial M} \omega = 0
+            \]
+    \end{enumerate}
+\end{corollary}
+Because $d \circ d = 0$, every exact form is closed.
+Let us now explore the converse question: Is every closed form exact?
+The following example confirms our suspicions that the answer is indeed negative.
+\begin{example}
+    \label{exa:piercedplane}
+    Let $X = \R^2\setminus\lbrace 0 \rbrace$ be the pierced real plane, and consider
+    \[
+        \omega = \frac{x\; dy - y\; dx}{x^2 + y^2}
+    \]
+    Let $\gamma \colon [0,2\pi] \to X$ be the curve segment defined by $\gamma(t) = (\cos t, \sin t)$.
+    We integrate
+    \[
+        \int_{\gamma}\omega
+        = \int_{[0,2\pi]} \frac{\cos t(\cos t \; dt) - \sin t(-\sin t \; dt)}{\sin^2t + \cos^2t}
+        = \int_{0}^{2\pi}dt
+        = 2\pi
+    \]
+    Hence, $\omega$ cannot be exact by the above corollary.
+\end{example}
+A better question might then be whether we can somehow ``measure'' the non-exactness of closed forms,
+which immediately suggests this might have something to do with homology.
+Indeed, since $d \circ d = 0$ and $d$ is $\R$-linear, we obtain a complex
+\[
+    0 \xrightarrow{} \Omega^0(M) \xrightarrow{d} \Omega^1(M) \xrightarrow{d} \cdots \xrightarrow{d} \Omega^n(M) \xrightarrow{d} 0
+\]
+and consider linear subspaces
+\begin{align*}
+    Z^k(M) &= \ker\left( d \colon \Omega^k(M) \to \Omega^{k+1}(M) \right) = \left\{ \text{closed $k$-forms on $M$} \right\} \\
+    B^k(M) &= \im\left( d \colon \Omega^{k-1}(M) \to \Omega^k(M) \right) = \left\{ \text{exact $k$-forms on $M$} \right\} \\
+\end{align*}
+Since $B^k(M) \leq Z^k(M)$ for every $k$, we define the \emph{$k$-th de Rham cohomology group} to be the quotient vector space (which we call a group out of convention)
+\[
+    H_{\text{dR}}^k(M) = \frac{Z^k(M)}{B^k(M)}
+\]
+Clearly, $H_{\text{dR}}^k(M) = 0$ for $k < 0$ and $k > n = \dim M$, but more importantly,
+$H_{\text{dR}}^k(M) = 0$ if and only if  every closed $k$-form on $M$ is exact.
+\begin{example}
+    The previous example implies that $H_{\text{dR}}^1(\R^2\setminus\lbrace 0\rbrace) \neq 0$.
+\end{example}
+One of the main features of singular (co)homology groups is homeomorphism invariance, i.e., homeomorphic topological spaces have isomorphic (co)homology groups.
+Since we are working with smooth manifolds, let us first show diffeomorphism invariance.
+This will as in the singular case follow from the fact that induced maps are well-behaved.
+\begin{proposition}
+    For any smooth map $F \colon M \to N$ between smooth manifolds with or without boundary,
+    the pull-back $F^* \colon \Omega^k(N) \to \Omega^k(M)$ carries closed forms into closed forms and exact forms into exact forms.
+    It thus descends to a linear map $F^* \colon H_{\text{dR}}^k(N) \to H_{\text{dR}}^k(M)$, called the \emph{induced cohomology map},
+    with the following properties
+    \begin{enumerate}[label=(\alph*)]
+        \item If $G \colon N \to P$ is another smooth map, then $(G\circ F)^* = F^* \circ G^*$.
+        \item If $id$ denotes the identity map on $M$, then $id^*$ is the identity map of $H_{\text{dR}}^k(M)$.
+    \end{enumerate}
+\end{proposition}
+\begin{proof}
+    If $\omega$ is a closed form, then $d(F^*\omega) = F^*(d\omega) = 0$, so $F^*\omega$ is also closed.
+    If $\omega = d\eta$ is exact, then $F^*\omega = F^*(d\eta) = d(F^*\eta)$, so $F^*\omega$ is also exact.
+
+    We define the induced map on the cohomology groups in the obvious way: $F^*[\omega] = [F^*\omega]$.
+    If $\omega$ and $\omega'$ are cohomologous, i.e., they differ by an exact form $d\eta$,
+    then $[F^*\omega'] = [F^*\omega + d(F^*\eta)] = [F^*\omega]$, so this map is indeed well-defined.
+    Then both properties follow from the properties of the pull-back map.
+\end{proof}
+Notice that the properties above remind us of the definition of a functor.
+Indeed, for any $k = 0,\dots,n$, the assignment $M \mapsto H_{\text{dR}}^k(M)$ and $F \mapsto F^*$
+is a contravariant functor from the category of smooth manifolds with boundary to the category of smooth vector spaces.
+The next corollary is then immediate.
+\begin{corollary}
+    Diffeomorphic smooth manifolds with or without boundary have isomorphic de Rham cohomology groups.
+\end{corollary}
+\begin{proof}
+    By functoriality, isomorphisms in one category get mapped to isomorphisms in another.
+\end{proof}
+It turns out, however, that as in the case of singular (co)homology, we can do better.
+\begin{theorem}
+    If $M$ and $N$ are homotopy equivalent smooth manifolds with or without boundary,
+    then $H_{\text{dR}}^k \iso H_{\text{dR}}^k$ for each $k$.
+    The isomorphisms are induced by a smooth homotopy equivalence $F \colon M \to N$.
+\end{theorem}
+\begin{proof}
+    See \cite[Thm. 17.11]{Lee2012} and surrounding propositions.
+\end{proof}
+The upshot of this theorem is that the de Rham cohomology groups of a smooth manifolds $M$ are
+in fact topological invariants, i.e., homeomorphic manifolds have isomorphic de Rham groups.
+This is quite remarkable, since we defined the de Rham groups with the use of the exterior derivative map,
+which is strongly connected to the smooth structure of $M$.
+
+\section{De Rham Theorem}
+
+The above paragraph hints to the idea that there may be a way to compute the de
+Rham cohomology groups in a purely topological way, ignoring its smooth
+structure all together. In this section we formalize this notion and prove it
+is indeed possible. Even more, we will construct an explicit isomorphism between
+the de Rham cohomology groups of a manifold and its singular cohomology groups
+with real coefficients.
+But first, a quick detour back to simplicial homology.
+
+\subsection{Integration over simplices}
+
+The connection between the de Rham and singular cohomology groups will be
+established by somehow integrating differential forms over singular chains.
+Explicitly, let $M$ be a smooth manifold, $\sigma$ a singular $k$-simplex and
+$\omega$ a $k$-form on $M$.  We would like to integrate the pull-back of
+$\omega$ along $\sigma$, which is a standard $k$-simplex $\Delta^k$ in $\R^n$.
+However, we defined simplices to be continuous maps, whereas we can only pull
+back forms along smooth maps.
+Let us use this subsection to resolve this issue by introducing \emph{smooth
+simplicial homology} and showing it is computationally equivalent to the one
+defined above, that is, we obtain isomorphic groups.
+
+\begin{definition}
+    Let $M$ be a smooth manifold.
+    A \emph{smooth $k$-simplex in $M$} is a map $\sigma \colon \Delta^k \to M$
+    that has a smooth extension to a neighbourhood of each point.
+    Denote by $C_k^\infty(M)$ the subgroup of $C_k(M)$ generated only by smooth simplices.
+    Since the boundary of a smooth simplex is a smooth chain, i.e., a sum of smooth simplices,
+    we define the \emph{$k$-th smooth singular homology group of $M$} to be the quotient
+    \[
+        H_k^\infty(M)
+        = \frac{Z_k^\infty(M)}{B_k^\infty(M)}
+        = \frac{\ker(\partial \colon C_k^\infty(M) \to C_{k-1}^\infty(M))}{\im(\partial \colon C_{k+1}^\infty(M) \to C_k^\infty(M))}
+    \]
+\end{definition}
+Because the inclusion homomorphism $\iota \colon C_k^\infty(M) \to C_k(M)$ clearly commutes with the boundary operator,
+it induces a map in homology $\iota_* \colon H_k^\infty(M) \to H_k(M)$ by $\iota_*[z] = [\iota(z)]$.
+The following theorem proves the equivalence.
+\begin{theorem}
+    For any smooth manifold $M$ the map $\iota_* \colon H_k^\infty(M) \to H_k(M)$ is an isomorphism.
+\end{theorem}
+\begin{proof}
+    See \cite[Thm. 18.7 and Lemma 18.8]{Lee2012}.
+\end{proof}
+
+We intentionally omit the rather long proof since we plan to merely use singular simplices to solve the above problem.
+Indeed, let us go ahead and define aforementioned integration.
+\begin{definition}
+    Let $M$ be a smooth manifold, $\omega$ a closed $k$-form on $M$ and $\sigma$ a smooth $k$-simplex in $M$.
+    We define the \emph{integral of $\omega$ over $\sigma$} to be
+    \[
+        \int_{\sigma} \omega = \int_{\Delta^k} \sigma^*\omega
+    \]
+    If $z = \sum_{i = 1}^{l}z_i \sigma_i$ is a smooth $k$-chain, the integral of $\omega$ over $z$ is defined as
+    \[
+        \int_{z} \omega = \sum_{i = 1}^{l} z_i\int_{\sigma_i} \omega
+    \]
+\end{definition}
+\begin{remark}
+    Recall that $\Delta^k$ is a smooth $k$-manifold with corners in $\R^k$,
+    so the above definition indeed makes sense.
+\end{remark}
+What follows is the natural generalization of Stokes' Theorem from what we already know.
+\begin{theorem}
+    Let $z$ be a smooth $k$-chain in a smooth manifold $M$, and let $\omega$ be a smooth $(k-1)$-form on $M$.
+    Then
+    \[
+        \int_{\partial z} \omega = \int_{z} d\omega
+    \]
+\end{theorem}
+\begin{proof}
+    See \cite[Thm. 18.12]{Lee2012}.
+\end{proof}
+
+We are now finally equipped with the knowledge we need to draw the equivalence.
+
+\subsection{The de Rham homomorphism}
+
+Using the above Stokes' Theorem for Chains we define the following map.
+\begin{definition}
+    Let $M$ be a smooth manifold.
+    The \emph{de Rham homomorphism} is the linear map $\ell \colon H_{dR}^k(M) \to H^k(M; \R)$,
+    defined as follows. For $[\omega] \in H_{dR}^k(M)$ and $[z] \in H_k(M) \iso H_k^\infty(M)$ (recall, cohomology classes are maps on homology groups), we define
+    \[
+        \ell [\omega] [z] = \int_{\tilde{z}} \omega
+    \]
+    where $\tilde{z}$ is some smooth $k$-cycle representing the homology class $[z]$.
+\end{definition}
+Let us quickly verify that this map is well defined.
+If $\tilde{z}$ and $\tilde{z}'$ are homologous smooth cycles, i.e., $\tilde{z} = \partial\tilde{b} + \tilde{z}'$,
+then
+\[
+    \int_{\tilde{z}} \omega - \int_{\tilde{z}'} \omega
+    = \int_{\partial\tilde{b}} \omega
+    = \int_{\tilde{b}} d\omega
+    = 0
+\]
+and if $\omega = d\eta$ is exact then
+\[
+    \int_{\tilde{z}} \omega
+    = \int_{\tilde{z}} d\eta
+    = \int_{\partial\tilde{z}} \eta
+    = 0
+\]
+One of the most important properties of the de Rham homomorphism is its naturality, as the following proposition states.
+\begin{proposition}
+    Let $M$ be a smooth manifold, $k$ a natural number, and let $\ell$ denote the de Rham homomorphism as defined above.
+    \begin{enumerate}[label=(\alph*)]
+        \item If $F \colon M \to N$ is a smooth map between smooth manifolds, then
+
+            \adjustbox{scale=1, center}{
+                \begin{tikzcd}
+                    H_{dR}^k(N) \arrow[r, "F^*"] \arrow[d, "\ell"] & H_{dR}^k(M) \arrow[d, "\ell"] \\
+                    H^k(N; \R) \arrow[r, "F^*"] & H^k(M; \R)
+                \end{tikzcd}
+            }
+            
+            is a commutative diagram.
+        \item If $U, V \subset M$ are open sets such that $M = U \cup V$, them
+
+            \adjustbox{scale=1, center}{
+                \begin{tikzcd}
+                    H_{dR}^{k-1}(U\cap V) \arrow[r, "\delta"] \arrow[d, "\ell"] & H_{dR}^k(M) \arrow[d, "\ell"] \\
+                    H^k(U \cap V; \R) \arrow[r, "\partial^*"] & H^k(M; \R)
+                \end{tikzcd}
+            }
+            
+            is a commutative diagram,
+            where $\delta$ and $\partial^*$ are the connecting homomorphisms
+            of the Mayer-Vietoris sequences for the de Rham\footnote{See \cite[Thm. 17.20]{Lee2012}.}
+            and singular\footnote{See \cite[pp. 149, 203]{Hatcher2002}.} cohomology, respectively.
+    \end{enumerate}
+\end{proposition}
+\begin{proof}
+    The first point is immediate.
+    Let $\sigma$ be a smooth $k$-simplex in $M$ and let $\omega$ be a smooth $k$-form on $N$.
+    Then
+    \[
+        \int_{\sigma} F^*\omega
+        = \int_{\Delta^k} \sigma^*F^*\omega
+        = \int_{\Delta^k} (F \circ \sigma)^* \omega
+        = \int_{F\circ\sigma} \sigma
+    \]
+    which implies
+    \[
+        \ell(F^*[\omega])[\sigma]
+        = \ell[\omega][F\circ\sigma]
+        = \ell[\omega](F_*[\omega])
+        = F^*(\ell[\omega])[\sigma]
+    \]
+    For the second point, the commutativity of the diagram in question is equivalent to
+    \[
+        \ell(\delta[\omega])[z] = (\partial^*\ell[\omega])[z]
+    \]
+    for any $[\omega] \in H_{dR}^{k-1}(U\cap V)$ and any $[z] \in H_k(M)$.
+    Recall from the section on preliminaries that in real coefficients $H^k(M; \R) \iso \Hom(H_k(M), \R)$,
+    so with this identification we rewrite the above as
+    \[
+        \ell(\delta[\omega])[z] = \ell([\omega])(\partial_*[z])
+    \]
+    Now, if $\sigma$ is a smooth $k$-form representing the class $\delta[\omega]$
+    and $y$ is a smooth $(k-1)$-chain representing the class $\partial_*[z]$,
+    by definition of $\ell$ this is the same as
+    \[
+        \int_{y} \sigma = \int_{z} \omega
+    \]
+    By the Mayer-Vietoris sequence for singular homology,
+    we can let $y = \partial x$, where $x$ and $x'$ are smooth $k$-chains in $U$ and $V$,
+    respectively, such that $x + x'$ is homologous to $z$.
+    By properties of the Mayer-Vietoris sequence, we can choose $\eta \in \Omega^{k-1}(U)$ and $\eta' \in \Omega^{k-1}(V)$
+    such that $\omega = \eta|_{U \cap V} - \eta'|_{U\cap V}$,
+    and then let $\sigma$ be the $k$-form that is equal to $d\eta$ on $U$ and $d\eta'$ on $V$.
+    Since $\partial x + \partial x' = \partial z = 0$ as $z$ is a cycle,
+    and $d\eta|_{U\cap V} - d\eta'|_{U\cap V} = d\omega = 0$,
+    we have
+    \[
+        \int_{y} \omega
+        = \int_{\partial x} \omega
+        = \int_{\partial x} \eta - \int_{\partial x} \eta'
+        = \int_{\partial x} \eta + \int_{\partial x'} \eta'
+        = \int_{x} d\eta + \int_{x'} d\eta'
+        = \int_{x} \sigma + \int_{x'} \sigma
+        = \int_{z} \sigma
+    \]
+    so the diagram indeed commutes.
+\end{proof}
+We are now ready to state and prove the de Rham Theorem.
+\begin{theorem}
+    For every smooth manifold $M$ and natural number $k$, the de Rham homomorphism $\ell$ is an isomorphism.
+\end{theorem}
+\begin{proof}
+    We say that $M$ is a \emph{de Rham manifold} if the de Rham homomorphism is
+    an isomorphism for each $k$.  Since by naturality $\ell$ commutes with the
+    cohomology maps induced by smooth maps between smooth manifolds, any
+    manifold diffeomorphic to a de Rham manifold also satisfies the property of
+    being de Rham.  We call an open cover $\mathcal{U} = \left\{ U_i \right\}$
+    of $M$ a \emph{de Rham cover} if each $U_i$ and all finite intersections of
+    sets in $\mathcal{U}$ is de Rham. If $\mathcal{U}$ is also a basis for the
+    topology on $M$, we call it a \emph{de Rham basis}.
+    Let us now prove the theorem by showing that every smooth manifold is de
+    Rham in $6$ steps.
+
+    \underline{\emph{Step 1:}}
+    Firstly, let us show that if $\left\{ M_j \right\}$ is any countable
+    collection of de Rham manifolds, then their disjoint union $\bigsqcup_j
+    M_j$ is de Rham.
+    This trivially follows from properties of both singular and de Rham cohomology.
+    Indeed, the inclusion maps $\iota_j \colon M_j \to \bigsqcup_j M_j$ induce
+    isomorphisms between the cohomology groups of the above disjoint union and
+    the direct product of cohomology groups of the manifolds $M_j$. Then by
+    naturality, $\ell$ commutes with this isomorphisms.
+
+    \underline{\emph{Step 2:}}
+    Secondly, we show that every convex open subset of $\R^n$ is de Rham.  By
+    the Poincar\'e lemma,\footnote{For more topological proof, consider
+    \cite[Thm. 17.14]{Lee2012} and the surrounding chapter on homotopy
+    invariance. For those preferring direct calculation, read
+    \cite[4.18]{Warner1983}.} for any such subset $U$ we have $H_{\text{dR}}^k(U) = 0$ for all $k \neq 0$.
+    Since $U$ is clearly homotopy equivalent to a singleton,
+    by homotopy invariance and properties of singular cohomology,
+    the singular cohomology groups are also trivial for $k \neq 0$.
+    In the case where $k = 0$, we have by definition that $H_{\text{dR}}^0(U)$ is the $1$-dimensional real vector space consisting of constant functions,
+    and $H^0(U ; \R) \iso \Hom(H_0(U), \R)$ is also clearly one dimensional, since it is generated by any one singular $0$-simplex (all of them are homologous).
+    Now, if $\sigma \colon \Delta^0 \to M$ is a singular $0$-simplex (which is trivially smooth),
+    and $f$ is the constant function $1$,
+    then
+    \[
+        \ell[f][\sigma]
+        = \int_{\Delta^0} \sigma^*f
+        = (f \circ \sigma)(0)
+        = 1
+    \]
+    Thus $\ell \colon H_{\text{dR}}^0(U) \to H^0(U; \R)$ is a non-zero linear
+    map between $1$-dimensional real vector spaces and hence an isomorphism.
+
+    \underline{\emph{Step 3:}}
+    Thirdly, we prove that if $M$ has a finite de Rham cover, then $M$ is de Rham.
+    Suppose $M = U_1 \cup \cdots \cup U_n$ constitutes a de Rham cover.
+    As expected, we utilize induction on the number $n$ of sets in the cover.
+    The base step for $n = 1$ trivially holds true.
+    The first induction step for $n = 2$ will give us the idea of what is going on.
+    Suppose next that $M$ has a de Rham cover consisting of two sets $U$ and $V$,
+    i.e., the manifolds $U$, $V$, and $U \cap V$ are de Rham.
+    We join together the Mayer-Vietoris sequences for the de Rham and singular cohomology with the given de Rham isomorphism
+
+    \adjustbox{scale=0.9, center}{
+        \begin{tikzcd}
+            H_{\text{dR}}^{k-1}(U) \oplus H_{\text{dR}}^{k-1}(V) \arrow[r] \arrow[d, "\ell"]
+            & H_{\text{dR}}^{k-1}(U \cap V) \arrow[r] \arrow[d, "\ell"]
+            & H_{\text{dR}}^k(M) \arrow[r] \arrow[d, "\ell"]
+            & H_{\text{dR}}^k(U) \oplus H_{\text{dR}}^k(V) \arrow[r] \arrow[d, "\ell"]
+            & H_{\text{dR}}^k(U \cap V) \arrow[d, "\ell"] \\
+            H^{k-1}(U; \R) \oplus H^{k-1}(V; \R) \arrow[r]
+            & H^{k-1}(U \cap V) \arrow[r]
+            & H^k(M) \arrow[r]
+            & H^k(U) \oplus H^k(V) \arrow[r]
+            & H^k(U \cap V)
+        \end{tikzcd}
+    }
+    
+    This diagram clearly commutes by naturality of $\ell$.
+    By the induction hypothesis, the first, second, fourth, and fifth $\ell$ are isomorphisms,
+    hence by the Five Lemma\footnote{See \cite[p. 129]{Hatcher2002}.} so is the middle one.
+    In other words, $M$ is de Rham.
+    Now, for the general induction step,
+    suppose $M = U_1 \cup \cdots \cup U_n$,
+    and denote $U = U_1 \cup \cdots \cup U_{n-1}$ and $V = U_n$, then use the argument above.
+
+    \underline{\emph{Step 4:}}
+    Next, we prove that if $M$ has a de Rham basis, then $M$ is de Rham.
+    Suppose $\left\{ U_\alpha \right\}$ is a de Rham basis for $M$,
+    and let $f \colon M \to \R$ be an exhaustion function on $M$.\footnote{Recall the Analysis on Manifolds course, or see \cite[p. 46]{Lee2012}.}
+    For each integer $m$ let us define the subsets $A_m, A_m' \subseteq M$ by
+    \begin{align*}
+        A_m &= \left\{ x \in M ; \; m \leq f(x) \leq m + 1 \right\} \\
+        A_m'&= \left\{ x \in M ; \; m - \frac{1}{2} < f(x) < m + \frac{3}{2} \right\}
+    \end{align*}
+    For each $x \in A_m$ there is a basis open subset containing $x$ that is contained in $A_m'$.
+    The collection of all such basis sets is of course an open cover of $A_m$.
+    Since $f$ is an exhaustion function, $A_m$ is compact and is therefore covered by finitely many of these basis sets.
+    Denote by $B_m$ the union of the above finite collection of sets.
+    We now have a finite de Rham cover of $B_m$, so by \emph{Step 3}, $B_m$ is de Rham.
+    Notice that $B_m \subseteq A_m'$, so $B_m$ can have non-empty intersection with $B_n$ only when $n \in \left\{ m-1, m, m+1 \right\}$.
+    We therefore define
+    \[
+        U = \bigcup_{m \text{ odd}} B_m, \quad\quad V = \bigcup_{m \text{ even}} B_m
+    \]
+    Clearly, $U$ and $V$ are disjoint unions of de Rham manifolds, so they are both de Rham by \emph{Step 1}.
+    The intersection $U \cap V$ is de Rham as well, because it is the disjoint union $\bigsqcup_m B_m \cap B_{m+1}$,
+    and each of $B_m \cap B_{m+1}$ has a finite de Rham cover $\left\{ U_\alpha \cap U_{\beta} \right\}$,
+    where $U_\alpha$ and $U_\beta$ are the basis sets used to define $B_m$ and $B_{m+1}$, respectively.
+    By \emph{Step 3}, $M = U \cup V$ is de Rham.
+
+    \underline{\emph{Step 5:}}
+    We now prove that every open subset of $\R^n$ is de Rham.
+    Indeed, let $U \subseteq \R^n$ be an open set.
+    Then is a union of Euclidean open balls (basis sets for the topology on $\R^n$),
+    each of which is of course convex and hence de Rham.
+    Since every finite intersection of open balls is again convex, $U$ has a de Rham basis and is therefore de Rham by \emph{Step 4}.
+
+    \underline{\emph{Step 6:}}
+    Lastly, we prove our theorem.
+    Since any smooth manifold has a basis of smooth coordinate domains and any
+    smooth coordinate domain is diffeomorphic to an open subset of $\R^n$, and
+    the same holds true for their intersections, this constitutes a de Rham
+    basis. Then $M$ is de Rham by \emph{Step 4}, which completes the proof.
+\end{proof}
+We have finally proven that the de Rham cohomology groups can be calculated using only topological means,
+and are in fact isomorphic to the singular cohomology groups with real coefficients.
+In the following section we consider a few applications of this result.
+
+\section{Applications}
+
+There are on the surface two obvious way we can use the equivalence of
+cohomology groups given by the de Rham Theorem above.  We can use the
+information we have about the topology on our manifold and its singular
+(co)homology groups in order to draw conclusions about, e.g., solution to
+differential equations on $M$, such as $d\eta = \omega$. The other way is of
+course to use the smooth structure and explicit definition of the de Rham
+cohomology to then gain information about the topology on $M$.
+Let us now consider a few of the uses for the de Rham cohomology and theorem.
+
+\subsection{Calculation}
+
+Let us compute de Rham cohomology groups for some example manifolds.
+But first, two elementary propositions that will help us greatly.
+\begin{proposition}
+    Let $\left\{ M_j \right\}$ be a countable collection of smooth
+    $n$-manifolds with or without boundary, and let $M = \bigsqcup_j M_j$. For
+    each $k$, the inclusion maps $\iota_j \colon M_j \to M$ induce an
+    isomorphism from $H_{\text{dR}}^k(M) \to \bigsqcap_j H_{\text{dR}}^k(M_j)$.
+\end{proposition}
+\begin{proof}
+    The pullback maps $\iota_j^* \colon \Omega^k(M) \to \Omega^k(M_j)$ already induce an isomorphism $\Omega^k(M) \to \bigsqcap_j \Omega^k(M_j)$, defined by
+    \[
+        \omega \mapsto (\iota_1^*\omega, \iota_2^*\omega,\dots) = (\omega|_{M_1}, \omega|_{M_2},\dots)
+    \]
+    which then induced an isomorphism in cohomology.
+\end{proof}
+\begin{proposition}
+    Let $M$ be a connected smooth manifold with or without boundary.
+    The zeroth de Rham cohomology space $H_{\text{dR}}^0(M)$ is equal to
+    the space of constant functions and is therefore $1$-dimensional.
+\end{proposition}
+\begin{proof}
+    Since $B_{\text{dR}}^0(M) = 0$, we have that $H_{\text{dR}}^0(M) = \left\{ f \colon M \to \R ; \; df = 0 \right\}$.
+    As $M$ is connected, $df = 0$ precisely when $f$ is constant.
+\end{proof}
+\begin{corollary}
+    Let $M$ be a manifold of dimension $0$.
+    Then $H_{\text{dR}}^0(M)$ is a direct product of $1$-dimensional vector spaces and the rest are trivial.
+\end{corollary}
+\begin{proof}
+    Use the two propositions above.
+\end{proof}
+\begin{corollary}
+    For $M = \R^n$ we have $H_{\text{dR}}^0(\R^n) = \R$ and the rest are trivial.
+\end{corollary}
+\begin{proof}
+    $\R^n$ is homotopy equivalent to a single point.
+    Now use the previous corollary.
+\end{proof}
+We next consider the example of the sphere.
+\begin{proposition}
+    Let $M = \S^n$. Then $H_{\text{dR}}^0(\S^n) = H_{\text{dR}}^n(\S^n) = \R$ and the rest are trivial.
+\end{proposition}
+\begin{proof}
+    We know that by the Mayer-Vietoris exact sequence for singular homology,
+    we have $H_0(\S^n;\; \R) = H_n(\S^n; \; \R) = \R$ and the rest are trivial.\footnote{See e.g. \cite[Example 2.46]{Hatcher2002}.}
+    Then the same holds for singular cohomology groups with coefficients in $\R$, so the de Rham theorem finishes the proof.
+\end{proof}
+This implies that all closed $k$-forms on $\S^n$ for $k = 1,\dots,n-1$ are exact, and also yields the following corollary.
+\begin{corollary}
+    An $n$-form $\omega$ on $\S^n$ is exact if and only if $\int_{\S^n} \omega = 0$.
+\end{corollary}
+\begin{proof}
+    Note that $\omega$ is clearly closed, as all $(n+1)$-forms are zero.
+    If $\omega$ is exact, then $\int_{\S^n} \omega = 0$ by Stokes' theorem.
+    Conversely, we know that $H_{\text{dR}}^n(\S^n) = \R$ and recall that $\S^n$ is compact, hence all forms on $\S^n$ have compact support.
+    This means that for a fixed $n$-form $\omega$ with $\int_{\S^n} \sigma \neq 0$,
+    then for any $n$-form $\omega'$ there exists $a \in \R$ such that $\omega' - a\omega$ is exact, that is
+    \[
+        \omega' - a\omega = d\sigma
+    \]
+    for some $(n-1)$-form $\sigma$.
+    Then by Stokes' theorem
+    \[
+        \int_{\S^n} \omega' - a \int_{\S^n} \omega = 0
+    \]
+    and so
+    \[
+        a = \frac{\int_{\S^n} \omega'}{\int_{\S^n} \omega}
+    \]
+    If $\int_{\S^n} \omega = 0$, we can now assign $a = 0$, in other words,
+    $\omega$ must be exact.
+\end{proof}
+\begin{remark}
+    Furthermore notice that for any compact orientable manifold the statement
+    $H_{\text{dR}}^n(M) \iso \R$ where $n = \dim M$ is equivalent to saying
+    that $[\omega] \mapsto \int_{M}\omega$ is an isomorphism.\footnote{A simple introduction to this can be found in \cite[Volume 1, pp. 268--271]{Spivak1999Comp}, and also in \cite{Lee2012}.}
+\end{remark}
+Since $\S^n$ is homotopy equivalent to the punctured $(n+1)$-space
+$\R^{n+1}\setminus\left\{ 0 \right\}$, this yields that a closed $n$-form
+$\eta$ on $\R^{n+1}\setminus\left\{ 0 \right\}$ is exact if and only if
+$\int_{S} \eta = 0$ for some sphere $S\subset M$.  Recall now Example
+\ref{exa:piercedplane}, where we used an integral over $\S^1$ to determine
+non-exactness of the form on the punctured real plane.  This corollary shows
+that the condition used in the example was not only sufficient but also
+necessary.
+
+\subsection{Product structure}
+
+As already discussed, singular cohomology does not tell us anything
+fundamentally new about our manifold when compared to singular homology, it
+merely presents the same information in a more structured way.  By this we of
+course mean that the collection of singular cohomology groups can be made into
+a graded ring with the use of the \emph{cup product}, which is neatly and
+graphically explained in \cite[Section 3.2]{Hatcher2002}.
+In this subsection we approach this concept from a different angle.
+
+Recall that the properties of the \emph{wedge product}\footnote{Summed up in \cite[Prop. 14.11]{Lee2012}.}
+make the space of differential forms $\Omega(M) = \bigoplus_{i=0}^n\Omega^i(M)$ into a graded ring.
+Indeed, for $\omega \in \Omega^k(M)$ and $\eta \in \Omega^l(M)$ we have $\omega\wedge\eta \in \Omega^{k+l}(M)$,
+and $\wedge$ is bilinear (implies distributivity of product), associative, and anticommutative, that is
+\[
+    \omega\wedge\eta = (-1)^{kl}\eta\wedge\omega
+\]
+If we additionally assume that $\omega$ and $\eta$ are closed forms, we have
+\[
+    d(\omega\wedge\eta) = d\omega\wedge\eta + (-1)^k\omega\wedge d\eta = 0
+\]
+so $\omega\wedge\eta$ is also closed and represents some de Rham cohomology class.
+To show that this cohomology class depends solely on the cohomology classes of $\omega$ and $\eta$ it is enough to take an exact form $\omega = d\sigma$ and check that $\omega\wedge\eta$ is also exact.
+Indeed, we have
+\[
+    d\sigma\wedge\eta
+    = d(\sigma\wedge\eta) - (-1)^{k-1}\sigma\wedge d\eta
+    = d(\sigma\wedge\eta)
+\]
+Hence the wedge product descends to cohomology and $H_{\text{dR}}(M) = \bigoplus_{i=0}^n H_{\text{dR}}^i(M)$ is a graded ring with $[\omega]\wedge[\eta] = [\omega\wedge\eta]$.
+We can now use the de Rham theorem to induce a product structure on singular cohomology by
+\[
+    \alpha \cup \beta = \ell(\ell^{-1}(\alpha)\wedge\ell^{-1}(\beta))
+\]
+In the way the wedge product of two forms acts on vector fields we see that these two products are the same.
+In fact, we have the following theorem.
+\begin{theorem}
+    The cup product on a smooth manifold $M$ is induced by the wedge product.
+\end{theorem}
+
+\subsection{The cap product and Poincar\'e duality}
+
+There is another (external) product on singular homology called the \emph{cap
+product} that later gives us the famous \emph{Poincar\'e duality}, drawing an
+isomorphism between singular cohomology and singular homology.  In this
+subsection we consider how this abstract duality materializes in the world of
+de Rham cohomology.
+
+We suppose additionally that our manifold $M$ is
+orientable\footnote{(Co)homology in fact gives us a more general notion of
+\emph{orientability in coefficients}. Since we are dealing with real
+coefficients, we always assume our manifolds to be $\R$-orientable.}, connected,
+and compact.
+Recall\footnote{Or read \cite[pp. 236--241]{Hatcher2002}.} that we can define the cap product on singular (co)homology as a map
+$\cap \colon H_{k+l}(M) \times H^k(M) \to H_l(M)$
+that maps elements as follows
+\[
+    \sigma \cap \alpha = \alpha(\sigma\circ[e_0,\dots,e_k]) \cdot \sigma\circ[e_k,\dots,e_{k+l}]
+\]
+and it is easy to verify that
+\[
+    \partial(\sigma \cap \alpha) = (-1)^k (\partial\sigma \cap \alpha - \sigma \cap \delta\alpha)
+\]
+One of the principal properties of the cap product is its connection to the cup product via
+\[
+    \beta (\sigma \cap \alpha) = (\alpha \cup \beta) (\sigma)
+\]
+For $M$ as above there exists a non-zero element in the top singular homology group $[M] \in H_n(X; \; \R)$ called the \emph{fundamental class}.\footnote{Sometimes also orientation class, see \cite[p. 236]{Hatcher2002}.}
+We can now state the Poincar\'e duality.
+\begin{theorem}
+    Let $M$ be a connected, closed, $A$-orientable manifold of dimension $n$, for a ring $A$.
+    Then the homomorphism $D \colon H^k(M; \; A) \to H_{n-k}(M ; \; A)$, defined by
+    \[
+        D(\alpha) = [M] \cap \alpha
+    \]
+    is an isomorphism for all $k \leq n$.
+\end{theorem}
+
+When trying to transfer this to the context of the de Rham cohomology is that we have not defined the \emph{de Rham homology groups}.
+In the spirit of duality, we therefore denote $H_k^{\text{dR}}(M) = \left( H_{\text{dR}}^k(M) \right)^*$.
+The Poincar\'e duality in the de Rham cohomology setting is then given by integration.
+\begin{theorem}
+    Let $M$ be an $\R$-orientable, connected, and compact smooth manifold of dimension $n$.
+    Then the map $D_{\text{dR}} \colon \Omega^k(M) \to \Omega^{n-k}(M)^*$, defined by
+    \[
+        D_{\text{dR}}(\omega)(\eta) = \int_{M} \omega \wedge \eta
+    \]
+    descends to an isomorphism $H_{\text{dR}}^k(M) \to H_{n-k}^{\text{dR}}(M)$.
+\end{theorem}
+\begin{proof}
+    That this map descends into a homomorphism is obvious from the properties
+    of the wedge product (and integration) that we discussed in the previous
+    section.  Indeed, the very properties that make the wedge product descend
+    to a cup product on the de Rham cohomology can be reused here.
+    
+    For the proof that this is in fact an isomorphism for every $k \leq n$, we
+    can just trace the proof of the de Rham theorem and replace the property of
+    \emph{being a de Rham manifold} with \emph{being a Poincar\'e manifold}.
+    Since the proof of the de Rham theorem is quite lengthy, we omit the specifics here.
+\end{proof}
+This theorem and the above connection of the cap and the cup product in singular (co)homology gives us an idea on how to realize the cap product itself.
+Indeed, let $M$ be as above and let $\iota \colon N \to M$ be an embedding of a submanifold $N$ of dimension $k+l$.
+Then the cap product of $[N] \in H_{k+l}^{\text{dR}}(M)$ and a $k$-form $[\omega] \in H_{\text{dR}}^k(M)$ is an element $\alpha \in H_{l}^{\text{dR}}(M)$ given by
+\[
+    \alpha(\eta) = \int_{N} \iota^*\omega \wedge \iota^*\eta
+\]
+where $\eta \in H_{\text{dR}}^l(M)$.
+It is up to the reader to use the aforementioned properties to verify that this is indeed the cap product on $M$ with real coefficients.
+
+\section{Conclusion}
+
+To conclude, let us just mention that this theory opens up a wide array of directions one could study.
+Examples range from harmonic differential forms and Hodge theory, to once again proving old theorems in new ways.
+We challenge the reader to, e.g., prove the topological invariance of dimension, i.e., two topological manifolds of different dimensions cannot be homeomorphic, using only knowledge obtained in this essay.
+
+If nothing else, the de Rham theorem holds great aesthetic value, similar to that of the Gauss-Bonnet theorem, once again proving how an ostensibly smooth definition turns out to be nothing but mere topology.
+
+\bibliographystyle{plain}
+\bibliography{uni}
+
+\end{document}
