@@ -1,0 +1,52 @@
+1:
+Bound by Holder
+
+2:
+Write as a complex series + Abel (lacking in z = 1 -> x = 0):
+http://en.wikipedia.org/wiki/Abel%27s_test#Abel.27s_test_in_complex_analysis
+
+3:
+article: Fourier Serier of Polygons
+
+5:
+Dini's Criterion
+
+6:
+https://www.mathcounterexamples.net/a-trigonometric-series-that-is-not-a-fourier-series-lebesgue/
+https://math.stackexchange.com/questions/129575/series-which-are-not-fourier-series?r=SearchResults&s=2|102.9936
+https://math.stackexchange.com/questions/3138298/sum-limitsn-ge-2-frac1-log-n-sin-nx-is-not-the-fourier-series-of-a-rie?r=SearchResults&s=3|86.6352
+https://math.stackexchange.com/questions/1543879/how-to-show-that-the-series-of-frac-sinn-logn-converges?r=SearchResults&s=5|48.4549
+https://math.stackexchange.com/questions/351848/for-what-real-numbers-a-does-the-series-sum-frac-sinka-logk-conver?r=SearchResults&s=1|104.1077
+https://math.stackexchange.com/questions/3653093/does-sum-frac-sink-logk-converge-or-diverge?r=SearchResults&s=4|71.5874
+
+8:
+https://math.stackexchange.com/questions/1860448/a-continuous-function-with-a-divergent-fourier-series
+https://en.wikipedia.org/wiki/Convergence_of_fourier_series#Uniform_convergence
+
+9:
+Muscalu, Vol I, Section 1.4.2 Ex 1.7 (p. 17)
+https://math.stackexchange.com/questions/3655801/proof-of-bohrs-inequality-for-fourier-transform?r=SearchResults&s=2|77.8405
+https://mathoverflow.net/questions/231179/does-there-exist-some-c-independent-of-n-and-f-such-that-f-p-geq/231850?r=SearchResults&s=10|10.9854#231850
+https://math.stackexchange.com/questions/1655967/lp-norm-of-certain-trigonometric-polynomials-bounded-by-lp-norm-of-second
+
+12:
+Yuchuan Wei: Dirichlet Multiplication and Easily-Generated Function Analysis
+Yuchuan Wei: Triangular Function Analysis
+
+13:
+Grafakos: Thm 3.5.1
+Apostol: Thm 9.33
+
+15:
+Grafakos: Thm 3.5.5
+Kolmogorov: Introductory real analysis. p. 328
+https://math.stackexchange.com/questions/4184526/fourier-series-of-function-with-bounded-variation-is-bounded-by-its-norm?r=SearchResults&s=2|51.0443
+Carothers - completeness of BV
+Carothers - p. 192: "Since a quasicont fn is the uniform limit of a sequence of step functions on each compact interval in R, a quasicont fn has at most countably many pts of discontinuity."
+Folland: Thm 3.27 same
+
+Grafakos: Prop 3.3.14
+Butzer: p. 52 Ex. 11
+
+16:
+Right Riemann sum

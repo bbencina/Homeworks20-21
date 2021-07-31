@@ -1,0 +1,714 @@
+\documentclass[a4paper, 12pt]{article}
+
+\usepackage[english]{babel}
+\usepackage[margin=0.5in]{geometry}
+
+\input{basic}
+\input{math}
+
+\allowdisplaybreaks
+
+\title{Introduction to Harmonic Analysis - Exam Homework}
+\author{Benjamin Benčina}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{Exercise}
+    Let us prove that for all $f, g \in L^2(\T)$ we have
+    \[
+        || f * g ||_{L^2(\T)}^2 \leq ||f * f ||_{L^2(\T)} ||g * g||_{L^2(\T)}
+    \]
+    
+    For ease of writing, we denote $|| \cdot ||_{L^2(\T)}$ as $|| \cdot ||_2$.
+    From a Corollary from the Lectures we know that
+    \begin{equation}
+        || f ||_2^2 = \sum_{n \in \Z} | \hat{f}(n) |^2
+        \label{eq:L2norm}
+    \end{equation}
+    holds for all $f \in L^2(\T)$.
+    We know from the Measure Theory course (and our Lectures) that since $\T$
+    is a space with finite measure, it follows from H\"older's inequality that
+    $L^2(\T) \subseteq L^1(\T)$, hence $f, g \in L^1(\T)$.
+    This is convenient, as a Theorem from the Lectures, describing the
+    properties of convolution, also states that
+    \begin{equation}
+        \widehat{f * g}(n) = \hat{f}(n) \cdot \hat{g}(n)
+        \label{eq:fouriercoefprod}
+    \end{equation}
+    for all $f, g \in L^1(\T)$.
+    We can now finally estimate
+    \begin{align*}
+        || f * g ||_2^2
+        &\overset{\eqref{eq:L2norm}}{=} \sum_{n \in \Z} |\widehat{f * g}(n)|^2
+        \overset{\eqref{eq:fouriercoefprod}}{=} \sum_{n \in \Z} | \hat{f}(n) \hat{g}(n) |^2
+        = \sum_{n \in \Z} |\hat{f}(n)|^2 \cdot |\hat{g}(n)|^2 \\
+        &\overset{\text{H\"older}}{\leq}
+        \sqrt{\sum_{n \in \Z} \left( |\hat{f}(n)|^2 \right)^2} \cdot
+        \sqrt{\sum_{n \in \Z} \left( |\hat{g}(n)|^2 \right)^2}
+        \overset{\eqref{eq:fouriercoefprod}}{=}
+        \sqrt{\sum_{n \in \Z} |\widehat{f * f}(n)|^2 } \cdot
+        \sqrt{\sum_{n \in \Z} |\widehat{g * g}(n)|^2 } \\
+        &\overset{\eqref{eq:L2norm}}{=} || f * f ||_2 \cdot || g * g ||_2
+    \end{align*}
+    which finishes the proof.
+\end{Exercise}
+
+\begin{Exercise}
+    Suppose a continuous function $f \colon \T \to \C$ is given by
+    \[
+        f(x) = \sum_{n=1}^{\infty}\frac{e^{2\pi i n x}}{n^\alpha}
+    \]
+    where $\alpha > 1$. We will show that $f$ is smooth on $\T\setminus\left\{ 0 \right\}$.
+
+    We denote $z = e^{2\pi i x} \in \T = \S^1 \subset \C$,
+    hence the above sum transforms into
+    \[
+        f(z) = \sum_{n = 1}^{\infty} \frac{z^n}{n^\alpha}
+    \]
+    Note that the above identification does not spoil smoothness, since $x
+    \mapsto t = e^{2\pi i x}$ is a $C^\infty$-diffeomorphism from $(0, 1)$ to
+    $\S^1\setminus\left\{ 1 \right\}$.
+    It is now enough to prove that the above complex series converges uniformly
+    for all $z \neq 1$ on the unit circle, making the above function analytic
+    and hence smooth.\footnote{As seen in the Analysis 2 course.} To achieve
+    this, we use the complex analytic version of \emph{Abel's test},\footnote{I
+    am almost certain that we have proved this in one of the (Complex) Analysis
+    courses, but I can not find it in my old notes, so I will prove it here as
+    well. One can also find this in a lot of elementary complex analysis books
+    such as \cite[p.\ 80]{Macrobert1954} or \cite[pp.\ 91--92]{Moretti1964}.}
+    which states that if a sequence $(a_n)_n$ of decreasing (positive) real
+    numbers converges to $0$, then the power series
+    \[
+        \sum_{n=0}^{\infty} a_n z^n
+    \]
+    converges (uniformly) everywhere on the closed unit circle, except maybe
+    for $z = 1$.  The sum can of course be moved to start from $n = 1$, since a
+    single term does not impact convergence of a series.
+    Before we continue, let us quickly prove that Abel's test indeed holds true.
+    Let us take an arbitrary point $z$ from the closed unit circle with $z \neq 1$.
+    For each $n \in \N$, we denote partial sums
+    \[
+        f_n(z) = \sum_{k = 0}^{n} a_k z^k.
+    \]
+    By multiplying these functions by $(1 - z)$, we obtain
+    \begin{align*}
+        (1 - z) f_n(z)
+        &= \sum_{k = 0}^{n} a_k (1 - z) z^k
+        = \sum_{k = 0}^{n} a_k z^k - \sum_{k = 0}^{n} a_k z^{k+1} \\
+        &= a_0 + \sum_{k = 1}^{n}a_k z^k - \sum_{k = 1}^{n+1}a_{k-1}z^k
+        = a_0 - a_n z^{n+1} + \sum_{k = 1}^{n}(a_k - a_{k-1}) z^k
+    \end{align*}
+    Since $a_0$ is a constant and by assumption $a_n z^{n+1} \to 0$ uniformly,
+    it only remains to show that the last sum converges.
+    We prove a stronger statement, it converges absolutely. Indeed, we calculate
+    \[
+        \sum_{k = 1}^{\infty} |(a_k - a_{k-1})z^k|
+        = \sum_{k = 1}^{\infty} |a_k - a_{k-1}| |z|^k
+        \overset{|z|\leq 1}{\leq} \sum_{k = 1}^{\infty} (a_{k-1} - a_k)
+    \]
+    and use that the sequence $(a_n)_n$ converges to $0$.
+    Therefore, the sequence $(1 - z)f_n$ converges uniformly on the closed unit disc.
+    For $z \neq 1$ we now simply divide by $(1 - z)$ to obtain the desired result.
+
+    In our case $a_n = \frac{1}{n^\alpha}$, which of course converges to $0$.
+    Furthermore, since $\alpha > 1$, the above series converges absolutely
+    \[
+        \sum_{n = 1}^{\infty} \Big\| \frac{z^n}{n^\alpha} \Big\|
+        = \sum_{n = 1}^{\infty} \frac{1}{n^\alpha}
+        \overset{\alpha > 1}{<} \infty
+    \]
+    Abel's test completes the proof, since $f$ is now a uniform limit of smooth
+    functions.
+\end{Exercise}
+
+\stepcounter{excounter}
+
+\stepcounter{excounter}
+
+\begin{Exercise}
+    Let $f \in L^1(\T)$ and suppose that
+    \begin{equation}
+        |f(x) - f(0)| \leq \frac{1}{(\log|x|)^2}
+        \label{eq:5-condition}
+    \end{equation}
+    for all non-zero $x \in [-\frac{1}{2}, \frac{1}{2}] = \T\setminus\left\{ 0 \right\}$.
+    Does it follow that
+    \[
+        \lim_{n \to \infty}S_nf(0) = f(0)?
+    \]
+    
+    \underline{\textsc{yes}}.
+    Let us use \emph{Dini's Criterion} for $x = 0$ and $\delta = \frac{1}{2}$.
+    Indeed, we have
+    \begin{align*}
+        \int_{|y|<\delta} \Big|\frac{f(y)-f(0)}{y}\Big|dy
+        &\overset{\eqref{eq:5-condition}}{\leq} \int_{|y|<\delta} \Big|\frac{dy}{y(\log|y|)^2}\Big|
+        = \int_{0<y<\delta}\frac{dy}{y(\log|y|)^2} + \int_{-\delta<y<0}\frac{dy}{-y(\log(-y))^2} \\
+        &\overset{t=\log(\pm y)}{=} 2 \int_{-\infty}^{\log\frac{1}{2}} \frac{dt}{t^2}
+        \overset{\text{ANA1}}{=} \frac{1}{\log 2} + \frac{1}{\log 2} = \frac{2}{\log 2} < \infty
+    \end{align*}
+    where the last equality is justified by a theorem from the Analysis 1
+    course, stating the above generalized integral indeed exists since the
+    exponent in the denominator is greater than $1$, which finishes the proof.
+\end{Exercise}
+
+\begin{Exercise}
+    Let us show that
+    \begin{equation}
+        \label{eq:6-series}
+        \sum_{n=2}^{\infty}\frac{\sin(2\pi nx)}{\log n}
+    \end{equation}
+    converges for all $x \in \T$, and yet is not the Fourier series of any
+    function in $L^1(\T)$.
+
+    For the convergence part we recall \emph{Dirichlet's test} from the
+    Analysis 1 course.\footnote{Also found in \cite[p.\ 259]{Voxman1981}.} It
+    states that for a sequence $(a_n)_n$ of real numbers and a sequence
+    $(b_n)_n$ of complex numbers, such that $(a_n)_n$ is monotone, $\lim_{n \to
+    \infty}a_n = 0$, and for every $N\geq 1$ we have $|\sum_{n=1}^{N}b_n| \leq
+    M$ for some constant $M$, the sequence $\sum_{n = 1}^{\infty}a_nb_n$
+    converges.
+    We can now use this test on $(a_n)_n = \frac{1}{\log n}$ ($n \geq 2$) and
+    $(b_n) = \sin(2\pi xn)$ for $x \in \T$.  The conditions on $(a_n)_n$ are
+    clearly satisfied, as the logarithm is an unbounded strictly increasing
+    function on $(0, \infty)$.  Now fix $x \in \T\setminus\left\{ 0 \right\}$
+    and take $N \geq 2$, and calculate
+    \begin{align*}
+        \Big| \sum_{n = 2}^{N} \sin(2\pi xn) \Big|
+        &= \Big| \sum_{n = 2}^{N} \frac{e^{2\pi i xn} - e^{-2\pi i xn}}{2i} \Big| \\
+        &\overset{\text{geom.}}{=} \Big| \frac{e^{4\pi ix}}{2i} \frac{1 - e^{2\pi i x (N-1)}}{1 - e^{2\pi ix}} -
+        \frac{e^{-4\pi ix}}{2i} \frac{1 - e^{-2\pi i x (N-1)}}{1 - e^{-2\pi ix}} \Big| \\
+        &= \Big| \frac{e^{2\pi i x(N+1)} - e^{2\pi i x 2}}{2i (e^{2\pi ix} - 1)} -
+        \frac{e^{-2\pi i x(N+1)} - e^{-2\pi i x 2}}{2i (e^{-2\pi ix} - 1)} \Big| \\
+        &= \Big| \frac{(e^{2\pi ix(N+1)} - e^{2\pi ix2})(e^{-2\pi ix} - 1) - (e^{-2\pi ix(N+1)} - e^{-2\pi ix2}) (e^{2\pi ix} - 1)}{2i (e^{2\pi ix} - 1) (e^{-2\pi ix} - 1)} \Big| \\
+        &= \Big| \frac{e^{2\pi ixN} - e^{2\pi ix} - e^{2\pi ix(N+1)} + e^{2\pi ix2} - e^{2\pi ixN} + e^{-2\pi ix} + e^{-2\pi ix(N+1)} - e^{-2\pi ix 2}}{2i (1 - e^{2\pi ix} - e^{-2\pi ix} + 1)} \Big| \\
+        &\overset{\text{pairs}}{=} \Big| \frac{\sin(2\pi xN) - \sin(2\pi x) - \sin(2\pi x(N+1)) + \sin(4\pi x)}{2 - 2\cos(2\pi x)} \Big| \\
+        &= \Big| \frac{\sin(2\pi xN) \cdot (1 - \cos(2\pi x)) -\sin(2\pi x) \cdot (1 - 2\cos(2\pi x) + \cos(2\pi xN))}{2 - 2\cos(2\pi x)} \Big| \\
+        &= \Big| \frac{\sin(2\pi x N)}{2} - \frac{\sin(2\pi x)}{2} + \frac{\sin(2\pi x) \cdot (1 - \cos(2\pi xN))}{2(1 - \cos(2\pi x))} \Big| \\
+        &\leq \Big| \frac{\sin(2\pi x N)}{2} \Big| + \Big| \frac{\sin(2\pi x)}{2} \Big| + \Big| \frac{\sin(2\pi x) \cdot (1 - \cos(2\pi xN)) \cdot (1 + \cos(2\pi x)}{2(1 - \cos^2(2\pi x))} \Big| \\
+        &\leq \Big| \frac{\sin(2\pi x N)}{2} \Big| + \Big| \frac{\sin(2\pi x)}{2} \Big| + \Big| \frac{(1 - \cos(2\pi xN)) \cdot (1 + \cos(2\pi x)}{2\sin(2\pi x)} \Big| \\
+        &\leq 1 + \frac{2}{|\sin(2\pi x)|}
+    \end{align*}
+    which is independent of $N$.
+    The only $x$ that could cause problems is $x = 0$, but for $x = 0$ the
+    entire sum at the beginning is equal to $0$ for every $N \geq 2$.
+    Dirichlet's test hence guarantees convergence for every $x \in \T$.
+
+    Now suppose that \eqref{eq:6-series} is a Fourier series of some Lebesgue-measurable function $f$.
+    By the alternative representation of Fourier series as a series of sines and cosines,
+    we see that we have
+    \[
+        a_n = 0 \quad \forall n \in \N_0, \quad b_1 = 0, \quad b_n = \frac{1}{\log n} \quad \forall n \geq 2
+    \]
+    We know that $b_n = i(\hat{f}(n) - \hat{f}(-n))$.
+    Let us now prove that for every function $f \in L^1(\T)$ we have that the series
+    \[
+        \sum_{n = 1}^{\infty} \frac{\hat{f}(n) - \hat{f}(-n)}{n}
+    \]
+    converges.
+    Indeed, we calculate
+    \begin{align*}
+        \sum_{n = 1}^{N} \frac{\hat{f}(n) - \hat{f}(-n)}{n}
+        &= \sum_{n = 1}^{N} \int_{0}^{1} f(x) \frac{e^{2\pi inx} - e^{-2\pi inx}}{n} dx \\
+        &= 2i \int_{0}^{1} f(x) \sum_{n = 1}^{N} \frac{\sin(2\pi inx)}{n} dx \\
+        &= 2i \int_{0}^{1} f(x) S_N\Phi(x) dx
+    \end{align*}
+    where $\Phi(x)$ is the sawtooth function.
+    By the Lebesgue Dominated Convergence Theorem, we have
+    \begin{align*}
+        \Big| \sum_{n = 1}^{\infty} \frac{\hat{f}(n) - \hat{f}(-n)}{n} \Big|
+        &= \Big| \lim_{N \to \infty} (2i \int_{0}^{1} f(x) S_N\Phi(x) dx) \Big| \\
+        &\overset{\text{LDC}}{=} \Big| 2i \int_{0}^{1} f(x) S\Phi(x) dx \Big| \\
+        &\leq 2 \int_{0}^{1} | f(x) S\Phi(x) | dx \\
+    \end{align*}
+    which converges as $f \in L^1(\T)$ and $\Phi$ is the sawtooth function, proving the statement.
+
+    Let us now apply this to our case, to get that the series
+    \[
+        \sum_{n = 2}^{\infty} \frac{1}{n \log n}
+    \]
+    must converge, which is not true, leading to a contradiction.  Indeed, by a
+    theorem from the Analysis 1 course\footnote{This is sometimes called the
+    \emph{Cauchy condensation test}, at Analysis 1 lectures we called it just
+    \emph{Cauchy's test}.}, which states that if $(a_n)_n$ is a positive
+    decreasing sequence, then
+    \[
+        \sum_{n=1}^{\infty} a_n \text{ converges}
+        \iff \sum_{n = 1}^{\infty} 2^n a_{2^n} \text{ converges}.
+    \]
+    We therefore have
+    \begin{align*}
+        \sum_{n = 2}^{\infty}\frac{1}{n \log n} \text{ converges}
+        &\overset{\text{ANA1}}{\iff} \sum_{n = 2}^{\infty} 2^n \frac{1}{2^n \log(2^n)} \text{ converges} \\
+        &\iff \log_2(e) \cdot \sum_{n = 2}^{\infty} \frac{1}{n} \text{ converges}
+    \end{align*}
+    which we know not to be true.
+    Hence our initial series cannot be the Fourier series of any $L^1(\T)$-function.
+\end{Exercise}
+
+\stepcounter{excounter}
+
+\begin{Exercise}
+    Is there a continuous function $f \colon \T \to \R$ such that
+    $\lim_{n\to\infty}|S_nf(0)| = \infty$?
+
+    \underline{\textsc{yes}}.
+    For the proof we first recall the Banach-Steinhaus Theorem, also known as
+    the Uniform Boundedness Principle, which states that for a Banach space
+    $X$, a normed space $Y$, and a collection of bounded linear operators
+    $\mathcal{A} \subseteq B(X, Y)$, if $\mathcal{A}_x = \left\{ \| Ax \| ; \;
+    A \in \mathcal{A} \right\}$ is bounded for every $x \in X$, then $\left\{
+        \| A \| ; \; A \in \mathcal{A} \right\}$ is bounded.\footnote{We proved
+    this theorem in both the Functional Analysis and the Introduction to
+    Functional Analysis course.} In particular, this holds for every Banach
+    space $X$ and a collection of bounded linear functionals $\mathcal{A}
+    \subseteq X^*$.  Equivalently, taking the contrapositive, we get that for a
+    Banach space $X$ and a collection $\mathcal{A} \subseteq X^*$, if $\sup_{A
+    \in \mathcal{A}} \| A \| = \infty$, then there must exist $x \in X$ with
+    $\sup_{A \in \mathcal{A}} |Ax| = \infty$.  This special case of the theorem
+    is what we will use in the proof.
+
+    We define the functionals $\Lambda_n \in C(\T)^*$ by $\Lambda_n f$ being the $n$-th partial sum of the Fourier series of the continuous function $f$ at $0$, so
+    \[
+        \Lambda_n f
+        = S_n f (0)
+        = (D_n * f) (0)
+        = \int_{0}^{1} f(t)D_n(t) dt
+    \]
+    where $D_n$ is the usual Dirichlet kernel
+    \[
+        D_n(t)
+        = \sum_{k = -n}^{n} e^{2\pi i k t}
+        = \frac{\sin((2n + 1)\pi t)}{\sin(\pi t)}
+    \]
+    Firstly, it is easy to see that $\lim_{n \to \infty}\| D_n \|_1 = \infty$,
+    for example we proved that $\| D_n \|_1 \sim \log n$.
+    Secondly, since clearly $\Lambda_n f = \langle f, D_n \rangle_{C(\T)}$,
+    by the Riesz Representation Theorem\footnote{Which we also proved at the Introduction to Functional Analysis course.}
+    we have that
+    \[
+        \| \Lambda_n \|_{C(\T)^*} = \| D_n \|_1 \to \infty
+    \]
+    The above special case of the Banach-Steinhaus Theorem then yields a function $f \in C(\T)$ such the $\Lambda_n f$ is unbounded,
+    that is, its Fourier series at $0$ diverges.
+
+    Another possible proof would be to construct such a function, which is done, e.g., in \cite[Vol. I, p.\ 299]{Zygmund2002},
+    and we used a similar construction in an exercise from Tutorials.
+\end{Exercise}
+
+\begin{Exercise}
+    Let $f \in L^1(\T)$ be a functions such that $\hat{f}(j) = 0$ for all $|j| < N$.
+    Let us prove that for all $p \in [1, \infty]$ we have
+    \[
+        \| f'' \|_p \geq C N^2 \| f \|_p
+    \]
+    where $C > 0$ is independent of $f$, $p$, and $N$.
+
+    Let us try to find a function $\psi \in L^1(\T)$ such that
+    \[
+        \psi * f'' = f
+    \]
+    Suppose we already have $\psi$, we try to calculate its Fourier coefficients
+    \[
+        \widehat{\psi * f''}(m)
+        = \hat{\psi}(m) \cdot \hat{f}(m)
+        = (2\pi i m)^2 \hat{\psi}(m) \cdot \hat{f}(m)
+    \]
+    so we want to have
+    \[
+        \hat{\psi}(j)
+        = \frac{1}{(2\pi i j)^2}
+        = -\frac{1}{(2\pi j)^2}
+    \]
+    for every $|j| \geq N$ (the rest we can define to be whatever will fit the
+    next lemma). The question is now whether such a $\psi \in L^1(\T)$ exists,
+    and for that we employ \cite[Vol. I, Lemma 1.12]{Muscalu2013}, which states
+    that if $(a_n)_{n \in \Z}$ is an even sequence of non-negative numbers that
+    tend to zero, for which the following holds
+    \[
+        a_{n+1} + a_{n-1} - 2a_n \geq 0
+    \]
+    for every $n$, then there exists a (non-negative) function $g \in L^1(\T)$
+    with $\hat{g}(n) = a_n$ for all $n \in \Z$.
+    Since this fact is new, let us take a quick detour and prove the lemma,
+    going along the lines of \cite{Muscalu2013}.
+
+    Notice that for every real $C^2$-function $\varphi$ with $\varphi'(x)x \to 0$
+    and $\varphi(x) \to x$ as $x \to \infty$, the following holds
+    \begin{equation}
+        \label{eq:9-integral}
+        \int_{x}^{\infty} \varphi''(y) (y - x) dy
+        = \varphi'(y) (y - x) \Big|_x^\infty - \int_{x}^{\infty} \varphi'(y) dy
+        = 0 - (0 - \varphi(x)) = \varphi(x)
+    \end{equation}
+    In the discrete setting, the second derivative corresponds to
+    \[
+        \Delta^2 x_{i+1}
+        = \Delta x_{i+1} - \Delta x_i
+        = x_{i+1} - x_i - x_i + x_{i-1} = x_{i+1} + x_{i-1} - 2x_i
+    \]
+    so \eqref{eq:9-integral} reads as
+    \begin{equation}
+        \sum_{n > m} (a_{n+1} + a_{n-1} - 2a_n) (n - m) = a_m
+        \label{eq:9-discrete}
+    \end{equation}
+    for every sequence $(a_n)_n$ with $a_n \to 0$ and $n(a_n - a_{n-1}) \to 0$ as $n \to \infty$.
+    Recall now that the Fourier coefficients of the Fej\'er kernel are precisely
+    \[
+        \hat{K}_n(k) = \left( 1 - \frac{|k|}{n} \right)^+
+    \]
+    so we may write \eqref{eq:9-discrete} as
+    \[
+        \sum_{n > m} n (a_{n+1} + a_{n-1} - 2a_n) \hat{K}_n(m) = a_m
+    \]
+    The required function $f$ can thus be defined by
+    \[
+        \sum_{n = 1}^{\infty} n (a_{n+1} + a_{n-1} - 2a_n) K_n = f
+    \]
+    This sum of course converges, since $\|K_n\|_1 = 1$ so the partial sums look like
+    \[
+        \Big\| \sum_{n = 1}^{N} n (a_{n+1} + a_{n-1} - 2a_n) K_n \Big\|_1
+        \leq\sum_{n = 1}^{N} n (a_{n+1} + a_{n-1} - 2a_n)
+        = a_0 - (N + 1) a_N + N a_{N+1} \xrightarrow{N \to \infty} a_0
+    \]
+    The lemma is now proven.
+
+    Define now the sequence
+    \[
+        \hat\psi_N(j) =
+        \begin{cases}
+            \frac{1}{(2\pi i j)^2} \quad & |j| \geq N \\
+            \frac{1}{(2\pi i N)^2} & |j| < N
+        \end{cases}
+    \]
+    for a fix $N \in \N$.
+    We consider this lemma for our sequence for $n > N$
+    \[
+        \frac{1}{(2\pi i (n+1))^2} + \frac{1}{(2\pi i (n-1))^2} - \frac{2}{(2\pi i n)^2}
+        = - \frac{n^2 + 1}{2\pi^2(n^2-1)^2} + \frac{1}{2\pi^2 n^2} \leq 0
+    \]
+    where the last inequality indeed holds, as it is easy to
+    verify\footnote{Preferably with a computer, \texttt{Mathematica}'s
+    \texttt{Solve} command did the job.} that this expression has zeros in
+    $\pm\frac{1}{\sqrt{3}}$, and we verify manually for $n = N$, which is easy,
+    as the sequence is negative and increasing.  The case for $n < N$ is of
+    course trivial, everything substracts to $0$.  In other words there exists
+    the function $-\psi_N \in L^1(\T)$.  Therefore, $\psi_N$ must exist in
+    $L^1(\T)$ as well, that has $\hat\psi_N(j) = \frac{1}{(2\pi i j)^2}$ for
+    all $|j| \geq N$.  Since $\| K_n \|_1 = 1$, by the above lemma and the
+    Lebesgue Monotone Convergence Theorem, we obtain
+    \[
+        \| \psi_N \|_1 = \sum_{j = 1}^{\infty} j \left( -\hat\psi_N(j+1) - \hat\psi_N(j-1) + 2\hat\psi_N(j) \right)
+    \]
+    We quickly notice that in the $k$-th partial sum of the above norm, every term but a select few vanishes,
+    because the $j$-th term appears $2j$ times with a positive sign and $j + 1 + j - 1 = 2j$ times with a negative sign.
+    What remains is
+    \[
+        \sum_{j = 1}^{k} j \left( -\hat\psi_N(j+1) - \hat\psi_N(j-1) + 2\hat\psi_N(j) \right)
+        = \hat\psi_N(1) + (k + 1)\hat\psi_N(k) - k\hat\psi_N(k+1) \to \hat\psi_N(1)
+    \]
+    and since clearly $|(k+1)\hat\psi_N(k) - k\hat\psi_N(k+1)| \to 0$ (recall the
+    coefficients are of the $k^{-2}$ order), we obtain that $\|\psi_N\|_1$ is
+    dominated from above by $\frac{1}{N^2}$, that is, there exists a $C' > 0$,
+    such that
+    \[
+        \|\psi_N\|_1 \leq \frac{C'}{N^2}
+    \]
+    Now, we simply use Young's inequality
+    \[
+        \| f \|_p
+        = \| \psi_N * f'' \|_p
+        \leq \| f'' \|_p \cdot \| \psi_N \|_1
+        \leq \| f'' \|_p \cdot \frac{1}{N^2} C'
+    \]
+    and define $C = \frac{1}{C'}$.
+\end{Exercise}
+
+\stepcounter{excounter}
+
+\stepcounter{excounter}
+
+\stepcounter{excounter}
+
+\begin{Exercise}
+    Suppose a series with complex terms
+    \[
+        \sum_{n = 0}^{\infty} a_n
+    \]
+    converges in the sense of Abel, i.e., the following limit exists
+    \[
+        \lim_{r \nearrow 1} \sum_{n = 0}^{\infty} a_n r^n.
+    \]
+    Additionally, assume that the sequence $(a_n)_n$ satisfies
+    \[
+        \lim_{n \to \infty} n a_n = 0.
+    \]
+    Let us show that the above series must also converge in the usual sense.
+
+    Let $k \in \N$ arbitrary and let us split the sum along $k$.  Firstly, we
+    have
+    \[
+        \Big| \sum_{n = 0}^{k-1} a_n (1 - r^n) \Big|
+        \leq (1 - r) \sum_{n = 0}^{k-1} n|a_n|
+    \]
+    because clearly
+    \[
+        \frac{1 - r^n}{1 - r} = 1 + r + \cdots + r^{n-1} \overset{r < 1}{\leq} n.
+    \]
+    Secondly, if $H_k$ denotes the upper bound of $(n|a_n|)_{n\geq k}$, which
+    exists as any convergent sequence is bounded, we have
+    \[
+        \Big| \sum_{n = k}^{\infty} a_n r^n \Big|
+        \leq H_k \frac{1}{k} r^k (1 + r + r^2 + \cdots)
+        \leq H_k \frac{1}{k} \frac{r^k}{1 - r}
+    \]
+    Now consider $r = 1 - \frac{1}{k}$ and estimate
+    \begin{align*}
+        \Big| \sum_{n = 0}^{k-1} a_n - \sum_{n = 0}^{\infty} a_n r^n \Big|
+        &= \Big| \sum_{n = 0}^{k-1} a_n - \sum_{n = 0}^{k-1} a_n r^n - \sum_{n=k}^{\infty} a_n r^n \Big| \\
+        &\leq \Big| \sum_{n = 0}^{k-1} (1 - r^n) a_n \Big| + \Big| \sum_{n=k}^{\infty} a_n r^n \Big| \\
+        &\leq (1 - 1 + \frac{1}{k})\sum_{n = 0}^{k-1} n|a_n| + H_k\frac{1}{k} \frac{(1 - \frac{1}{k})^k}{1 - 1 + \frac{1}{k}} \\
+        &= \frac{1}{k} \sum_{n = 0}^{k-1} n |a_n| + (1 - \frac{1}{k})^k H_k
+    \end{align*}
+    Since each of the terms on the right-hand side goes to $0$ as $k \to
+    \infty$ and $r \nearrow 1$ as $k \to \infty$, we have
+    \[
+        \sum_{n = 0}^{\infty} a_n = \lim_{k \to \infty} \sum_{n = 0}^{k-1} a_n = \lim_{r \nearrow 1} \sum_{n = 0}^{\infty} a_n r^n
+    \]
+    which finishes the proof.\footnote{This proof is a slight modification of
+    the one found in \cite[p.\ 251]{Bromwich1908}, which is due to Alfred
+    Tauber and his original $1897$ paper \cite{Tauber1897}.}
+\end{Exercise}
+
+\stepcounter{excounter}
+
+\begin{Exercise}
+    Let $BV(\T)$ be the set of all functions $f \colon \T \to \C$ of bounded variation.
+
+    We first prove that $BV(\T)$ is a $\C$-vector space.
+    Indeed, it is immediate from the definition of a function of bounded variation that for every scalar $\alpha$ and every $f \in BV(\T)$ we have
+    \begin{equation}
+        \label{eq:15-abshomog}
+        V(\alpha f) = |\alpha| V(f) < \infty
+    \end{equation}
+    To prove the same holds for addition, take $f, g \in BV(\T)$ and an arbitrary partition $P$ of $\T$.
+    Then we have
+    \begin{align*}
+        \sum_{k} |(f + g)(x_k) - (f + g)(x_{k-1})|
+        &= \sum_{k} |f(x_k) + g(x_k) - f(x_{k-1}) - g(x_{k-1})| \\
+        &\leq \sum_{k} |f(x_k) - f(x_{k-1})| + \sum_{k} |g(x_k) - g(x_{k-1})| \\
+    \end{align*}
+    After applying the supremum over all partitions, we obtain
+    \begin{equation}
+        \label{eq:15-triangle}
+        V(f + g) \leq V(f) + V(g) < \infty
+    \end{equation}
+    
+    We then define the map
+    \begin{equation}
+        \label{eq:15-norm}
+        \|f\|_{BV(\T)} = \sup_{y \in \T} |f(y)| + V(f)
+    \end{equation}
+    and prove it is a norm which turns $BV(\T)$ into a Banach space.
+    All of the properties of the norm follow rather easily.
+    The triangle inequality follows immediately from \eqref{eq:15-triangle} and the fact that the same holds for supremum.
+    Likewise, absolute homogeneity follows directly from \eqref{eq:15-abshomog}.
+    This map is also obviously non-negative and both of its terms are non-negative as well,
+    hence
+    \[
+        \|f\|_{BV(\T)} = 0
+        \iff \sup_{y \in \T}|f(y)| = 0 \land V(f) = 0
+        \iff f = 0
+    \]
+    To prove completeness, consider a Cauchy sequence $(f_n)_{n \in \N} \subset
+    BV(\T)$, i.e., for every $\varepsilon > 0$ there exists a $N \in \N$ such
+    that for every $n,m > N$ we have $\| f_n - f_m \|_{BV(\T)} < \varepsilon$.
+    In particular, $(f_n)$ is also clearly Cauchy in $\|\cdot\|_\infty$ (this
+    is really a direct consequence of \eqref{eq:15-norm}), and hence converges
+    uniformly to a bounded function $f \colon \T \to \C$.
+    Let us show that $f \in BV(\T)$ and that $f_n \to f$ in the $BV$-norm as well.
+    Let $P$ be any partition of $\T$ and let $\varepsilon > 0$.
+    By assumption, we can choose $N \in \N$ such that $\| f_n - f_m \|_{BV(\T)} < \varepsilon$ for all $n, m > N$.
+    By definition of the variation of a function over a partition $P$, if $f_n
+    \to f$ (even pointwise), then $V(f_n;\; P) \to V(f; \; P)$ (indeed, the
+    limit acts well in finite sums).  But then for any $n > N$ and $y \in \T$
+    we have
+    \begin{equation}
+        \label{eq:15-complete}
+        \begin{aligned}
+            |f(y) - f_n(y)| + V(f - f_n; \; P)
+            &= \lim_{m \to \infty}\left( |f_m(y) - f_n(y)| + V(f_m - f_n; \; P) \right) \\
+            &\leq \sup_{m > N,\; y \in \T} \| f_m - f_n \|_{BV(\T)}
+            < \varepsilon
+        \end{aligned}
+    \end{equation}
+    Since this estimate holds for all partitions $P$, we have $\| f - f_n \| <
+    \varepsilon$ for any $n > N$. Now $f - f_n \in BV(\T)$ and of course $f_n
+    \in BV(\T)$ for all $n > N$, so $f \in BV(\T)$ as well.  Naturally, the
+    estimate \eqref{eq:15-complete} shows that $\| f - f_n \|_{BV(\T)} \to 0$.
+
+    Lastly, let us prove that
+    \[
+        |S_nf(x)| \leq \| f \|_{BV(\T)}
+    \]
+    for all $n \in \N$ and $x \in \T$.
+
+    \underline{\textbf{A note to the examiner:}}
+    I will present two solutions to this problem.  The idea for the first is
+    based on \cite[p.\ 52, Problem 11]{Butzer1971}.  The second, alternative
+    solution is a more intuitive solution with no combinatorial tricks that I
+    came up with after reading one too many real analysis book chapters on
+    functions of bounded variation in order to finish this exercise.  If the
+    second solution fails, please ignore it and please tell me where, I include
+    it only to honor all the time I spent on this at first glance short
+    exercise.
+
+    \underline{\emph{Trick solution}:}
+    We first notice that
+    \begin{equation}
+        \label{eq:15-cesaro}
+        S_n f(x) = \sigma_n f(x) + \frac{1}{n} \sum_{k = -n}^{n} |k| \hat{f}(k) e^{2\pi i k x},
+    \end{equation}
+    where $\sigma_n f$ denotes the Ces\`aro mean, defined by
+    \[
+        \sigma_n f = \frac{1}{n} \sum_{k = 0}^{n-1} S_n f.
+    \]
+    Indeed, let us write out the right-hand side
+    \begin{align*}
+        \sigma_n f(x) + \frac{1}{n} \sum_{k = -n}^{n} |k| \hat{f}(k) e^{2\pi i k x}
+        &= \frac{1}{n} \sum_{m = 0}^{n-1}\sum_{k = -m}^{m} \hat{f}(k) e^{2\pi i k x} + \frac{1}{n} \sum_{k = -n}^{n} |k| \hat{f}(k) e^{2\pi i k x} \\
+        &= \hat{f}(0) +  \frac{1}{n} \sum_{k = 1}^{n-1}(n-k)\left( \hat{f}(k) + \hat{f}(-k) \right) e^{2\pi i k x} + \frac{1}{n} \sum_{k = -n}^{n} |k| \hat{f}(k) e^{2\pi i k x} \\
+        &= \sum_{k = -n}^{n} \hat{f}(k) e^{2\pi i k x} = S_n f(x)
+    \end{align*}
+    Then we notice that for all $f \in BV(\T)$ we have
+    \begin{equation}
+        \label{eq:15-bvcoef}
+        |\hat{f}(k)| \leq \frac{V(f)}{2\pi|k|}
+    \end{equation}
+    for all $k \neq 0$.
+    Indeed, integration per partes yields
+    \[
+        \hat{f}(k)
+        = \int_{\T} f(x) e^{-2\pi i k x} dx
+        = (-2\pi i k x)f(x) e^{-2\pi i k x} \Big|_\T + \int_{\T} \frac{e^{-2\pi i k x}}{2\pi i k x} df
+        = \int_{\T} \frac{e^{-2\pi i k x}}{2\pi i k x} df
+    \]
+    where the last equality holds because of periodicity and $df$ is the associated measure to $f$,
+    and we have
+    \begin{align*}
+        \Big| \int_{\T} e^{-2\pi i k x} df \Big|
+        &\leq \int_{\T} 1 df
+        = \lim_{\overset{\Delta x_i \to 0}{(x_i)_0^n \text{ partition of } \T}} \sum_{k = 1}^{n} f(x_k) - f(x_{k-1}) \\
+        &\leq \sup_{P \text{ any partition of } \T} \sum_{P} |f(x_k) - f(x_{k-1})|
+        = V(f)
+    \end{align*}
+    Joining \eqref{eq:15-cesaro} and \eqref{eq:15-bvcoef}, we obtain
+    \[
+        |S_n f(x) |
+        \leq |\sigma_n f(x)| + \frac{1}{n}\sum_{k = -n}^{n} |k| |\hat{f}(k)|
+        \leq \| f\|_\infty + \frac{2n|k|}{n} \frac{V(f)}{2\pi |k|}
+        \leq \| f\|_\infty + V(f)
+        = \| f \|_{BV(\T)}
+    \]
+    completing the exercise.
+
+    \underline{\emph{Alternative solution}:}
+    We first notice that if $f \colon \T \to \C$ is of bounded variation, then
+    obviously $\Re f \colon \T \to \R$ and $\Im f \colon \T \to \R$ are real
+    functions of bounded variation.  The converse is also true, if $f$ and $g$
+    are real functions of bounded variations on $\T$, then $F = f + ig$ is a
+    complex function of bounded variation. It is therefore enough to focus on
+    real functions of bounded variations, which have a somewhat nicer
+    theory.\footnote{See e.g.\ Chapter 13 of \cite{Carothers2000},
+    Section 3.5 of \cite{Folland1999}, or Section 32 of \cite{Kolmogorov1975}.}
+    Indeed, by \cite[Theorem 13.5]{Carothers2000},
+    any real function of bounded variation on $\T$ is a difference of two
+    increasing functions,\footnote{The converse also holds called Jordan's
+    Theorem, found in e.g. \cite[Corollary 13.6]{Carothers2000}.} which we can
+    easily see by defining $v(x) = V(f;\; [0, x])$ for $x \in [0, 1] = \T$ and
+    $v(0) = 0$. The function $v$ is then clearly increasing on $\T$, as is $v -
+    f$, so we can simply write $f = v - (v - f)$ as a difference of two
+    increasing function.
+    We show $v$ and $v-f$ are increasing by the following calculation
+    \[
+        v(y) - v(x)
+        = V(f; \; [0,y]) - V(f;\; [0,x])
+        = V(f; \; [x, y])
+        \geq |f(y) - f(x)|
+        \geq 0.
+    \]
+    for all $y > x$ in $\T$.
+
+    This in particular means $f$ is \emph{quasi-continuous}, i.e., a function
+    possessing finite left- and right-hand limits at each point (or just
+    countable number of jumps).  Now, since on a compact interval (like $\T$
+    can be thought of) any quasi-continuous function is a uniform limit of step
+    functions, all step functions are in $L^2(\T)$ (as piecewise continuous
+    (even constant) functions), and $L^2(\T)$ is complete, all real functions
+    of bounded variation on $\T$ are also in $L^2(\T)$.  This of course also
+    means that all complex functions of bounded variation on $\T$ are in
+    $L^2(\T)$. Now recall from lectures that $S_n$ projects orthogonally on the
+    appropriate finite dimensional supspace of $L^2(\T)$, so by a Theorem from
+    the Introduction to Functional Analysis class, its operator norm is bounded
+    by $\| S_n \|_{L^2(\T)} \leq 1$.  The operator norms can be compared as
+    \begin{equation}
+        \| S_n \|_{BV(\T)} \leq \| S_n \|_{L^2(\T)}
+        \label{eq:15-opnormcomp}
+    \end{equation}
+    because the supremum is taken over a smaller set.  The following estimation
+    then goes through
+    \[
+        | S_nf(x) |
+        \leq \| S_nf \|_{BV(\T)}
+        \leq \| S_n \|_{BV(\T)} \| f \|_{BV(\T)}
+        \overset{\eqref{eq:15-opnormcomp}}{\leq} \| S_n \|_{L^2(\T)} \| f \|_{BV(\T)}
+        \leq \| f \|_{BV(\T)}
+    \]
+\end{Exercise}
+
+\begin{Exercise}
+    To a continuous function $f \colon \T \to \C$ for every $N \in \N$ we associate its \emph{discrete Fourier coefficients}
+    \[
+        a_N(n) = \frac{1}{N} \sum_{k = 1}^{N} f(e^{\frac{2\pi ik}{N}}) e^{\frac{-2\pi ikn}{N}}
+    \]
+    as well as its usual Fourier coefficients
+    \[
+        a(n) = \int_{\T} f(x) e^{-2\pi inx} dx
+    \]
+    Let us prove that
+    \[
+        \lim_{N\to\infty} a_N(n) = a(n)
+    \]
+    
+    Denote $g_n(x) = f(x)e^{-2\pi ixn}$.
+    We make a partition of the interval $I = [0, 1]$ into $N$ equal parts,
+    i.e., $x_k = \frac{k}{N}$ for $k = 0,\dots,N$.
+    Notice that this partition maps to $\T = \S^1$ as $y_k = e^{2\pi i x_k} =
+    e^{\frac{2\pi i k}{N}}$.  We now observe that $a_N(n)$ is exactly the right
+    Riemann sum of the function $g_n$ on $\T$ for this partition.  Indeed,
+    whereas in the usual Riemann sum we take function values on arbitrary
+    points of the partition intervals, we always take right-most points for the
+    right Riemann sum. Concretely, for an arbitrary partition
+    $P = \left\{ x_0<\cdots<x_n \right\}$ of $[0,1]$, we define
+    \[
+        R_Pf = \sum_{i = 1}^{n} f(x_i)(x_i - x_{i-1})
+    \]
+    The right Riemann sum is thus a special case of the usual Riemann sum and
+    all the convergence theorems hold for it as well.  Hence
+    \[
+        \lim_{N\to\infty} a_N(n) = \lim_{N\to\infty} R_Ng_n = \int_{\T} g_n(x) dx = a(n)
+    \]
+    where $R_N$ yields the right Riemann sum given by the above partitioning of
+    $I$ into $N$ equal parts.  Note that in this case, the factor of
+    $\frac{1}{N}$ plays the role of the interval lengths, which at first glance
+    appear to be omitted.
+\end{Exercise}
+
+\nocite{Grafakos2014Classical}
+\bibliographystyle{ieeetr}
+\bibliography{uni.bib}
+
+\end{document}
